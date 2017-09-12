@@ -12,6 +12,15 @@ void fatal_error(std::string error, std::string ctx)
 {
 	std::cout << error << ctx <<std::endl;
 }
+#else
+void fatal_error(std::string error)
+{
+	
+}
+void fatal_error(std::string error, std::string ctx)
+{
+	
+}
 #endif
 
 
@@ -19,7 +28,6 @@ Window::Window()
 {
 	gWindow = NULL;
 	glcontext = NULL;
-	gCurrentSurface = NULL;
 }
 
 
@@ -63,7 +71,7 @@ bool Window::init()
 			}
 			else
 			{
-
+				SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 			}
 			
 		}
@@ -86,12 +94,6 @@ bool Window::loadMedia()
 
 void Window::close()
 {
-	//Deallocate surface
-	for (int i = 0; i < KEY_PRESS_SURFACE_TOTAL; ++i)
-	{
-		SDL_FreeSurface(gKeyPressSurfaces[i]);
-		gKeyPressSurfaces[i] = NULL;
-	}
 
 	//Destroy window
 	SDL_DestroyWindow(gWindow);
@@ -113,28 +115,3 @@ void Window::close()
 	return loadedSurface;
 }*/
 
-void Window::gLoop()
-{
-
-	//Main loop flag
-	bool quit = false;
-
-	//Event handler
-	SDL_Event e;
-
-	//While application is running
-
-	while (!quit)
-	{
-		//Handle events on queue
-		while (SDL_PollEvent(&e) != 0)
-		{
-			//User requests quit
-			if (e.type == SDL_QUIT)
-			{
-				quit = true;
-			}
-		}
-
-	}
-}
