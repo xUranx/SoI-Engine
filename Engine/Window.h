@@ -28,8 +28,8 @@ public:
 	std::string Images = "Images/";
 private:
 
-	const int SCREEN_WIDTH = 640;
-	const int SCREEN_HEIGHT = 480;
+	int SCREEN_WIDTH;
+	int SCREEN_HEIGHT;
 
 };
 

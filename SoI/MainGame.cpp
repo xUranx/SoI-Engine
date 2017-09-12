@@ -16,27 +16,14 @@ void MainGame::run()
 {
 	if (!window.init())
 	{
-#if _DEBUG
-		printf("Failed to initialize!\n");
-#endif
 	}
 	else
 	{
-		//Load media
-		if (!window.loadMedia())
-		{
-#if _DEBUG
-			printf("Failed to load media!\n");
-#endif
-		}
-		else
-		{
-			gLoop();
-		}
+		_sprite.init(-1.0f, -1.0f, 1.0f, 1.0f);
+		gLoop();
 	}
 
 	//Free resources and close SDL
-	errorexit:
 	window.close();
 }
 
@@ -55,13 +42,26 @@ void MainGame::gLoop()
 	{
 		//Handle events on queue
 		while (SDL_PollEvent(&e) != 0)
-		{
+		{	
 			//User requests quit
 			if (e.type == SDL_QUIT)
 			{
 				quit = true;
+				goto endpoint;
 			}
 		}
-
+	endpoint:;
 	}
+}
+
+void MainGame::drawGame()
+{
+	glClearDepth(1.0);
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
+	_sprite.draw();
+
+	SDL_GL_SwapWindow(window.gWindow);
 }

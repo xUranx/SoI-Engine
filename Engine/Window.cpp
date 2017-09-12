@@ -1,33 +1,16 @@
 #include "Window.h"
-#include <iostream>
 #include <glew.h>
+#include "Error.h"
 
 
-#ifdef _DEBUG
-void fatal_error(std::string error)
-{
-	std::cout << error << std::endl;
-}
-void fatal_error(std::string error, std::string ctx)
-{
-	std::cout << error << ctx <<std::endl;
-}
-#else
-void fatal_error(std::string error)
-{
-	
-}
-void fatal_error(std::string error, std::string ctx)
-{
-	
-}
-#endif
 
 
 Window::Window()
 {
 	gWindow = NULL;
 	glcontext = NULL;
+	SCREEN_WIDTH = 1024;
+	SCREEN_HEIGHT = 720;
 }
 
 
@@ -47,7 +30,7 @@ bool Window::init()
 	//Initialize SDL
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 	{
-		printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
+		fatal_error("SDL could not initialize! SDL_Error: ", SDL_GetError());
 		success = false;
 	}
 	else

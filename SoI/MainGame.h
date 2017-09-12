@@ -1,12 +1,12 @@
 #pragma once
-#include "Window.h"
-
+#include <Engine/Window.h>
+#include <Engine/Sprite.h>
 enum GameState
 {
 	MainMenu, Game, Exit 
 };
 
-class MainGame: public Window
+class MainGame
 {
 public:
 	MainGame();
@@ -15,5 +15,7 @@ public:
 private:
 	void gLoop();
 	Window window;
+	Sprite _sprite;
+	void drawGame();
 };
 
