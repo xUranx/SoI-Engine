@@ -144,13 +144,13 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Error.cpp" />
+    <ClCompile Include="Log.cpp" />
     <ClCompile Include="GLSLProgram.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Error.h" />
+    <ClInclude Include="Log.h" />
     <ClInclude Include="GLSLProgram.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Window.h" />

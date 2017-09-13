@@ -7,7 +7,7 @@
 class Window
 {
 public:
-	Window();
+	Window(std::string _wName);
 	~Window();
 	bool init();
 	bool loadMedia();
@@ -27,7 +27,7 @@ public:
 
 	std::string Images = "Images/";
 private:
-
+	std::string wName;
 	int SCREEN_WIDTH;
 	int SCREEN_HEIGHT;
 

@@ -10,9 +10,12 @@ public:
 
 	bool compileShaders(std::string vertexShaderFilePath, std::string fragmentShaderFilePath);
 
-	void linkShaders();
+	bool linkShaders();
 
 private:
+
+	bool compileShader(std::string FilePath, GLuint id);
+
 	GLuint programID;
 
 	GLuint vertexShaderID;

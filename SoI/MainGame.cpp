@@ -1,9 +1,11 @@
 #include "MainGame.h"
+#include <Engine\Log.h>
 
 
 
 MainGame::MainGame()
 {
+
 }
 
 
@@ -16,9 +18,10 @@ void MainGame::run()
 {
 	if (!window.init())
 	{
+		fatal_error("Failed to init window");
 	}
 	else
-	{
+	{	
 		_sprite.init(-1.0f, -1.0f, 1.0f, 1.0f);
 		gLoop();
 	}
@@ -53,6 +56,7 @@ void MainGame::gLoop()
 	endpoint:;
 	}
 }
+
 
 void MainGame::drawGame()
 {
