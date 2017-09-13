@@ -22,12 +22,12 @@ void MainGame::run()
 	}
 	else
 	{	
-		_sprite.init(-1.0f, -1.0f, 2.0f, 2.0f);
 		if(!initShaders())
 		{
 			goto errorend;
 		}
 		Block1 = ImageLoader::loadPNG("Include/Textures/Block.png");
+		_sprite.init(-1.0f, -1.0f, 2.0f, 2.0f);
 		gLoop();
 	}
 
