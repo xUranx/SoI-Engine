@@ -22,12 +22,27 @@ void MainGame::run()
 	}
 	else
 	{	
-		_sprite.init(-1.0f, -1.0f, 1.0f, 1.0f);
+		_sprite.init(-1.0f, -1.0f, 2.0f, 2.0f);
+		if(!initShaders())
+		{
+			goto errorend;
+		}
 		gLoop();
 	}
 
 	//Free resources and close SDL
+	errorend:
 	window.close();
+}
+
+bool MainGame::initShaders()
+{
+	bool success = true;
+	success = colorP.compileShaders("Shaders/colorShading.vert", "Shaders/colorShading.frag");
+	colorP.addAtribute("vertexPosition");
+	colorP.addAtribute("vertexColour");
+	success = colorP.linkShaders();
+	return success;
 }
 
 void MainGame::gLoop()
@@ -50,10 +65,9 @@ void MainGame::gLoop()
 			if (e.type == SDL_QUIT)
 			{
 				quit = true;
-				goto endpoint;
 			}
 		}
-	endpoint:;
+		drawGame();
 	}
 }
 
@@ -64,8 +78,11 @@ void MainGame::drawGame()
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	colorP.use();
 
 	_sprite.draw();
+
+	colorP.unuse();
 
 	SDL_GL_SwapWindow(window.gWindow);
 }

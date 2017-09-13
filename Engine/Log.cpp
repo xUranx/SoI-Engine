@@ -1,5 +1,7 @@
 #include "Log.h"
 #include <iostream>
+#include <cstdlib>
+#include <SDL.h>
 
 #ifdef _DEBUG
 extern void fatal_error(std::string error)

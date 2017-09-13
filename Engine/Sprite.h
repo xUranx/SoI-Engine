@@ -1,5 +1,6 @@
 #pragma once
 #include <glew.h>
+
 class Sprite
 {
 public:

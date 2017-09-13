@@ -3,7 +3,7 @@
 #include <fstream>
 #include <vector>
 
-GLSLProgram::GLSLProgram() : programID(0), vertexShaderID(0), fragmentShaderID(0)
+GLSLProgram::GLSLProgram() : numAttribute(0), programID(0), vertexShaderID(0), fragmentShaderID(0)
 {
 
 }
@@ -73,7 +73,7 @@ bool GLSLProgram::compileShader(std::string FilePath, GLuint id)
 	glCompileShader(id);
 
 	GLint success = 0;
-	glGetShaderiv(id, GL_INFO_LOG_LENGTH, &success);
+	glGetShaderiv(id, GL_COMPILE_STATUS, &success);
 	if (success == GL_FALSE)
 	{
 		GLint mLenght = 0;
@@ -110,23 +110,45 @@ bool GLSLProgram::linkShaders()
 		glGetProgramiv(programID, GL_INFO_LOG_LENGTH, &maxLength);
 
 		//The maxLength includes the NULL character
-		std::vector<GLchar> infoLog(maxLength);
+		std::vector<char> infoLog(maxLength);
 		glGetProgramInfoLog(programID, maxLength, &maxLength, &infoLog[0]);
 
-		//We don't need the program anymore.
+		//Don't need the program anymore.
 		glDeleteProgram(programID);
 		//Don't leak shaders either.
 		glDeleteShader(vertexShaderID);
 		glDeleteShader(fragmentShaderID);
 
-		//Use the infoLog as you see fit.
-
-		//In this simple program, we'll just leave
+		
+		std::string iLog = &infoLog[0];
+		fatal_error("Failed to link shaders: \n -> " + iLog);
 		return false;
 	}
 
 	//Always detach shaders after a successful link.
 	glDetachShader(programID, vertexShaderID);
 	glDetachShader(programID, fragmentShaderID);
+	glDeleteShader(vertexShaderID);
+	glDeleteShader(fragmentShaderID);
 	return true;
+}
+
+void GLSLProgram::addAtribute(const std::string& attName)
+{
+	glBindAttribLocation(programID, numAttribute++, attName.c_str());
+
+}
+
+void GLSLProgram::use()
+{
+	glUseProgram(programID);
+	for  (int i = 0; i < numAttribute;  i++)
+	{
+		glEnableVertexAttribArray(i);
+	}
+}
+
+void GLSLProgram::unuse()
+{
+	glUseProgram(0);
 }

@@ -12,7 +12,14 @@ public:
 
 	bool linkShaders();
 
+	void addAtribute(const std:: string& attName);
+
+	void use();
+	void unuse();
+
 private:
+
+	int numAttribute;
 
 	bool compileShader(std::string FilePath, GLuint id);
 
