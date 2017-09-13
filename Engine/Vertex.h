@@ -1,21 +1,23 @@
 #pragma once
 
 #include <glew.h>
-
+struct Colour
+{
+	GLubyte r;
+	GLubyte g;
+	GLubyte b;
+	GLubyte a;
+};
+struct Position
+{
+	float x;
+	float y;
+};
 struct Vertex 
 {
-	struct Position
-	{
-		float x;
-		float y;
-	} position;
-	struct Colour
-	{
-		GLubyte r;
-		GLubyte g;
-		GLubyte b;
-		GLubyte a;
-	} colour;
+	Position position;
+	
+	Colour colour;
 	void setColour(GLubyte _r, GLubyte _g, GLubyte _b, GLubyte _a)
 	{
 		colour.r = _r;

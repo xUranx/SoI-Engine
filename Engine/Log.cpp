@@ -7,11 +7,15 @@
 extern void fatal_error(std::string error)
 {
 	std::cout << "Error: " << error << std::endl;
+	SDL_Quit();
+	exit(1);
 }
 
 extern void fatal_error(std::string error, std::string ctx)
 {
 	std::cout << "Error: " << error << ctx << std::endl;
+	SDL_Quit();
+	exit(1);
 }
 
 extern void Message(std::string msg)

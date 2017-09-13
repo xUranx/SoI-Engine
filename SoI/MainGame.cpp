@@ -3,7 +3,7 @@
 
 
 
-MainGame::MainGame()
+MainGame::MainGame(): time(0)
 {
 
 }
@@ -47,7 +47,7 @@ bool MainGame::initShaders()
 
 void MainGame::gLoop()
 {
-
+	
 	//Main loop flag
 	bool quit = false;
 
@@ -58,6 +58,7 @@ void MainGame::gLoop()
 
 	while (!quit)
 	{
+		time += 0.01;
 		//Handle events on queue
 		while (SDL_PollEvent(&e) != 0)
 		{	
@@ -74,12 +75,18 @@ void MainGame::gLoop()
 
 void MainGame::drawGame()
 {
-	glClearDepth(1.0);
 
+	
+	//set base depth
+	glClearDepth(1.0);
+	//Clear the buffers
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	colorP.use();
 
+	GLuint timeLoc = colorP.getUniformLoc("time");
+	glUniform1f(timeLoc, time);
+	
 	_sprite.draw();
 
 	colorP.unuse();

@@ -17,6 +17,8 @@ public:
 	void use();
 	void unuse();
 
+	GLuint getUniformLoc(const std::string& uniformName);
+
 private:
 
 	int numAttribute;

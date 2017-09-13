@@ -20,7 +20,7 @@ private:
 	Window window{"Sphere Of Influence"};
 	Sprite _sprite;
 	void drawGame();
-
+	float time;
 	GLSLProgram colorP;
 };
 
