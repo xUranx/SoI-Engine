@@ -51,23 +51,8 @@ void Sprite::init(float _x, float _y, float _width, float _height)
 
 	for (int i = 0; i < 6; i++)
 	{
-		vertexData[i].colour.r = 255;
-		vertexData[i].colour.g = 200;
-		vertexData[i].colour.b = 0;
-		vertexData[i].colour.a = 255;
+		vertexData[i].setColour(255, 255, 0, 0);
 	}
-	vertexData[1].colour.r = 0;
-	vertexData[1].colour.g = 200;
-	vertexData[1].colour.b = 0;
-	vertexData[2].colour.r = 0;
-	vertexData[2].colour.g = 0;
-	vertexData[2].colour.b = 100;
-	vertexData[3].colour.r = 0;
-	vertexData[3].colour.g = 0;
-	vertexData[3].colour.b = 100;
-	vertexData[4].colour.r = 200;
-	vertexData[4].colour.g = 100;
-	vertexData[4].colour.b = 100;
 	
 
 	glBindBuffer(GL_ARRAY_BUFFER, vboID);
