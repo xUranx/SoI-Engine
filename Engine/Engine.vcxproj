@@ -144,14 +144,21 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ImageLoader.cpp" />
+    <ClCompile Include="IOManager.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="GLSLProgram.cpp" />
+    <ClCompile Include="picoPNG.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GLTexture.h" />
+    <ClInclude Include="ImageLoader.h" />
+    <ClInclude Include="IOManager.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="GLSLProgram.h" />
+    <ClInclude Include="picoPNG.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="Window.h" />

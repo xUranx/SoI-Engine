@@ -31,32 +31,32 @@ void Sprite::init(float _x, float _y, float _width, float _height)
 
 	Vertex vertexData[6];
 
-	vertexData[0].position.x = _x + _width;
-	vertexData[0].position.y = _y + _height;
+	vertexData[0].setPos(_x + _width, _y + _height);
+	vertexData[0].setUV(1.0f, 1.0f);
 
-	vertexData[1].position.x = _x;
-	vertexData[1].position.y = _y + _height;
+	vertexData[1].setPos(_x, _y + _height);
+	vertexData[1].setUV(0.0, 1.0f);
 
-	vertexData[2].position.x = _x;
-	vertexData[2].position.y = _y;
-	//
-	vertexData[3].position.x = _x;
-	vertexData[3].position.y = _y;
+	vertexData[2].setPos(_x, _y);
+	vertexData[2].setUV(0.0f, 0.0f);
 
-	vertexData[4].position.x = _x + _width;
-	vertexData[4].position.y = _y;
+	vertexData[3].setPos(_x, _y);
+	vertexData[3].setUV(0.0f, 0.0f);
 
-	vertexData[5].position.x = _x + _width;
-	vertexData[5].position.y = _y + _height;
+	vertexData[4].setPos(_x + _width, _y);
+	vertexData[4].setUV(1.0f, 0.0f);
+
+	vertexData[5].setPos(_x + _width, _y + _height);
+	vertexData[5].setUV(1.0f, 1.0f);
 
 	for (int i = 0; i < 6; i++)
 	{
-		vertexData[i].setColour(100, 0, 0, 255);
+		vertexData[i].setColour(255, 255, 255, 255);
 	}
-	vertexData[1].setColour(255, 255, 0, 255);
-	vertexData[4].setColour(0, 255, 255, 255);
-	vertexData[2].setColour(0, 0, 255, 255);
-	vertexData[3].setColour(0, 0, 255, 255);
+	//vertexData[1].setColour(255, 255, 0, 255);
+	//vertexData[4].setColour(0, 255, 255, 255);
+	//vertexData[2].setColour(0, 0, 255, 255);
+	//vertexData[3].setColour(0, 0, 255, 255);
 
 	
 
@@ -76,6 +76,8 @@ void Sprite::draw()
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, position));
 
 	glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(Vertex), (void*)offsetof(Vertex, colour));
+
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, uv));
 
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 

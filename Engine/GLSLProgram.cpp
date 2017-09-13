@@ -153,9 +153,9 @@ void GLSLProgram::unuse()
 	glUseProgram(0);
 }
 
-GLuint GLSLProgram::getUniformLoc(const std::string& unifromName)
+GLint GLSLProgram::getUniformLoc(const std::string& unifromName)
 {
-	GLuint location = glGetUniformLocation(programID, unifromName.c_str());
+	GLint location = glGetUniformLocation(programID, unifromName.c_str());
 	if (location == GL_INVALID_INDEX)
 	{
 		fatal_error("Uniform " + unifromName + " doesnt exit in shader");

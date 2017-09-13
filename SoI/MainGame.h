@@ -1,7 +1,8 @@
 #pragma once
 #include <Engine/Window.h>
 #include <Engine/Sprite.h>
-#include <Engine\GLSLProgram.h>
+#include <Engine/GLSLProgram.h>
+#include <Engine/GLTexture.h>
 
 enum GameState
 {
@@ -22,5 +23,6 @@ private:
 	void drawGame();
 	float time;
 	GLSLProgram colorP;
+	GLTexture Block1;
 };
 

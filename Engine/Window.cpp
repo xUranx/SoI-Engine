@@ -27,7 +27,6 @@ bool Window::init()
 	
 	//Initialization flag
 	bool success = true;
-	Message("SDL Initialized");
 	//Initialize SDL
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 	{
@@ -36,6 +35,7 @@ bool Window::init()
 	}
 	else
 	{
+		Message("SDL Initialized");
 		//Create window
 		
 		gWindow = SDL_CreateWindow(wName.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL);
