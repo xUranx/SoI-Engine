@@ -1,7 +1,7 @@
 #include "MainGame.h"
 #include <Engine\Log.h>
 #include <iostream>
-
+using namespace Engine;
 MainGame::MainGame(): time(0)
 {
 

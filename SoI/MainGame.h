@@ -18,11 +18,11 @@ public:
 	bool initShaders();
 private:
 	void gLoop();
-	Window window;
-	std::vector<Sprite*> _sprite;
+	Engine::Window window;
+	std::vector<Engine::Sprite*> _sprite;
 	void drawGame();
 	float time;
-	GLSLProgram colorP;
+	Engine::GLSLProgram colorP;
 	
 };
 

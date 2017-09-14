@@ -2,34 +2,35 @@
 #include "ImageLoader.h"
 #include "Log.h"
 #define textureMap_ite std::map<std::string, GLTexture>::iterator
+namespace Engine {
 
-
-TextureCahce::TextureCahce()
-{
-}
-
-
-TextureCahce::~TextureCahce()
-{
-}
-
-GLTexture TextureCahce::getTexture(std::string path)
-{
-	
-	textureMap_ite it = textureMap.find(path);
-
-	if (it == textureMap.end())
+	TextureCahce::TextureCahce()
 	{
-		//LoadTexture
-		GLTexture newTexture = ImageLoader::loadPNG(path);
-		textureMap.insert(make_pair(path, newTexture));
-		Message("Loaded new Texture: " + path);
-		return newTexture;
 	}
-	else
+
+
+	TextureCahce::~TextureCahce()
 	{
-		Message("Used Cahced Texture");
-		return it->second;
 	}
-	
+
+	GLTexture TextureCahce::getTexture(std::string path)
+	{
+
+		textureMap_ite it = textureMap.find(path);
+
+		if (it == textureMap.end())
+		{
+			//LoadTexture
+			GLTexture newTexture = ImageLoader::loadPNG(path);
+			textureMap.insert(make_pair(path, newTexture));
+			Message("Loaded new Texture: " + path);
+			return newTexture;
+		}
+		else
+		{
+			Message("Used Cahced Texture");
+			return it->second;
+		}
+
+	}
 }

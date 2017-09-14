@@ -1,33 +1,36 @@
 #pragma once
 #include <string>
 #include <glew.h>
-class GLSLProgram
-{
-public:
-	GLSLProgram();
-	~GLSLProgram();
+
+namespace Engine {
+	class GLSLProgram
+	{
+	public:
+		GLSLProgram();
+		~GLSLProgram();
 
 
-	bool compileShaders(std::string vertexShaderFilePath, std::string fragmentShaderFilePath);
+		bool compileShaders(std::string vertexShaderFilePath, std::string fragmentShaderFilePath);
 
-	bool linkShaders();
+		bool linkShaders();
 
-	void addAtribute(const std:: string& attName);
+		void addAtribute(const std::string& attName);
 
-	void use();
-	void unuse();
+		void use();
+		void unuse();
 
-	GLint getUniformLoc(const std::string& uniformName);
+		GLint getUniformLoc(const std::string& uniformName);
 
-private:
+	private:
 
-	int numAttribute;
+		int numAttribute;
 
-	bool compileShader(std::string FilePath, GLuint id);
+		bool compileShader(std::string FilePath, GLuint id);
 
-	GLuint programID;
+		GLuint programID;
 
-	GLuint vertexShaderID;
-	GLuint fragmentShaderID;
-};
+		GLuint vertexShaderID;
+		GLuint fragmentShaderID;
+	};
 
+}

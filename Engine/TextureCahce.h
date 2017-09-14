@@ -1,15 +1,16 @@
 #pragma once
 #include <map>
 #include "GLTexture.h"
-class TextureCahce
-{
-public:
-	TextureCahce();
-	~TextureCahce();
+namespace Engine {
+	class TextureCahce
+	{
+	public:
+		TextureCahce();
+		~TextureCahce();
 
-	GLTexture getTexture(std::string path);
+		GLTexture getTexture(std::string path);
 
-private:
-	std::map<std::string, GLTexture> textureMap;
-};
-
+	private:
+		std::map<std::string, GLTexture> textureMap;
+	};
+}

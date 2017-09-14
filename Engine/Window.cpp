@@ -3,159 +3,160 @@
 #include "Log.h"
 
 
+namespace Engine {
 
-
-Window::Window()
-{
-	gWindow = NULL;
-	glcontext = NULL;
-}
-
-
-Window::~Window()
-{
-
-
-
-}
-
-
-bool Window::init(std::string _wName, int sW, int sH, unsigned int curFlags)
-{
-
-	Uint32 flags = SDL_WINDOW_OPENGL;
-	if (curFlags & INVS)
+	Window::Window()
 	{
-		flags |= SDL_WINDOW_HIDDEN;
+		gWindow = NULL;
+		glcontext = NULL;
 	}
-	if (curFlags & FULLSCREEN)
+
+
+	Window::~Window()
 	{
-		flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+
+
+
 	}
-	if (curFlags & BORDELES)
+
+
+	bool Window::init(std::string _wName, int sW, int sH, unsigned int curFlags)
 	{
-		flags |= SDL_WINDOW_BORDERLESS;
-	}
-	//Initialization flag
-	bool success = true;
-	//Initialize SDL
-	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
-	{
-		fatal_error("SDL could not initialize! SDL_Error: ", SDL_GetError());
-		success = false;
-	}
-	else
-	{
-		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-		Message("SDL Initialized");
-		//Create window
-		
-		gWindow = SDL_CreateWindow(_wName.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, sW, sH, flags);
-		if (gWindow == NULL)
+
+		Uint32 flags = SDL_WINDOW_OPENGL;
+		if (curFlags & INVS)
 		{
-			fatal_error("Window could not be created! SDL_Error: ", SDL_GetError());
+			flags |= SDL_WINDOW_HIDDEN;
+		}
+		if (curFlags & FULLSCREEN)
+		{
+			flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+		}
+		if (curFlags & BORDELES)
+		{
+			flags |= SDL_WINDOW_BORDERLESS;
+		}
+		//Initialization flag
+		bool success = true;
+		//Initialize SDL
+		if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
+		{
+			fatal_error("SDL could not initialize! SDL_Error: ", SDL_GetError());
 			success = false;
 		}
 		else
-		{	
-			Message("Window initialized");
-			//Get window surface
-			glcontext = SDL_GL_CreateContext(gWindow);
-			GLenum test = glewInit();
-			if (test != GLEW_OK)
+		{
+			SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+			Message("SDL Initialized");
+			//Create window
+
+			gWindow = SDL_CreateWindow(_wName.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, sW, sH, flags);
+			if (gWindow == NULL)
 			{
-				fatal_error("Glew Init error");
+				fatal_error("Window could not be created! SDL_Error: ", SDL_GetError());
 				success = false;
 			}
 			else
 			{
-				std::string versio = (char*)glGetString(GL_VERSION);
-				Message("Opengl initialized. Version: " + versio);
-				
+				Message("Window initialized");
+				//Get window surface
+				glcontext = SDL_GL_CreateContext(gWindow);
+				GLenum test = glewInit();
+				if (test != GLEW_OK)
+				{
+					fatal_error("Glew Init error");
+					success = false;
+				}
+				else
+				{
+					std::string versio = (char*)glGetString(GL_VERSION);
+					Message("Opengl initialized. Version: " + versio);
+
+				}
+
 			}
-			
 		}
+
+		return success;
 	}
-	
-	return success;
+
+	bool Window::loadMedia()
+	{
+		//Loading success flag
+		bool success = true;
+
+		//Load splash image
+		//loadSurface("C:/Users/Sami/Desktop/SDLTUT/x.bmp");
+
+
+		return success;
+	}
+
+	void Window::close()
+	{
+		Message("Closing");
+		//Destroy window
+		SDL_DestroyWindow(gWindow);
+		gWindow = NULL;
+
+		//Quit SDL subsystems
+		SDL_Quit();
+	}
+
+	void Window::fpsCounter()
+	{
+		static const int NUM_SAMPLES = 100;
+		static float frameTimes[NUM_SAMPLES];
+		static int currentFrame = 0;
+
+		static float prevticks = SDL_GetTicks();
+
+		float currentTicks;
+		currentTicks = SDL_GetTicks();
+
+		frameTime = currentTicks - prevticks;
+		frameTimes[currentFrame % NUM_SAMPLES] = frameTime;
+
+		prevticks = currentTicks;
+
+		int count;
+
+		if (currentFrame < NUM_SAMPLES)
+		{
+			count = currentFrame;
+		}
+		else
+		{
+			count = NUM_SAMPLES;
+		}
+
+		float fameTimeAverage = 0;
+		for (int i = 0; i < count; i++)
+		{
+			fameTimeAverage += frameTimes[i];
+		}
+		fameTimeAverage /= count;
+		if (fameTimeAverage > 0)
+		{
+			fps = 1000.0f / fameTimeAverage;
+		}
+		else
+		{
+			fps = 60.0f;
+		}
+		currentFrame++;
+	}
+
+	/*SDL_Surface* Window::loadSurface(std::string path)
+	{
+		//Load image at specified path
+		SDL_Surface* loadedSurface = SDL_LoadBMP(path.c_str());
+		if (loadedSurface == NULL)
+		{
+			printf("Unable to load image %s! SDL Error: %s\n", path.c_str(), SDL_GetError());
+		}
+
+		return loadedSurface;
+	}*/
+
 }
-
-bool Window::loadMedia()
-{
-	//Loading success flag
-	bool success = true;
-
-	//Load splash image
-	//loadSurface("C:/Users/Sami/Desktop/SDLTUT/x.bmp");
-
-
-	return success;
-}
-
-void Window::close()
-{
-	Message("Closing");
-	//Destroy window
-	SDL_DestroyWindow(gWindow);
-	gWindow = NULL;
-
-	//Quit SDL subsystems
-	SDL_Quit();
-}
-
-void Window::fpsCounter()
-{
-	static const int NUM_SAMPLES = 100;
-	static float frameTimes[NUM_SAMPLES];
-	static int currentFrame = 0;
-
-	static float prevticks = SDL_GetTicks();
-
-	float currentTicks;
-	currentTicks = SDL_GetTicks();
-
-	frameTime = currentTicks - prevticks;
-	frameTimes[currentFrame % NUM_SAMPLES] = frameTime;
-
-	prevticks = currentTicks;
-
-	int count;
-
-	if (currentFrame < NUM_SAMPLES)
-	{
-		count = currentFrame;
-	}
-	else
-	{
-		count = NUM_SAMPLES;
-	}
-
-	float fameTimeAverage = 0;
-	for (int i = 0; i < count; i++)
-	{
-		fameTimeAverage += frameTimes[i];
-	}
-	fameTimeAverage /= count;
-	if (fameTimeAverage > 0)
-	{
-		fps = 1000.0f / fameTimeAverage;
-	}
-	else
-	{
-		fps = 60.0f;
-	}
-	currentFrame++;
-}
-
-/*SDL_Surface* Window::loadSurface(std::string path)
-{
-	//Load image at specified path
-	SDL_Surface* loadedSurface = SDL_LoadBMP(path.c_str());
-	if (loadedSurface == NULL)
-	{
-		printf("Unable to load image %s! SDL Error: %s\n", path.c_str(), SDL_GetError());
-	}
-
-	return loadedSurface;
-}*/
-
