@@ -2,7 +2,7 @@
 #include <Engine/Window.h>
 #include <Engine/Sprite.h>
 #include <Engine/GLSLProgram.h>
-#include <Engine/GLTexture.h>
+#include <vector>
 
 enum GameState
 {
@@ -18,11 +18,11 @@ public:
 	bool initShaders();
 private:
 	void gLoop();
-	Window window{"Sphere Of Influence"};
-	Sprite _sprite;
+	Window window;
+	std::vector<Sprite*> _sprite;
 	void drawGame();
 	float time;
 	GLSLProgram colorP;
-	GLTexture Block1;
+	
 };
 

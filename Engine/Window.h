@@ -2,14 +2,14 @@
 #include <SDL.h>
 #include <string>
 
-
+enum WindowFlags{INVS = 0x1, FULLSCREEN = 0x2, BORDELES = 0x4};
 
 class Window
 {
 public:
-	Window(std::string _wName);
+	Window();
 	~Window();
-	bool init();
+	bool init(std::string _wName, int sW, int sH, unsigned int curFlags);
 	bool loadMedia();
 	void close();
 	
@@ -26,10 +26,13 @@ public:
 	//Current displayed image
 
 	std::string Images = "Images/";
+	void fpsCounter();
+	float getfps() { return fps; }
 private:
 	std::string wName;
 	int SCREEN_WIDTH;
 	int SCREEN_HEIGHT;
+	float fps, frameTime;
 
 };
 

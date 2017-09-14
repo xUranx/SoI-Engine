@@ -13,9 +13,9 @@ void main()
 {
 	
 	vec4 textureColour = texture(Textu, fragmentUV);
-	colour = textureColour * fragmentColour;
-	//colour = vec4(fragmentColour.r * (cos(fragmentPosition.x * 4.0 + time) + 1.0) * 0.5, 
-	//			  fragmentColour.g  * (cos(fragmentPosition.y * 8.0 + time)+1.0) * 0.5,
-	//			  fragmentColour.b  * (cos(fragmentPosition.x * 1.4 + time)+1.0) * 0.5,
-	//			  1.0);
+	//colour = textureColour * fragmentColour;
+	colour = vec4(fragmentColour.r * (cos(fragmentPosition.x * 4.0 + time) + 1.0) * 0.5, 
+				  fragmentColour.g  * (cos(fragmentPosition.y * 10.0 + time)+1.0) * 0.5,
+				  fragmentColour.b  * (sin(fragmentPosition.x * 1.7 + time)+1.0) * 0.5,
+				  1.0) * textureColour;
 }
