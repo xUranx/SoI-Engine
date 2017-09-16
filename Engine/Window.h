@@ -9,13 +9,13 @@ namespace Engine {
 	public:
 		Window();
 		~Window();
+		//Init SDL and OpenGl
 		bool init(std::string _wName, int sW, int sH, unsigned int curFlags);
-		bool loadMedia();
+		//Close SDL window
 		void close();
 
-		//SDL_Surface* loadSurface(std::string path);
 
-		//The window we'll be rendering to
+		//The window
 		SDL_Window* gWindow;
 
 		//The surface contained by the window
@@ -26,7 +26,9 @@ namespace Engine {
 		//Current displayed image
 
 		std::string Images = "Images/";
+		//fps counter
 		void fpsCounter();
+		//Returns fps
 		float getfps() { return fps; }
 	private:
 		std::string wName;

@@ -1,8 +1,10 @@
 #include "MainGame.h"
 #include <Engine\Log.h>
 #include <iostream>
+#include <Engine\SpriteBatch.h>
+#include <Engine\ResourceManager.h>
 using namespace Engine;
-MainGame::MainGame(): time(0)
+MainGame::MainGame(): time(0), sWidth(1024), sHeight(640)
 {
 
 }
@@ -15,7 +17,7 @@ MainGame::~MainGame()
 
 void MainGame::run()
 {
-	if (!window.init("Sphere of Influence", 1024, 640, 0))
+	if (!window.init("Sphere of Influence", sWidth, sHeight, 0))
 	{
 		fatal_error("Failed to init window");
 	}
@@ -25,14 +27,25 @@ void MainGame::run()
 		{
 			goto errorend;
 		}
-		_sprite.push_back(new Sprite());
-		_sprite.back()->init(0.0f, 0.0f, 1.0f, 1.0f, "Include/Textures/Block.png");
-		_sprite.push_back(new Sprite());
-		_sprite.back()->init(-1.0f, -1.0f, 1.0f, 1.0f, "Include/Textures/Block.png");
-		_sprite.push_back(new Sprite());
-		_sprite.back()->init(0.0f, -1.0f, 1.0f, 1.0f, "Include/Textures/Block.png");
-		_sprite.push_back(new Sprite());
-		_sprite.back()->init(-1.0f, 0.0f, 1.0f, 1.0f, "Include/Textures/Block.png");
+		/*b2Vec2 grav(0.0f, -9.81);
+		world = std::make_unique<b2World>(grav);
+
+		b2BodyDef groundBodyDef;
+		groundBodyDef.position.Set(0.0f, -10.0f);
+		b2Body* groundBody = world->CreateBody(&groundBodyDef);
+		b2PolygonShape gBox;
+		gBox.SetAsBox(50.0f, 10.0f);
+		groundBody->CreateFixture(&gBox, 0.0f);
+
+		Box newBox;
+		newBox.init(world.get(), glm::vec2(0.0f, 14.0f), glm::vec2(10.0f, 10.0f));
+		boxes.push_back(newBox);*/
+
+		spriteBatch.init();
+
+		cam2D.init(sWidth, sHeight);
+		//cam2D.setPos(cam2D.getPos() + glm::vec2(sWidth / 2.0f, sHeight / 2.0f));
+		//cam2D.setScale(32.0f);
 		gLoop();
 	}
 
@@ -62,7 +75,8 @@ void MainGame::gLoop()
 	SDL_Event e;
 
 	//While application is running
-
+	const float CamSpeed = 20.0f;
+	const float ScalSpeed = 0.1f;
 	while (!quit)
 	{
 		time += 0.01;
@@ -88,11 +102,30 @@ void MainGame::gLoop()
 				case SDLK_ESCAPE:
 					quit = true;
 					break;
+				case SDLK_w:
+					cam2D.setPos(cam2D.getPos() + glm::vec2(0.0f, -CamSpeed));
+					break;
+				case SDLK_s :
+					cam2D.setPos(cam2D.getPos() + glm::vec2(0.0f, CamSpeed));
+					break;
+				case SDLK_a:
+					cam2D.setPos(cam2D.getPos() + glm::vec2(CamSpeed, 0.0f));
+					break;
+				case SDLK_d:
+					cam2D.setPos(cam2D.getPos() + glm::vec2(-CamSpeed, 0.0f));
+					break;
+				case SDLK_q:
+					cam2D.setScale(cam2D.getScale() + ScalSpeed);
+					break;
+				case SDLK_e:
+					cam2D.setScale(cam2D.getScale() - ScalSpeed);
+					break;
 				default:
 					break;
 				}
 			}
 		}
+		cam2D.update();
 		drawGame();
 	}
 }
@@ -113,13 +146,39 @@ void MainGame::drawGame()
 	GLint textLoc = colorP.getUniformLoc("Textu");
 	glUniform1i(textLoc, 0);
 
-	GLint timeLoc = colorP.getUniformLoc("time");
-	glUniform1f(timeLoc, time);
-	for (int i = 0; i < _sprite.size(); i++)
-	{
-		_sprite[i]->draw();
-	}
+	//GLint timeLoc = colorP.getUniformLoc("time");
+	//glUniform1f(timeLoc, time);
 
+	GLint pLoc = colorP.getUniformLoc("P");
+	glm::mat4 camMatrix = cam2D.getCameraMatrix();
+	glUniformMatrix4fv(pLoc, 1, GL_FALSE, &(camMatrix[0][0]));
+
+	spriteBatch.begin();
+
+	/*for (auto& b : boxes)
+	{
+		glm::vec4 destRect;
+		destRect.x = b.getBody()->GetPosition().x;
+		destRect.y = b.getBody()->GetPosition().y;
+		destRect.z = b.getDimensions().x;
+		destRect.w = b.getDimensions().y;
+	}*/
+
+	glm::vec4 pos(0.0f, 0.0f, 50.0f, 50.0f);
+	glm::vec4 uv(0.0f, 0.0f, 1.0f, 1.0f);
+	static GLTexture texture = ResourceManager::getTexture("Include/Textures/Block.png");
+	GLuint id = texture.id;
+	Colour color;
+	color.r = 255;
+	color.g = 255;
+	color.b = 255;
+	color.a = 255;
+
+	spriteBatch.draw(pos, uv, id, 0.0f, color);
+
+
+	spriteBatch.end();
+	spriteBatch.renderBatch();
 	glBindTexture(GL_TEXTURE_2D, 0);
 	colorP.unuse();
 

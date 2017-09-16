@@ -13,13 +13,13 @@ namespace Engine {
 		void update();
 
 		//Setter
-		void setPos(glm::vec2& newPos) { position = newPos; }
-		void setScale(float newScale) { scale = newScale; }
+		void setPos(glm::vec2& newPos) { position = newPos; needsUpdate = true;}
+		void setScale(float newScale) { scale = newScale; needsUpdate = true;}
 
 		//Getter
-		glm::vec2 getPos() { return position; }
-		float getScale() { return scale; }
-		glm::mat4 getCameraMatrix() { return cameraMatrix; }
+		glm::vec2 getPos() const { return position; }
+		float getScale() const { return scale; }
+		glm::mat4 getCameraMatrix() const { return cameraMatrix; }
 	private:
 		int sWidth, sHeight;
 		bool needsUpdate;

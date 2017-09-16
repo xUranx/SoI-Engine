@@ -9,13 +9,14 @@ out vec4 colour;
 uniform float time;
 uniform sampler2D Textu;
 
+
 void main()
 {
 	
 	vec4 textureColour = texture(Textu, fragmentUV);
-	//colour = textureColour * fragmentColour;
-	colour = vec4(fragmentColour.r * (cos(fragmentPosition.x * 4.0 + time) + 1.0) * 0.5, 
-				  fragmentColour.g  * (cos(fragmentPosition.y * 10.0 + time)+1.0) * 0.5,
-				  fragmentColour.b  * (sin(fragmentPosition.x * 1.7 + time)+1.0) * 0.5,
-				  1.0) * textureColour;
+	colour = textureColour * fragmentColour;
+	//colour = vec4(fragmentColour.r * (cos(time) + 1.0) * 0.5, 
+	//			  fragmentColour.g  * (cos(time)*0.3 +1.0) * 0.5,
+	//			  fragmentColour.b  * (sin(time)+1.0) * 0.5,
+	//			  1.0) * textureColour;
 }

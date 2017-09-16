@@ -22,7 +22,8 @@ namespace Engine {
 
 	bool Window::init(std::string _wName, int sW, int sH, unsigned int curFlags)
 	{
-
+		SCREEN_WIDTH = sW;
+		SCREEN_HEIGHT = sH;
 		Uint32 flags = SDL_WINDOW_OPENGL;
 		if (curFlags & INVS)
 		{
@@ -76,18 +77,6 @@ namespace Engine {
 
 			}
 		}
-
-		return success;
-	}
-
-	bool Window::loadMedia()
-	{
-		//Loading success flag
-		bool success = true;
-
-		//Load splash image
-		//loadSurface("C:/Users/Sami/Desktop/SDLTUT/x.bmp");
-
 
 		return success;
 	}
@@ -146,17 +135,4 @@ namespace Engine {
 		}
 		currentFrame++;
 	}
-
-	/*SDL_Surface* Window::loadSurface(std::string path)
-	{
-		//Load image at specified path
-		SDL_Surface* loadedSurface = SDL_LoadBMP(path.c_str());
-		if (loadedSurface == NULL)
-		{
-			printf("Unable to load image %s! SDL Error: %s\n", path.c_str(), SDL_GetError());
-		}
-
-		return loadedSurface;
-	}*/
-
 }
