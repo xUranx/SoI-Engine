@@ -1,8 +1,10 @@
 #pragma once
-namespace Engine {
 #include <glew.h>
-	struct Colour
+namespace Engine {
+	struct ColourRGBA8
 	{
+		ColourRGBA8() : r(255), g(255), b(255), a(255) {}
+		ColourRGBA8(GLubyte _r,	GLubyte _g, GLubyte _b, GLubyte _a) : r(_r), g(_g), b(_b), a(_a) {}
 		GLubyte r;
 		GLubyte g;
 		GLubyte b;
@@ -31,7 +33,7 @@ namespace Engine {
 		}
 
 		//Colour
-		Colour colour;
+		ColourRGBA8 colour;
 		void setColour(GLubyte _r, GLubyte _g, GLubyte _b, GLubyte _a)
 		{
 			colour.r = _r;

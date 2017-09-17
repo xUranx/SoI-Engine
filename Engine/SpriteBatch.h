@@ -15,8 +15,12 @@ namespace Engine {
 		TEXTURE
 	};
 
-	struct Glyhp
+	class Glyhp
 	{
+	public:
+		Glyhp() {};
+		Glyhp(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint Texture, float Depth, const ColourRGBA8& colour);
+		Glyhp(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint Texture, float Depth, const ColourRGBA8& colour, float angle);
 		GLuint texture;
 		float depth;
 
@@ -24,6 +28,8 @@ namespace Engine {
 		Vertex bottomLeft;
 		Vertex topRight;
 		Vertex bottomRight;
+	private:
+		glm::vec2 rotatePoint(glm::vec2 pos, float angle);
 	};
 
 	class RenderBatch
@@ -46,7 +52,11 @@ namespace Engine {
 		void begin(GlyphSortType type = GlyphSortType::TEXTURE);
 		void end();
 
-		void draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, float depth, const Colour& colour);
+		void draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, float depth, const ColourRGBA8& colour);
+
+		void draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, float depth, const ColourRGBA8& colour, float angle);
+
+		void draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, float depth, const ColourRGBA8& colour, const glm::vec2& dir);
 
 		void renderBatch();
 
@@ -64,7 +74,8 @@ namespace Engine {
 
 		GlyphSortType sortType;
 
-		std::vector<Glyhp*> glyphs;
+		std::vector<Glyhp*> glyphsP;
+		std::vector<Glyhp> glyphs;
 		std::vector<RenderBatch> rBatch;
 	};
 }
