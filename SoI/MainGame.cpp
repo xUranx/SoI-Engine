@@ -3,6 +3,7 @@
 #include <iostream>
 #include <Engine\SpriteBatch.h>
 #include <Engine\ResourceManager.h>
+#include <random>
 using namespace Engine;
 MainGame::MainGame(): time(0), sWidth(1024), sHeight(640)
 {
@@ -37,9 +38,17 @@ void MainGame::run()
 		gBox.SetAsBox(50.0f, 10.0f);
 		groundBody->CreateFixture(&gBox, 0.0f);
 
-		Box newBox;
-		newBox.init(world.get(), glm::vec2(0.0f, 14.0f), glm::vec2(2.0f, 2.0f));
-		boxes.push_back(newBox);
+		std::mt19937 randGenerator;
+		std::uniform_real_distribution<float> xPos(-10.0f, 10.0f);
+		std::uniform_real_distribution<float> yPos(-15.0f, 15.0f);
+		std::uniform_real_distribution<float> size(0.5f, 2.5f);
+		const int num_box = 50;
+		for (int i = 0; i < num_box; i++)
+		{
+			Box newBox;
+			newBox.init(world.get(), glm::vec2(xPos(randGenerator), yPos(randGenerator)), glm::vec2(size(randGenerator), size(randGenerator)));
+			boxes.push_back(newBox);
+		}
 
 		spriteBatch.init();
 
@@ -160,8 +169,8 @@ void MainGame::drawGame()
 	for (auto& b : boxes)
 	{
 		glm::vec4 destRect;
-		destRect.x = b.getBody()->GetPosition().x;
-		destRect.y = b.getBody()->GetPosition().y;
+		destRect.x = b.getBody()->GetPosition().x - b.getDimensions().x/2.0f;
+		destRect.y = b.getBody()->GetPosition().y - b.getDimensions().y/2.0f;
 		destRect.z = b.getDimensions().x;
 		destRect.w = b.getDimensions().y;
 		spriteBatch.draw(destRect, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture.id, 0.0f, color, b.getBody()->GetAngle());

@@ -14,7 +14,15 @@ void main()
 {
 	
 	vec4 textureColour = texture(Textu, fragmentUV);
-	colour = textureColour * fragmentColour;
+	if(textureColour == vec4(0,0,0,1))
+	{
+		colour = fragmentColour;
+	}
+	else
+	{
+		colour = textureColour * fragmentColour;
+	}
+	
 	//colour = vec4(fragmentColour.r * (cos(time) + 1.0) * 0.5, 
 	//			  fragmentColour.g  * (cos(time)*0.3 +1.0) * 0.5,
 	//			  fragmentColour.b  * (sin(time)+1.0) * 0.5,
