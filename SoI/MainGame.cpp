@@ -28,9 +28,9 @@ void MainGame::run()
 			goto errorend;
 		}
 		b2Vec2 grav(0.0f, -9.81);
-		glm::vec2 dimes = glm::vec2(50.0f, 10.0f);
+		glm::vec2 dimes = glm::vec2(50.0f, 5.0f);
 		world = std::make_unique<b2World>(grav);
-		Ground.Fixedinit(world.get(), glm::vec2(0.0f, -20.0), dimes);
+		Ground.Fixedinit(world.get(), glm::vec2(0.0f, -15.0), dimes);
 		/*b2BodyDef groundBodyDef;
 		groundBodyDef.position.Set(0.0f, -20.0f);
 		b2Body* groundBody = world->CreateBody(&groundBodyDef);
@@ -39,9 +39,9 @@ void MainGame::run()
 		groundBody->CreateFixture(&gBox, 0.0f);*/
 		std::mt19937 randGenerator;
 		std::uniform_real_distribution<float> xPos(-10.0f, 10.0f);
-		std::uniform_real_distribution<float> yPos(0.0f, 30.0f);
+		std::uniform_real_distribution<float> yPos(0.0f, 20.0f);
 		std::uniform_real_distribution<float> size(0.5f, 2.5f);
-		const int num_box = 100;
+		const int num_box = 10;
 		for (int i = 0; i < num_box; i++)
 		{
 			Box newBox;
@@ -127,6 +127,9 @@ void MainGame::gLoop()
 					break;
 				case SDLK_e:
 					cam2D.setScale(cam2D.getScale() - ScalSpeed);
+					break;
+				case SDLK_x:
+					boxes[0].getBody()->ApplyLinearImpulse(b2Vec2{ 0.0f,50.0f }, boxes[0].getBody()->GetWorldCenter(),true);
 					break;
 				default:
 					break;
