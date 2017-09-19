@@ -7,7 +7,6 @@
 using namespace Engine;
 MainGame::MainGame(): time(0), sWidth(1024), sHeight(640)
 {
-
 }
 
 
@@ -29,32 +28,32 @@ void MainGame::run()
 			goto errorend;
 		}
 		b2Vec2 grav(0.0f, -9.81);
+		glm::vec2 dimes = glm::vec2(50.0f, 10.0f);
 		world = std::make_unique<b2World>(grav);
-
-		b2BodyDef groundBodyDef;
-		groundBodyDef.position.Set(0.0f, -30.0f);
+		Ground.Fixedinit(world.get(), glm::vec2(0.0f, -20.0), dimes);
+		/*b2BodyDef groundBodyDef;
+		groundBodyDef.position.Set(0.0f, -20.0f);
 		b2Body* groundBody = world->CreateBody(&groundBodyDef);
 		b2PolygonShape gBox;
 		gBox.SetAsBox(50.0f, 10.0f);
-		groundBody->CreateFixture(&gBox, 0.0f);
-
+		groundBody->CreateFixture(&gBox, 0.0f);*/
 		std::mt19937 randGenerator;
 		std::uniform_real_distribution<float> xPos(-10.0f, 10.0f);
-		std::uniform_real_distribution<float> yPos(-15.0f, 15.0f);
+		std::uniform_real_distribution<float> yPos(0.0f, 30.0f);
 		std::uniform_real_distribution<float> size(0.5f, 2.5f);
-		const int num_box = 50;
+		const int num_box = 100;
 		for (int i = 0; i < num_box; i++)
 		{
 			Box newBox;
 			newBox.init(world.get(), glm::vec2(xPos(randGenerator), yPos(randGenerator)), glm::vec2(size(randGenerator), size(randGenerator)));
 			boxes.push_back(newBox);
 		}
-
+		ball.init(world.get(), glm::vec2(0.0f, 0.0f), 2.0f);
 		spriteBatch.init();
 
 		cam2D.init(sWidth, sHeight);
 		//cam2D.setPos(cam2D.getPos() + glm::vec2(sWidth / 2.0f, sHeight / 2.0f));
-		cam2D.setScale(12.0f);
+		cam2D.setScale(18.0f);
 		gLoop();
 	}
 
@@ -93,7 +92,7 @@ void MainGame::gLoop()
 		static int framecounter = 0;
 		if (framecounter++ == 10)
 		{
-			//std::cout << window.getfps() << std::endl;
+			std::cout << window.getfps() << std::endl;
 			framecounter = 0;
 		}
 		//Handle events on queue
@@ -149,7 +148,7 @@ void MainGame::drawGame()
 	glClearDepth(1.0);
 	//Clear the buffers
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+	glClearColor(35.0f / 255.0f, 130.0f / 255.0f, 117.0f / 255.0f, 1.0f);
 
 	colorP.use();
 	glActiveTexture(GL_TEXTURE0);
@@ -173,14 +172,28 @@ void MainGame::drawGame()
 		destRect.y = b.getBody()->GetPosition().y - b.getDimensions().y/2.0f;
 		destRect.z = b.getDimensions().x;
 		destRect.w = b.getDimensions().y;
-		spriteBatch.draw(destRect, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture.id, 0.0f, color, b.getBody()->GetAngle());
+		spriteBatch.draw(destRect, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture.id, 1.0f, color, b.getBody()->GetAngle());
 	}
+	color.setColour(6.0f, 51.0f, 15.0f, 255.0f);
+	glm::vec4 destRect;
+	destRect.x = Ground.getBody()->GetPosition().x - Ground.getDimensions().x / 2.0f;
+	destRect.y = Ground.getBody()->GetPosition().y - Ground.getDimensions().y / 2.0f;
+	destRect.z = Ground.getDimensions().x;
+	destRect.w = Ground.getDimensions().y;
+	spriteBatch.draw(destRect, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), NULL, 1.0f, color);
+	destRect.x = ball.getBody()->GetPosition().x - ball.getRadius();
+	destRect.y = ball.getBody()->GetPosition().y - ball.getRadius();
+	destRect.z = ball.getRadius()*2.0f;
+	destRect.w = ball.getRadius()*2.0f;
+	color.setColour(255.0f, 255.0f, 255.0f, 255.0f);
+	static GLTexture texture2 = ResourceManager::getTexture("Include/Textures/rock_type_planet.png");
+	spriteBatch.draw(destRect, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture2.id, 1.0f, color);
+
 
 	/*glm::vec4 pos(0.0f, 0.0f, 50.0f, 50.0f);
 	glm::vec4 uv(0.0f, 0.0f, 1.0f, 1.0f);
 	static GLTexture texture = ResourceManager::getTexture("Include/Textures/Block.png");
 	GLuint id = texture.id;
-
 	spriteBatch.draw(pos, uv, id, 0.0f, color, 45.0f);*/
 
 

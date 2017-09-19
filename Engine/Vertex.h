@@ -9,6 +9,13 @@ namespace Engine {
 		GLubyte g;
 		GLubyte b;
 		GLubyte a;
+		void setColour(GLubyte _r, GLubyte _g, GLubyte _b, GLubyte _a)
+		{
+			r = _r;
+			g = _g;
+			b = _b;
+			a = _a;
+		}
 	};
 
 	struct UV

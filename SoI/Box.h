@@ -9,6 +9,8 @@ public:
 
 	void init(b2World* world, const glm::vec2 position, const glm::vec2& dimensions);
 
+	void Fixedinit(b2World * world, const glm::vec2 position, const glm::vec2 dimensions);
+
 	b2Body* getBody() const { return body; }
 	b2Fixture* getFixture() const { return fixture; }
 	const glm::vec2 getDimensions() const { return dimens; }

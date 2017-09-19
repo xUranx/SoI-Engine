@@ -7,6 +7,7 @@
 #include <Box2D\Box2D.h>
 #include "Box.h"
 #include <vector>
+#include "Planet.h"
 
 enum GameState
 {
@@ -32,5 +33,7 @@ private:
 	std::unique_ptr<b2World> world;
 	std::vector<Box> boxes;
 	Engine::SpriteBatch spriteBatch;
+	Box Ground;
+	Planet ball;
 };
 
