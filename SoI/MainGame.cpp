@@ -41,7 +41,7 @@ void MainGame::run()
 		std::uniform_real_distribution<float> xPos(-10.0f, 10.0f);
 		std::uniform_real_distribution<float> yPos(0.0f, 20.0f);
 		std::uniform_real_distribution<float> size(0.5f, 2.5f);
-		const int num_box = 100;
+		const int num_box = 50;
 		for (int i = 0; i < num_box; i++)
 		{
 			Box newBox;
@@ -50,9 +50,12 @@ void MainGame::run()
 		}
 		ball.init(world.get(), glm::vec2(0.0f, 0.0f), 2.0f);
 		spriteBatch.init();
-
+		UIspriteBatch.init();
+		spriteFont = new SpriteFont("Include/Fonts/font.ttf", 16);
 		cam2D.init(sWidth, sHeight);
+		hudCam.init(sWidth, sHeight);
 		//cam2D.setPos(cam2D.getPos() + glm::vec2(sWidth / 2.0f, sHeight / 2.0f));
+		hudCam.setPos(cam2D.getPos() + glm::vec2(sWidth / 2.0f, sHeight / 2.0f));
 		cam2D.setScale(18.0f);
 		gLoop();
 	}
@@ -89,12 +92,7 @@ void MainGame::gLoop()
 	{
 		time += 0.01;
 		window.fpsCounter();
-		static int framecounter = 0;
-		if (framecounter++ == 10)
-		{
-			std::cout << window.getfps() << std::endl;
-			framecounter = 0;
-		}
+	
 		//Handle events on queue
 		while (SDL_PollEvent(&e) != 0)
 		{	
@@ -138,7 +136,9 @@ void MainGame::gLoop()
 		}
 		world->Step(1.0f / 60.f, 6, 2);
 		cam2D.update();
+		hudCam.update();
 		drawGame();
+
 	}
 }
 
@@ -192,7 +192,6 @@ void MainGame::drawGame()
 	static GLTexture texture2 = ResourceManager::getTexture("Include/Textures/rock_type_planet.png");
 	spriteBatch.draw(destRect, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture2.id, 1.0f, color);
 
-
 	/*glm::vec4 pos(0.0f, 0.0f, 50.0f, 50.0f);
 	glm::vec4 uv(0.0f, 0.0f, 1.0f, 1.0f);
 	static GLTexture texture = ResourceManager::getTexture("Include/Textures/Block.png");
@@ -202,8 +201,31 @@ void MainGame::drawGame()
 
 	spriteBatch.end();
 	spriteBatch.renderBatch();
+	drawHUD();
 	glBindTexture(GL_TEXTURE_2D, 0);
 	colorP.unuse();
 
 	SDL_GL_SwapWindow(window.gWindow);
+}
+
+void MainGame::drawHUD()
+{
+	char buffer[256];
+	UIspriteBatch.begin();
+	static float fps;
+	GLint pLoc = colorP.getUniformLoc("P");
+	glm::mat4 camMatrix = hudCam.getCameraMatrix();
+	glUniformMatrix4fv(pLoc, 1, GL_FALSE, &(camMatrix[0][0]));
+
+	ColourRGBA8 colour = ColourRGBA8(255, 255, 255, 255);
+	static int framecounter = 0;
+	if (framecounter++ == 20)
+	{
+		fps = window.getfps();
+		framecounter = 0;
+	}
+	sprintf_s(buffer, "Fps: %f", fps);
+	spriteFont->draw(UIspriteBatch, buffer, glm::vec2(0, sHeight-20), glm::vec2(1.0f), 0.0f, colour);
+	UIspriteBatch.end();
+	UIspriteBatch.renderBatch();
 }

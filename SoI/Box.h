@@ -1,6 +1,7 @@
 #pragma once
 #include <Box2D\Box2D.h>
 #include <glm\glm.hpp>
+#include "CollisionListener.h"
 class Box
 {
 public:
@@ -18,5 +19,6 @@ private:
 	b2Body* body = nullptr;
 	b2Fixture* fixture = nullptr;
 	glm::vec2 dimens = glm::vec2(0.0f);
+	entityCat::entityCatecory eCat = entityCat::Block;
 };
 

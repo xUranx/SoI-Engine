@@ -1,6 +1,6 @@
 #include "Box.h"
 
-
+using namespace entityCat;
 
 Box::Box()
 {
@@ -27,8 +27,9 @@ void Box::init(b2World * world, const glm::vec2 position, const glm::vec2& dimen
 	fDef.shape = &bShape;
 	fDef.density = 1.0f;
 	fDef.friction = 0.3f;
-
+	fDef.filter.categoryBits = Block;
 	fixture = body->CreateFixture(&fDef);
+	body->SetUserData(this);
 }
 void Box::Fixedinit(b2World * world, const glm::vec2 position, const glm::vec2 dimensions)
 {
