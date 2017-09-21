@@ -41,7 +41,7 @@ void MainGame::run()
 		std::uniform_real_distribution<float> xPos(-10.0f, 10.0f);
 		std::uniform_real_distribution<float> yPos(0.0f, 20.0f);
 		std::uniform_real_distribution<float> size(0.5f, 2.5f);
-		const int num_box = 10;
+		const int num_box = 100;
 		for (int i = 0; i < num_box; i++)
 		{
 			Box newBox;

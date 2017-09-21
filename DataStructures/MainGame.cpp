@@ -64,12 +64,11 @@ void MainGame::gLoop()
 	cam2D.setPos(cam2D.getPos() + glm::vec2(sWidth / 2.0f, sHeight / 2.0f));
 	std::mt19937 randGenerator;
 	std::uniform_real_distribution<float> Height(20.0f, 300.0f);
-	int nums = (sWidth / 7);
-	float posX = 2.0f;
+	int nums = (sWidth);
+	float posX = 0.0f;
 	for (int i = 0; i < nums; i++)
 	{
-		glm::vec4 p(posX, 0.0f, 5.0f, Height(randGenerator));
-		posX += 7;
+		glm::vec4 p(posX++, 0.0f, 1.0f, Height(randGenerator));
 		pos.push_back(p);
 	}
 	posP.resize(pos.size());
@@ -106,24 +105,22 @@ void MainGame::gLoop()
 							posP[i] = &pos[i];
 						}
 						std::stable_sort(posP.begin(), posP.end(), compFrontToBack);
-						posX = 2.0f;
+						posX = 1.0f;
 						for (int i = 0; i < posP.size(); i++)
 						{
-							posP[i]->x = posX;
-							posX += 7;
+							posP[i]->x = posX++;
 						}
 						Message("Sorted");
 						sorted = true;
 					}
 					break;
 				case SDLK_r:
-					posX = 2.0f;
+					posX = 1.0f;
 					pos.clear();
 					posP.clear();
 					for (int i = 0; i < nums; i++)
 					{
-						glm::vec4 p(posX, 0.0f, 5.0f, Height(randGenerator));
-						posX += 7;
+						glm::vec4 p(posX++, 0.0f, 1.0f, Height(randGenerator));
 						pos.push_back(p);
 					}
 					posP.resize(pos.size());
