@@ -25,43 +25,50 @@ void MainGame::run()
 	{	
 		if(!initShaders())
 		{
-			goto errorend;
+
 		}
+		
 		b2Vec2 grav(0.0f, -9.81);
 		glm::vec2 dimes = glm::vec2(50.0f, 5.0f);
 		world = std::make_unique<b2World>(grav);
-		Ground.Fixedinit(world.get(), glm::vec2(0.0f, -15.0), dimes);
-		/*b2BodyDef groundBodyDef;
-		groundBodyDef.position.Set(0.0f, -20.0f);
-		b2Body* groundBody = world->CreateBody(&groundBodyDef);
-		b2PolygonShape gBox;
-		gBox.SetAsBox(50.0f, 10.0f);
-		groundBody->CreateFixture(&gBox, 0.0f);*/
+
 		std::mt19937 randGenerator;
 		std::uniform_real_distribution<float> xPos(-10.0f, 10.0f);
 		std::uniform_real_distribution<float> yPos(0.0f, 20.0f);
 		std::uniform_real_distribution<float> size(0.5f, 2.5f);
 		const int num_box = 50;
+		//boxes.resize(boxes.size()+num_box+1);
 		for (int i = 0; i < num_box; i++)
 		{
 			Box newBox;
 			newBox.init(world.get(), glm::vec2(xPos(randGenerator), yPos(randGenerator)), glm::vec2(size(randGenerator), size(randGenerator)));
 			boxes.push_back(newBox);
 		}
+		Ground.Fixedinit(world.get(), glm::vec2(0.0f, -15.0), dimes);
+
 		ball.init(world.get(), glm::vec2(0.0f, 0.0f), 2.0f);
+
 		spriteBatch.init();
 		UIspriteBatch.init();
 		spriteFont = new SpriteFont("Include/Fonts/font.ttf", 16);
+
 		cam2D.init(sWidth, sHeight);
 		hudCam.init(sWidth, sHeight);
+
 		//cam2D.setPos(cam2D.getPos() + glm::vec2(sWidth / 2.0f, sHeight / 2.0f));
 		hudCam.setPos(cam2D.getPos() + glm::vec2(sWidth / 2.0f, sHeight / 2.0f));
 		cam2D.setScale(18.0f);
+
+		dRender.init();
+
+		//world->SetContactListener(&ColList);
+
 		gLoop();
 	}
 
 	//Free resources and close SDL
-	errorend:
+
+	boxes.clear();
 	window.close();
 }
 
@@ -88,6 +95,7 @@ void MainGame::gLoop()
 	//While application is running
 	const float CamSpeed = 0.5f;
 	const float ScalSpeed = 0.5f;
+	//renderDebug = true;
 	while (!quit)
 	{
 		time += 0.01;
@@ -140,6 +148,7 @@ void MainGame::gLoop()
 		drawGame();
 
 	}
+	dRender.dispose();
 }
 
 
@@ -161,8 +170,8 @@ void MainGame::drawGame()
 	//GLint timeLoc = colorP.getUniformLoc("time");
 	//glUniform1f(timeLoc, time);
 
-	GLint pLoc = colorP.getUniformLoc("P");
 	glm::mat4 camMatrix = cam2D.getCameraMatrix();
+	GLint pLoc = colorP.getUniformLoc("P");
 	glUniformMatrix4fv(pLoc, 1, GL_FALSE, &(camMatrix[0][0]));
 
 	spriteBatch.begin();
@@ -204,6 +213,22 @@ void MainGame::drawGame()
 	drawHUD();
 	glBindTexture(GL_TEXTURE_2D, 0);
 	colorP.unuse();
+	
+	if (renderDebug)
+	{
+		for (auto& b : boxes)
+		{
+			glm::vec4 destRect;
+			destRect.x = b.getBody()->GetPosition().x - b.getDimensions().x / 2.0f;
+			destRect.y = b.getBody()->GetPosition().y - b.getDimensions().y / 2.0f;
+			destRect.z = b.getDimensions().x;
+			destRect.w = b.getDimensions().y;
+			dRender.drawBox(destRect, color, b.getBody()->GetAngle());
+			//dRender.drawCircle(glm::vec2(b.getBody()->GetPosition().x, b.getBody()->GetPosition().y), color, b.getDimensions().x / 2.0f);
+		}
+		dRender.end();
+		dRender.render(camMatrix, 2.0f);
+	}
 
 	SDL_GL_SwapWindow(window.gWindow);
 }
@@ -216,7 +241,6 @@ void MainGame::drawHUD()
 	GLint pLoc = colorP.getUniformLoc("P");
 	glm::mat4 camMatrix = hudCam.getCameraMatrix();
 	glUniformMatrix4fv(pLoc, 1, GL_FALSE, &(camMatrix[0][0]));
-
 	ColourRGBA8 colour = ColourRGBA8(255, 255, 255, 255);
 	static int framecounter = 0;
 	if (framecounter++ == 20)
@@ -224,7 +248,7 @@ void MainGame::drawHUD()
 		fps = window.getfps();
 		framecounter = 0;
 	}
-	sprintf_s(buffer, "Fps: %f", fps);
+	sprintf_s(buffer, "FPS: %f", fps);
 	spriteFont->draw(UIspriteBatch, buffer, glm::vec2(0, sHeight-20), glm::vec2(1.0f), 0.0f, colour);
 	UIspriteBatch.end();
 	UIspriteBatch.renderBatch();

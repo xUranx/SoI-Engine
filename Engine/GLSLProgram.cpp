@@ -2,6 +2,7 @@
 #include "Log.h"
 #include <fstream>
 #include <vector>
+#include "IOManager.h"
 namespace Engine {
 	GLSLProgram::GLSLProgram() : numAttribute(0), programID(0), vertexShaderID(0), fragmentShaderID(0)
 	{
@@ -17,7 +18,23 @@ namespace Engine {
 	{
 		Message("Creating Shaders.");
 
-		//Get a program object.
+		std::string vertSource;
+		std::string fragSource;
+
+		if(!IOManager::readFileToBuffer(vertexShaderFilePath, vertSource))
+		{
+			fatal_error("Failed to open: " + vertexShaderFilePath);
+		}
+		if (!IOManager::readFileToBuffer(fragmentShaderFilePath, fragSource))
+		{
+			fatal_error("Failed to open: " + fragmentShaderFilePath);
+		}
+		compileShadersFromSource(vertSource.c_str(), fragSource.c_str());
+		return true;
+	}
+
+	void GLSLProgram::compileShadersFromSource(const char * vertexSource, const char * fragmentSource)
+	{
 		programID = glCreateProgram();
 
 		bool state = true;
@@ -25,51 +42,23 @@ namespace Engine {
 		if (vertexShaderID == 0)
 		{
 			fatal_error("Vertex shader failed to be created!");
-			return false;
 		}
 		fragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
 		if (fragmentShaderID == 0)
 		{
 			fatal_error("Fragment shader failed to be created!");
-			return false;
 		}
 		Message("Compiling Shaders");
-		state = compileShader(vertexShaderFilePath, vertexShaderID);
-		if (!state)
-		{
-			fatal_error("Failed to compile vertex Shader");
-			return false;
-		}
-		state = compileShader(fragmentShaderFilePath, fragmentShaderID);
-		if (!state)
-		{
-			fatal_error("Failed to compile fragment Shader");
-			return false;
-		}
-		return true;
+		compileShader(vertexSource, "Vertex Shader", vertexShaderID);
+		compileShader(fragmentSource, "Fragment Shader", fragmentShaderID);
+
 	}
 
 
-	bool GLSLProgram::compileShader(std::string FilePath, GLuint id)
+	bool GLSLProgram::compileShader(const char* source, std::string t, GLuint id)
 	{
 
-		std::ifstream vertexFile(FilePath);
-		if (vertexFile.fail())
-		{
-			fatal_error("Failed to open: " + FilePath);
-		}
-
-		std::string fileContents;
-		std::string Line;
-
-		while (std::getline(vertexFile, Line))
-		{
-			fileContents += Line + "\n";
-		}
-		vertexFile.close();
-
-		const char* contetnsPtr = fileContents.c_str();
-		glShaderSource(id, 1, &contetnsPtr, nullptr);
+		glShaderSource(id, 1, &source, nullptr);
 		glCompileShader(id);
 
 		GLint success = 0;
@@ -83,7 +72,7 @@ namespace Engine {
 
 			glDeleteShader(id);
 			std::string errortext = &errorLog[0];
-			fatal_error("Shader " + FilePath + " failed to compile: \n ->" + errortext);
+			fatal_error("Shader " + t + " failed to compile: \n ->" + errortext);
 			return false;
 		}
 		return true;
@@ -161,5 +150,12 @@ namespace Engine {
 			fatal_error("Uniform " + unifromName + " doesnt exit in shader");
 		}
 		return location;
+	}
+	void GLSLProgram::dispose()
+	{
+		if (programID)
+		{
+			glDeleteProgram(programID);
+		}
 	}
 }

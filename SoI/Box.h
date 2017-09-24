@@ -15,10 +15,15 @@ public:
 	b2Body* getBody() const { return body; }
 	b2Fixture* getFixture() const { return fixture; }
 	const glm::vec2 getDimensions() const { return dimens; }
+
+	void startContact() { contact = true; }
+	void endContact() { contact = false; }
+
 private:
 	b2Body* body = nullptr;
 	b2Fixture* fixture = nullptr;
 	glm::vec2 dimens = glm::vec2(0.0f);
 	entityCat::entityCatecory eCat = entityCat::Block;
+	bool contact = false;
 };
 

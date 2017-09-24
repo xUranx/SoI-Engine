@@ -11,10 +11,16 @@ namespace entityCat
 		Block = 0x0008
 	};
 }
-class CollisionListener
+class CollisionListener : public b2ContactListener
 {
 public:
 	CollisionListener();
 	~CollisionListener();
+
+	void BeginContact(b2Contact* contact);
+
+	void EndContact(b2Contact* contact);
+
+
 };
 
