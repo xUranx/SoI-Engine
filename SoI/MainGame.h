@@ -42,7 +42,7 @@ private:
 	Engine::DebugRenderer dRender;
 	CollisionListener ColList;
 	std::unique_ptr<b2World> world;
-	std::vector<Box> boxes;
+	std::vector<Box*> boxes;
 	Box Ground;
 	Planet ball;
 };

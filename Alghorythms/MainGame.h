@@ -4,6 +4,7 @@
 #include <Engine/SpriteBatch.h>
 #include <Engine/Camera2D.h>
 #include <Box2D/Box2D.h>
+#include "Level.h"
 
 enum GameState
 {
@@ -29,7 +30,7 @@ private:
 	std::vector<glm::vec4> pos;
 	std::vector<glm::vec4*> posP;
 	static bool compFrontToBack(glm::vec4* a, glm::vec4* b);
-	
+	Level map;
 		
 
 };

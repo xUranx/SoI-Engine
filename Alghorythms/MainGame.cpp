@@ -63,7 +63,8 @@ void MainGame::gLoop()
 	cam2D.setPos(cam2D.getPos() + glm::vec2(sWidth / 2.0f, sHeight / 2.0f));
 	//Event handler
 	SDL_Event e;
-
+	map.init("Level1", 20, 100);
+	//map.debugPrintRaw();
 	//While application is running
 	bool sorted = false;
 	while (!quit)

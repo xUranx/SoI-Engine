@@ -20,12 +20,16 @@ class Level
 public:
 	Level();
 	~Level();
-	void genMapData(b2World* w, std::string n, float _width, float _height);
+	void init(std::string _name, float _width, float _height);
+	void debugPrintRaw();
 private:
+	void genMapData(b2World* world);
+	void genRawMapDataOld();
+	void genRawMapData();
 	TwoD<glm::u8> rawMapData;
 	std::vector<hexa> mapData;
-	std::string name = NULL;
-	float width = 0.0f;
-	float height = 0.0f;
+	std::string name;
+	int width ;
+	int height;
 };
 

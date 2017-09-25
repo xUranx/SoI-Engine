@@ -40,8 +40,8 @@ void MainGame::run()
 		//boxes.resize(boxes.size()+num_box+1);
 		for (int i = 0; i < num_box; i++)
 		{
-			Box newBox;
-			newBox.init(world.get(), glm::vec2(xPos(randGenerator), yPos(randGenerator)), glm::vec2(size(randGenerator), size(randGenerator)));
+			Box *newBox = new Box;
+			newBox->init(world.get(), glm::vec2(xPos(randGenerator), yPos(randGenerator)), glm::vec2(size(randGenerator), size(randGenerator)));
 			boxes.push_back(newBox);
 		}
 		Ground.Fixedinit(world.get(), glm::vec2(0.0f, -15.0), dimes);
@@ -61,14 +61,14 @@ void MainGame::run()
 
 		dRender.init();
 
-		//world->SetContactListener(&ColList);
+		world->SetContactListener(&ColList);
 
 		gLoop();
 	}
 
 	//Free resources and close SDL
 
-	boxes.clear();
+	//boxes.clear();
 	window.close();
 }
 
@@ -135,7 +135,7 @@ void MainGame::gLoop()
 					cam2D.setScale(cam2D.getScale() - ScalSpeed);
 					break;
 				case SDLK_x:
-					boxes[0].getBody()->ApplyLinearImpulse(b2Vec2{ 0.0f,50.0f }, boxes[0].getBody()->GetWorldCenter(),true);
+					boxes[0]->getBody()->ApplyLinearImpulse(b2Vec2{ 0.0f,50.0f }, boxes[0]->getBody()->GetWorldCenter(),true);
 					break;
 				default:
 					break;
@@ -148,7 +148,7 @@ void MainGame::gLoop()
 		drawGame();
 
 	}
-	dRender.dispose();
+	//dRender.dispose();
 }
 
 
@@ -180,11 +180,11 @@ void MainGame::drawGame()
 	for (auto& b : boxes)
 	{
 		glm::vec4 destRect;
-		destRect.x = b.getBody()->GetPosition().x - b.getDimensions().x/2.0f;
-		destRect.y = b.getBody()->GetPosition().y - b.getDimensions().y/2.0f;
-		destRect.z = b.getDimensions().x;
-		destRect.w = b.getDimensions().y;
-		spriteBatch.draw(destRect, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture.id, 1.0f, color, b.getBody()->GetAngle());
+		destRect.x = b->getBody()->GetPosition().x - b->getDimensions().x/2.0f;
+		destRect.y = b->getBody()->GetPosition().y - b->getDimensions().y/2.0f;
+		destRect.z = b->getDimensions().x;
+		destRect.w = b->getDimensions().y;
+		spriteBatch.draw(destRect, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture.id, 1.0f, color, b->getBody()->GetAngle());
 	}
 	color.setColour(6.0f, 51.0f, 15.0f, 255.0f);
 	glm::vec4 destRect;
@@ -219,11 +219,11 @@ void MainGame::drawGame()
 		for (auto& b : boxes)
 		{
 			glm::vec4 destRect;
-			destRect.x = b.getBody()->GetPosition().x - b.getDimensions().x / 2.0f;
-			destRect.y = b.getBody()->GetPosition().y - b.getDimensions().y / 2.0f;
-			destRect.z = b.getDimensions().x;
-			destRect.w = b.getDimensions().y;
-			dRender.drawBox(destRect, color, b.getBody()->GetAngle());
+			destRect.x = b->getBody()->GetPosition().x - b->getDimensions().x / 2.0f;
+			destRect.y = b->getBody()->GetPosition().y - b->getDimensions().y / 2.0f;
+			destRect.z = b->getDimensions().x;
+			destRect.w = b->getDimensions().y;
+			dRender.drawBox(destRect, color, b->getBody()->GetAngle());
 			//dRender.drawCircle(glm::vec2(b.getBody()->GetPosition().x, b.getBody()->GetPosition().y), color, b.getDimensions().x / 2.0f);
 		}
 		dRender.end();
@@ -248,7 +248,7 @@ void MainGame::drawHUD()
 		fps = window.getfps();
 		framecounter = 0;
 	}
-	sprintf_s(buffer, "FPS: %f", fps);
+	sprintf_s(buffer, "Hit: %d" ,ball.getHitCount());
 	spriteFont->draw(UIspriteBatch, buffer, glm::vec2(0, sHeight-20), glm::vec2(1.0f), 0.0f, colour);
 	UIspriteBatch.end();
 	UIspriteBatch.renderBatch();
