@@ -36,7 +36,7 @@ void MainGame::run()
 		std::uniform_real_distribution<float> xPos(-10.0f, 10.0f);
 		std::uniform_real_distribution<float> yPos(0.0f, 20.0f);
 		std::uniform_real_distribution<float> size(0.5f, 2.5f);
-		const int num_box = 50;
+		const int num_box = 10;
 		//boxes.resize(boxes.size()+num_box+1);
 		for (int i = 0; i < num_box; i++)
 		{
@@ -95,6 +95,7 @@ void MainGame::gLoop()
 	//While application is running
 	const float CamSpeed = 0.5f;
 	const float ScalSpeed = 0.5f;
+	bool isforceOn = false;
 	//renderDebug = true;
 	while (!quit)
 	{
@@ -135,7 +136,20 @@ void MainGame::gLoop()
 					cam2D.setScale(cam2D.getScale() - ScalSpeed);
 					break;
 				case SDLK_x:
-					boxes[0]->getBody()->ApplyLinearImpulse(b2Vec2{ 0.0f,50.0f }, boxes[0]->getBody()->GetWorldCenter(),true);
+					//boxes[0]->getBody()->ApplyLinearImpulse(b2Vec2{ 0.0f,1.0f }, boxes[0]->getBody()->GetWorldCenter(),true);
+					if (isforceOn)
+					{
+						boxes[0]->getBody()->SetGravityScale(1);
+						isforceOn = false;
+						boxes[0]->getBody()->SetLinearDamping(0);
+					}
+					else
+					{
+						boxes[0]->getBody()->SetGravityScale(0);
+						isforceOn = true;
+						boxes[0]->getBody()->SetLinearDamping(0.1f);
+					}
+					
 					break;
 				default:
 					break;
@@ -143,6 +157,8 @@ void MainGame::gLoop()
 			}
 		}
 		world->Step(1.0f / 60.f, 6, 2);
+		b2Vec2 dir = ball.getBody()->GetPosition() - boxes[0]->getBody()->GetPosition();
+		if (isforceOn) boxes[0]->getBody()->ApplyForce(10* dir,boxes[0]->getBody()->GetWorldCenter(), true);
 		cam2D.update();
 		hudCam.update();
 		drawGame();
@@ -161,7 +177,6 @@ void MainGame::drawGame()
 	//Clear the buffers
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(35.0f / 255.0f, 130.0f / 255.0f, 117.0f / 255.0f, 1.0f);
-
 	colorP.use();
 	glActiveTexture(GL_TEXTURE0);
 	GLint textLoc = colorP.getUniformLoc("Textu");
@@ -185,6 +200,11 @@ void MainGame::drawGame()
 		destRect.z = b->getDimensions().x;
 		destRect.w = b->getDimensions().y;
 		spriteBatch.draw(destRect, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture.id, 1.0f, color, b->getBody()->GetAngle());
+		if (b->getIfInSoi())
+		{
+			b2Vec2 p = ball.getBody()->GetPosition() - b->getBody()->GetPosition();
+			b->getBody()->ApplyForce(100 * p, b->getBody()->GetWorldCenter(), true);
+		}
 	}
 	color.setColour(6.0f, 51.0f, 15.0f, 255.0f);
 	glm::vec4 destRect;

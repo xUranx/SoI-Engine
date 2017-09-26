@@ -27,15 +27,17 @@ void Planet::init(b2World * world, const glm::vec2 position, const float Rad)
 
 	b2FixtureDef fDef;
 	fDef.density = 1.0f;
+	fDef.friction = 1.0f;
 	fDef.shape = &bCShape;
 	fixture = body->CreateFixture(&fDef);
 
 	//SoI Senseor
-	//b2CircleShape circleShape;
-	//circleShape.m_radius = 2,5;
-	//fDef.isSensor = true;
-	//fDef.filter.categoryBits = entityCat::Planet_SOI;
-	//fDef.filter.maskBits = entityCat::Block;//radar only collides with aircraft
-	//sFixture = body->CreateFixture(&fDef);
+	b2CircleShape circleShape;
+	circleShape.m_radius = Rad + 2.0f;
+	fDef.shape = &circleShape;
+	fDef.isSensor = true;
+	fDef.filter.categoryBits = entityCat::Planet_SOI;
+	fDef.filter.maskBits = entityCat::Block;
+	sFixture = body->CreateFixture(&fDef);
 	body->SetUserData(this);
 }

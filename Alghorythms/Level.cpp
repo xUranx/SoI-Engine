@@ -141,6 +141,9 @@ void Level::genRawMapDataOld()
 
 }
 
+
+
+
 void Level::genRawMapData()
 {
 	//https://gamedev.stackexchange.com/questions/37887/how-do-i-generate-a-smooth-random-horizontal-2d-tunnel
