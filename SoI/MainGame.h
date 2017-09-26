@@ -25,7 +25,7 @@ public:
 	void run();
 	bool initShaders();
 private:
-	bool renderDebug = false;
+	bool renderDebug = true;
 	int sWidth, sHeight;
 	void gLoop();
 	//std::vector<Engine::Sprite*> _sprite;

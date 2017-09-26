@@ -29,14 +29,14 @@ void MainGame::run()
 		}
 		
 		b2Vec2 grav(0.0f, -9.81);
-		glm::vec2 dimes = glm::vec2(50.0f, 5.0f);
+		glm::vec2 dimes = glm::vec2(50.0f, 3.0f);
 		world = std::make_unique<b2World>(grav);
 
 		std::mt19937 randGenerator;
 		std::uniform_real_distribution<float> xPos(-10.0f, 10.0f);
 		std::uniform_real_distribution<float> yPos(0.0f, 20.0f);
 		std::uniform_real_distribution<float> size(0.5f, 2.5f);
-		const int num_box = 10;
+		const int num_box = 100;
 		//boxes.resize(boxes.size()+num_box+1);
 		for (int i = 0; i < num_box; i++)
 		{
@@ -44,9 +44,9 @@ void MainGame::run()
 			newBox->init(world.get(), glm::vec2(xPos(randGenerator), yPos(randGenerator)), glm::vec2(size(randGenerator), size(randGenerator)));
 			boxes.push_back(newBox);
 		}
-		Ground.Fixedinit(world.get(), glm::vec2(0.0f, -15.0), dimes);
+		Ground.Fixedinit(world.get(), glm::vec2(0.0f, -18.0), dimes);
 
-		ball.init(world.get(), glm::vec2(0.0f, 0.0f), 2.0f);
+		ball.init(world.get(), glm::vec2(0.0f, 0.0f), 4.0f);
 
 		spriteBatch.init();
 		UIspriteBatch.init();
@@ -203,7 +203,7 @@ void MainGame::drawGame()
 		if (b->getIfInSoi())
 		{
 			b2Vec2 p = ball.getBody()->GetPosition() - b->getBody()->GetPosition();
-			b->getBody()->ApplyForce(100 * p, b->getBody()->GetWorldCenter(), true);
+			b->getBody()->ApplyForce(20 * p, b->getBody()->GetWorldCenter(), true);
 		}
 	}
 	color.setColour(6.0f, 51.0f, 15.0f, 255.0f);
@@ -236,16 +236,11 @@ void MainGame::drawGame()
 	
 	if (renderDebug)
 	{
-		for (auto& b : boxes)
-		{
-			glm::vec4 destRect;
-			destRect.x = b->getBody()->GetPosition().x - b->getDimensions().x / 2.0f;
-			destRect.y = b->getBody()->GetPosition().y - b->getDimensions().y / 2.0f;
-			destRect.z = b->getDimensions().x;
-			destRect.w = b->getDimensions().y;
-			dRender.drawBox(destRect, color, b->getBody()->GetAngle());
-			//dRender.drawCircle(glm::vec2(b.getBody()->GetPosition().x, b.getBody()->GetPosition().y), color, b.getDimensions().x / 2.0f);
-		}
+		glm::vec2 pos;
+		pos.x = ball.getBody()->GetPosition().x;
+		pos.y = ball.getBody()->GetPosition().y;
+		dRender.drawCircle(pos, color, ball.getRadius() + ball.getRadius()/2);
+		//dRender.drawCircle(glm::vec2(b.getBody()->GetPosition().x, b.getBody()->GetPosition().y), color, b.getDimensions().x / 2.0f);
 		dRender.end();
 		dRender.render(camMatrix, 2.0f);
 	}

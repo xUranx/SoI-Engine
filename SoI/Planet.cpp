@@ -33,7 +33,7 @@ void Planet::init(b2World * world, const glm::vec2 position, const float Rad)
 
 	//SoI Senseor
 	b2CircleShape circleShape;
-	circleShape.m_radius = Rad + 2.0f;
+	circleShape.m_radius = Rad + Rad/2;
 	fDef.shape = &circleShape;
 	fDef.isSensor = true;
 	fDef.filter.categoryBits = entityCat::Planet_SOI;

@@ -12,6 +12,7 @@ public:
 
 	b2Body* getBody() const { return body; }
 	b2Fixture* getFixture() const { return fixture; }
+	b2Fixture* getsFixture() const { return sFixture; }
 	const float getRadius() const { return radius; }
 	void startContact() { hitCount++; }
 	void endContact() {}
