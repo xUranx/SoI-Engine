@@ -14,6 +14,7 @@ public:
 	b2Fixture* getFixture() const { return fixture; }
 	b2Fixture* getsFixture() const { return sFixture; }
 	const float getRadius() const { return radius; }
+	const float getSoIRadius() const { return SoIRad; }
 	void startContact() { hitCount++; }
 	void endContact() {}
 	int getHitCount() { return hitCount; }
@@ -22,6 +23,7 @@ private:
 	b2Fixture* fixture = nullptr;
 	b2Fixture* sFixture = nullptr;
 	float radius = 0.0f;
+	float SoIRad = 0.0f;
 	bool contact = false;
 	Engine::ColourRGBA8 color;
 	int hitCount = 0;

@@ -3,6 +3,9 @@
 #include <math.h>
 #include <time.h>
 #include <iostream>
+#include <algorithm>
+#include <Engine\Log.h>
+#define ITE std::vector<glm::vec2>::iterator
 Level::Level()
 {
 
@@ -48,9 +51,33 @@ void Level::debugPrintRaw()
 	}
 }
 
-void Level::genMapData(b2World* world)
-{
-	
+void Level::genMapData(b2World* world, const glm::vec2 pos, float tWidth)
+{	
+	b2Vec2* vertices = new b2Vec2[(mapData.size() * 2) + 4];
+	int vpos = 0;
+	int i = 0;
+	for (i = 0; i < mapData.size(); i++)
+	{
+		vertices[vpos++].Set(mapData[i].x - tWidth/2, mapData[i].y);
+	}
+	vertices[vpos++].Set(0, mapData[i].y);
+	vertices[vpos++].Set(0, mapData[0].y - 2);
+	vertices[vpos++].Set(width, mapData[0].y - 2);
+	vertices[vpos++].Set(width, mapData[i].y);
+	for (i; i >= 0; i--)
+	{
+		vertices[vpos++].Set(mapData[i].x + tWidth / 2, mapData[i].y);
+	}
+
+	b2BodyDef bDef;
+	bDef.type = b2_staticBody;
+	bDef.position.Set(pos.x, pos.y);
+	b2PolygonShape pShape;
+	pShape.Set(vertices, (mapData.size() * 2) + 4);
+	b2FixtureDef fDef;
+	fDef.shape = &pShape;
+	body = world->CreateBody(&bDef);
+	body->CreateFixture(&fDef);
 }
 
 void Level::genRawMapDataOld()
@@ -149,22 +176,43 @@ void Level::genRawMapData()
 	//https://gamedev.stackexchange.com/questions/37887/how-do-i-generate-a-smooth-random-horizontal-2d-tunnel
 	//https://www.codeproject.com/Articles/25237/Bezier-Curves-Made-Simple
 	srand(time(NULL));
-	int size = (height / 5)*2;
-	float* points = new float[size];
-	points[0] = width / 2;
-	for (int i = 1; i < size; i+2)
+	int size = (height);
+	
+	mapData.push_back(glm::vec2(width / 2, 0));
+	for (int i = 2; i < size; i+=5)
 	{
 		int r = rand() % width + 2;
 		if (r > width - 2) r -= 2;
-		points[i] = r;
+		mapData.push_back(glm::vec2(r,i));
 	}
-	float lastPos = NULL;
-	for (int i = 0; i < size; i + 2)
+	bezier(10);
+	Engine::Message("Raw Map Data Done");
+}
+
+bool Level::compFrontToBack(glm::vec2 a, glm::vec2 b)
+{
+	return (a.y < b.y);
+}
+
+void Level::bezier(int times)
+{
+	for (int j = 0; j < times; j++)
 	{
-		if (lastPos != NULL)
+		std::vector<glm::vec2> tempV;
+		int size = mapData.size();
+		int lastPos = 0;
+		tempV.push_back(mapData[0]);
+		for (int i = 1; i < size; i++)
 		{
-			points[i - 1] = (lastPos + points[i]) / 2;
+			const float y = ((mapData[lastPos].y + mapData[i].y) / 2);
+			glm::vec2 temp = glm::vec2((mapData[lastPos].x + mapData[i].x) / 2, y);
+			tempV.push_back(temp);			
+			lastPos = i;
+
 		}
-		float lastPos = points[i];
+		tempV.push_back(mapData[size-1]);
+		mapData.clear();
+		mapData = tempV;
+		//std::sort(mapData.begin(), mapData.end(), compFrontToBack);
 	}
 }

@@ -8,8 +8,7 @@ using TwoD = std::vector<std::vector<T>>;
 class hexa
 {
 public:
-	std::vector<glm::vec2> data;
-	glm::u8 type = 0;
+	
 };
 class Level
 {
@@ -17,15 +16,19 @@ public:
 	Level();
 	~Level();
 	void init(std::string _name, float _width, float _height);
+	void bezier(int times);
 	void debugPrintRaw();
+	void genMapData(b2World* world, const glm::vec2 position, float tWidth);
+	b2Body* getBody() const { return body; }
 private:
-	void genMapData(b2World* world);
+	b2Body* body;
 	void genRawMapDataOld();
 	void genRawMapData();
 	TwoD<glm::u8> rawMapData;
-	std::vector<hexa> mapData;
+	std::vector<glm::vec2> mapData;
 	std::string name;
-	int width ;
+	int width;
 	int height;
+	static bool compFrontToBack(glm::vec2 a, glm::vec2 b);
 };
 

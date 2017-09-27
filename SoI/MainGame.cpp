@@ -4,8 +4,9 @@
 #include <Engine\SpriteBatch.h>
 #include <Engine\ResourceManager.h>
 #include <random>
+#include <time.h>
 using namespace Engine;
-MainGame::MainGame(): time(0), sWidth(1024), sHeight(640)
+MainGame::MainGame(): xtime(0), sWidth(1024), sHeight(640)
 {
 }
 
@@ -31,8 +32,8 @@ void MainGame::run()
 		b2Vec2 grav(0.0f, -9.81);
 		glm::vec2 dimes = glm::vec2(50.0f, 3.0f);
 		world = std::make_unique<b2World>(grav);
-
-		std::mt19937 randGenerator;
+		
+		std::mt19937 randGenerator (time(NULL));
 		std::uniform_real_distribution<float> xPos(-10.0f, 10.0f);
 		std::uniform_real_distribution<float> yPos(0.0f, 20.0f);
 		std::uniform_real_distribution<float> size(0.5f, 2.5f);
@@ -99,7 +100,7 @@ void MainGame::gLoop()
 	//renderDebug = true;
 	while (!quit)
 	{
-		time += 0.01;
+		xtime += 0.01;
 		window.fpsCounter();
 	
 		//Handle events on queue
@@ -239,7 +240,7 @@ void MainGame::drawGame()
 		glm::vec2 pos;
 		pos.x = ball.getBody()->GetPosition().x;
 		pos.y = ball.getBody()->GetPosition().y;
-		dRender.drawCircle(pos, color, ball.getRadius() + ball.getRadius()/2);
+		dRender.drawCircle(pos, color, ball.getSoIRadius());
 		//dRender.drawCircle(glm::vec2(b.getBody()->GetPosition().x, b.getBody()->GetPosition().y), color, b.getDimensions().x / 2.0f);
 		dRender.end();
 		dRender.render(camMatrix, 2.0f);
@@ -252,7 +253,7 @@ void MainGame::drawHUD()
 {
 	char buffer[256];
 	UIspriteBatch.begin();
-	static float fps;
+	static int fps;
 	GLint pLoc = colorP.getUniformLoc("P");
 	glm::mat4 camMatrix = hudCam.getCameraMatrix();
 	glUniformMatrix4fv(pLoc, 1, GL_FALSE, &(camMatrix[0][0]));
@@ -263,7 +264,7 @@ void MainGame::drawHUD()
 		fps = window.getfps();
 		framecounter = 0;
 	}
-	sprintf_s(buffer, "Hit: %d" ,ball.getHitCount());
+	sprintf_s(buffer, "FPS: %d" ,fps);
 	spriteFont->draw(UIspriteBatch, buffer, glm::vec2(0, sHeight-20), glm::vec2(1.0f), 0.0f, colour);
 	UIspriteBatch.end();
 	UIspriteBatch.renderBatch();

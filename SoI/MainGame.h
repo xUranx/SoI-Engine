@@ -31,7 +31,7 @@ private:
 	//std::vector<Engine::Sprite*> _sprite;
 	void drawGame();
 	void drawHUD();
-	float time;
+	float xtime;
 	Engine::Camera2D cam2D;
 	Engine::Camera2D hudCam;
 	Engine::Window window;
