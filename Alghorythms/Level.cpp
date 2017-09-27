@@ -5,7 +5,12 @@
 #include <iostream>
 #include <algorithm>
 #include <Engine\Log.h>
+#include <Engine\SpriteBatch.h>
+#include <Engine\DebugRenderer.h>
 #define ITE std::vector<glm::vec2>::iterator
+
+using namespace Engine;
+
 Level::Level()
 {
 
@@ -32,23 +37,10 @@ void Level::init(std::string _name, float _width, float _height)
 
 }
 
-void Level::debugPrintRaw()
+void Level::debugPrintRaw(SpriteBatch* sBatch,DebugRenderer* dRender)
 {
-	for (int i = height-1; i > 0; i--)
-	{
-		for (int j = 0; j < width; j++)
-		{
-			if (rawMapData[i][j] == 1)
-			{
-				std::cout << "1";
-			}
-			else
-			{
-				std::cout << "0";
-			}
-		}
-		std::cout<<std::endl;
-	}
+	
+		
 }
 
 void Level::genMapData(b2World* world, const glm::vec2 pos, float tWidth)
