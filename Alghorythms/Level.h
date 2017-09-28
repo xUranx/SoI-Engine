@@ -3,6 +3,8 @@
 #include <glm/glm.hpp>
 #include <array>
 #include <Box2D\Box2D.h>
+#include <Engine\DebugRenderer.h>
+#include <Engine\SpriteBatch.h>
 template <typename T>
 using TwoD = std::vector<std::vector<T>>;
 class hexa
@@ -17,7 +19,7 @@ public:
 	~Level();
 	void init(std::string _name, float _width, float _height);
 	void bezier(int times);
-	void debugPrintRaw(SpriteBatch* sBatch, DebugRenderer* dRender);
+	void debugPrintRaw(Engine::SpriteBatch* sBatch, Engine::DebugRenderer* dRender);
 	void genMapData(b2World* world, const glm::vec2 position, float tWidth);
 	b2Body* getBody() const { return body; }
 private:

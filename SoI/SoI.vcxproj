@@ -154,16 +154,20 @@
   <ItemGroup>
     <ClCompile Include="Box.cpp" />
     <ClCompile Include="CollisionListener.cpp" />
+    <ClCompile Include="GameObj.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="Planet.cpp" />
+    <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Box.h" />
     <ClInclude Include="CollisionListener.h" />
     <ClInclude Include="Equations.h" />
+    <ClInclude Include="GameObj.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="Planet.h" />
+    <ClInclude Include="Player.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

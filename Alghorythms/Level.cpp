@@ -23,7 +23,7 @@ Level::~Level()
 
 void Level::init(std::string _name, float _width, float _height)
 {
-	width = (int)_width;
+	width = (int)_width*2;
 	height = (int)_height;
 	name = _name;
 
@@ -171,13 +171,13 @@ void Level::genRawMapData()
 	int size = (height);
 	
 	mapData.push_back(glm::vec2(width / 2, 0));
-	for (int i = 2; i < size; i+=5)
+	for (int i = 5; i < size; i+=5)
 	{
 		int r = rand() % width + 2;
 		if (r > width - 2) r -= 2;
 		mapData.push_back(glm::vec2(r,i));
 	}
-	bezier(10);
+	bezier(4);
 	Engine::Message("Raw Map Data Done");
 }
 
@@ -193,8 +193,14 @@ void Level::bezier(int times)
 		std::vector<glm::vec2> tempV;
 		int size = mapData.size();
 		int lastPos = 0;
-		tempV.push_back(mapData[0]);
-		for (int i = 1; i < size; i++)
+		
+		for (int i = 0; i < j+1; i++)
+		{
+			tempV.push_back(mapData[i]);
+			lastPos = i;
+		}
+		int i = 0;
+		for (i = j+1; i < size-j; i++)
 		{
 			const float y = ((mapData[lastPos].y + mapData[i].y) / 2);
 			glm::vec2 temp = glm::vec2((mapData[lastPos].x + mapData[i].x) / 2, y);
@@ -202,7 +208,10 @@ void Level::bezier(int times)
 			lastPos = i;
 
 		}
-		tempV.push_back(mapData[size-1]);
+		for (i--; i < size; i++)
+		{
+			tempV.push_back(mapData[i]);
+		}
 		mapData.clear();
 		mapData = tempV;
 		//std::sort(mapData.begin(), mapData.end(), compFrontToBack);

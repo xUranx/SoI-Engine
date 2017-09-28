@@ -34,10 +34,10 @@ void MainGame::run()
 		world = std::make_unique<b2World>(grav);
 		
 		std::mt19937 randGenerator (time(NULL));
-		std::uniform_real_distribution<float> xPos(-10.0f, 10.0f);
-		std::uniform_real_distribution<float> yPos(0.0f, 20.0f);
+		std::uniform_real_distribution<float> xPos(-15.0f, 15.0f);
+		std::uniform_real_distribution<float> yPos(10.0f, 40.0f);
 		std::uniform_real_distribution<float> size(0.5f, 2.5f);
-		const int num_box = 100;
+		const int num_box = 5;
 		//boxes.resize(boxes.size()+num_box+1);
 		for (int i = 0; i < num_box; i++)
 		{
@@ -47,7 +47,7 @@ void MainGame::run()
 		}
 		Ground.Fixedinit(world.get(), glm::vec2(0.0f, -18.0), dimes);
 
-		ball.init(world.get(), glm::vec2(0.0f, 0.0f), 4.0f);
+		ball.init(world.get(), glm::vec2(0.0f, 0.0f), 5.0f);
 
 		spriteBatch.init();
 		UIspriteBatch.init();
@@ -168,7 +168,6 @@ void MainGame::gLoop()
 	//dRender.dispose();
 }
 
-
 void MainGame::drawGame()
 {
 
@@ -203,9 +202,14 @@ void MainGame::drawGame()
 		spriteBatch.draw(destRect, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture.id, 1.0f, color, b->getBody()->GetAngle());
 		if (b->getIfInSoi())
 		{
-			b2Vec2 p = ball.getBody()->GetPosition() - b->getBody()->GetPosition();
-			b->getBody()->ApplyForce(20 * p, b->getBody()->GetWorldCenter(), true);
-		}
+			b2Vec2 p = -(b->getBody()->GetWorldCenter() - ball.getBody()->GetWorldCenter());
+			/*float dist = p.Length();
+			float sum = p.x + p.y;
+			float last = (1.0f / sum)*100 / dist;
+			p.x = p.x * last;
+			p.y = p.y * last;*/
+			b->getBody()->ApplyForce(9*p, b->getBody()->GetWorldCenter(), true);
+		}	
 	}
 	color.setColour(6.0f, 51.0f, 15.0f, 255.0f);
 	glm::vec4 destRect;

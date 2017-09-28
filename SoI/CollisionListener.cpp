@@ -28,12 +28,12 @@ bool Soi(b2Contact * contact, bool mode)
 		if (sensorA)
 		{
 			Planet * ball = static_cast<Planet*>(fixtureA->GetBody()->GetUserData());
-			static_cast<Box*>(fixtureB->GetBody()->GetUserData())->startSoIcontact(ball->getBody()->GetPosition());
+			static_cast<Box*>(fixtureB->GetBody()->GetUserData())->startSoIcontact(ball->getBody()->GetWorldCenter());
 		}
 		else
 		{
 			Planet * ball = static_cast<Planet*>(fixtureB->GetBody()->GetUserData());
-			static_cast<Box*>(fixtureA->GetBody()->GetUserData())->startSoIcontact(ball->getBody()->GetPosition());
+			static_cast<Box*>(fixtureA->GetBody()->GetUserData())->startSoIcontact(ball->getBody()->GetWorldCenter());
 		}
 	}
 	else
