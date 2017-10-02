@@ -37,10 +37,19 @@ void Level::init(std::string _name, float _width, float _height)
 
 }
 
-void Level::debugPrintRaw(SpriteBatch* sBatch,DebugRenderer* dRender)
+void Level::debugPrintRaw()
 {
-	
-		
+	glLineWidth(2.0);
+	glColor4f(1.0, 1.0, 0.0, 1.0);
+	int cur = 0;
+	for (int i = 1; i < mapData.size(); i++)
+	{
+		glBegin(GL_LINES);
+		glVertex2f((mapData[cur].x+200)*2, (mapData[cur].y+100)*2);
+		glVertex2f((mapData[i].x+200)*2, (mapData[i].y+100)*2);
+		cur = i;
+		glEnd();
+	}
 }
 
 void Level::genMapData(b2World* world, const glm::vec2 pos, float tWidth)
@@ -177,7 +186,7 @@ void Level::genRawMapData()
 		if (r > width - 2) r -= 2;
 		mapData.push_back(glm::vec2(r,i));
 	}
-	bezier(4);
+	bezier(1);
 	Engine::Message("Raw Map Data Done");
 }
 
