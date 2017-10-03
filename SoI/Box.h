@@ -3,15 +3,20 @@
 #include <glm\glm.hpp>
 #include "CollisionListener.h"
 #include <Engine\Log.h>
+#include <Engine\SpriteBatch.h>
+#include <Engine\GLTexture.h>
+#include <Engine\Vertex.h>
 class Box
 {
 public:
 	Box();
 	~Box();
 
-	void init(b2World* world, const glm::vec2 position, const glm::vec2& dimensions);
+	void init(b2World* world, const glm::vec2 position, Engine::GLTexture text, Engine::ColourRGBA8& color, const glm::vec2& dimensions);
 
 	void Fixedinit(b2World * world, const glm::vec2 position, const glm::vec2 dimensions);
+
+	void draw(Engine::SpriteBatch& sBatch);
 
 	b2Body* getBody() const { return body; }
 	b2Fixture* getFixture() const { return fixture; }
@@ -32,5 +37,7 @@ private:
 	entityCat::entityCatecory eCat = entityCat::Block;
 	bool contact = false;
 	bool SoIContact = false;
+	Engine::GLTexture texture;
+	Engine::ColourRGBA8 colour;
 };
 

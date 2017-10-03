@@ -10,6 +10,7 @@
 #include "Box.h"
 #include <vector>
 #include "Planet.h"
+#include "Player.h"
 #include "CollisionListener.h"
 
 enum GameState
@@ -45,5 +46,6 @@ private:
 	std::vector<Box*> boxes;
 	Box Ground;
 	Planet ball;
+	Player player;
 };
 

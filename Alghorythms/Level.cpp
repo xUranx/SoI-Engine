@@ -186,7 +186,7 @@ void Level::genRawMapData()
 		if (r > width - 2) r -= 2;
 		mapData.push_back(glm::vec2(r,i));
 	}
-	bezier(1);
+	bezier(10);
 	Engine::Message("Raw Map Data Done");
 }
 

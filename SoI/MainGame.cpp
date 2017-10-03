@@ -37,17 +37,20 @@ void MainGame::run()
 		std::uniform_real_distribution<float> xPos(-15.0f, 15.0f);
 		std::uniform_real_distribution<float> yPos(10.0f, 40.0f);
 		std::uniform_real_distribution<float> size(0.5f, 2.5f);
-		const int num_box = 5;
-		//boxes.resize(boxes.size()+num_box+1);
+		const int num_box = 100;
+		GLTexture texture = ResourceManager::getTexture("Include/Textures/Block.png");
+		ColourRGBA8 color;
 		for (int i = 0; i < num_box; i++)
 		{
 			Box *newBox = new Box;
-			newBox->init(world.get(), glm::vec2(xPos(randGenerator), yPos(randGenerator)), glm::vec2(size(randGenerator), size(randGenerator)));
+			newBox->init(world.get(), glm::vec2(xPos(randGenerator), yPos(randGenerator)),texture, color, glm::vec2(size(randGenerator), size(randGenerator)));
 			boxes.push_back(newBox);
 		}
 		Ground.Fixedinit(world.get(), glm::vec2(0.0f, -18.0), dimes);
 
 		ball.init(world.get(), glm::vec2(0.0f, 0.0f), 5.0f);
+		GLTexture texturep = ResourceManager::getTexture("Include/Textures/Char.png");
+		player.init(world.get(), glm::vec2(6.0f,10.0f), color, texturep, glm::vec2(0.8f,3.0f));
 
 		spriteBatch.init();
 		UIspriteBatch.init();
@@ -190,16 +193,11 @@ void MainGame::drawGame()
 	glUniformMatrix4fv(pLoc, 1, GL_FALSE, &(camMatrix[0][0]));
 
 	spriteBatch.begin();
-	static GLTexture texture = ResourceManager::getTexture("Include/Textures/Block.png");
+	
 	ColourRGBA8 color;
 	for (auto& b : boxes)
 	{
-		glm::vec4 destRect;
-		destRect.x = b->getBody()->GetPosition().x - b->getDimensions().x/2.0f;
-		destRect.y = b->getBody()->GetPosition().y - b->getDimensions().y/2.0f;
-		destRect.z = b->getDimensions().x;
-		destRect.w = b->getDimensions().y;
-		spriteBatch.draw(destRect, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture.id, 1.0f, color, b->getBody()->GetAngle());
+		b->draw(spriteBatch);
 		if (b->getIfInSoi())
 		{
 			b2Vec2 p = -(b->getBody()->GetWorldCenter() - ball.getBody()->GetWorldCenter());
@@ -211,6 +209,7 @@ void MainGame::drawGame()
 			b->getBody()->ApplyForce(9*p, b->getBody()->GetWorldCenter(), true);
 		}	
 	}
+	player.draw(spriteBatch);
 	color.setColour(6.0f, 51.0f, 15.0f, 255.0f);
 	glm::vec4 destRect;
 	destRect.x = Ground.getBody()->GetPosition().x - Ground.getDimensions().x / 2.0f;

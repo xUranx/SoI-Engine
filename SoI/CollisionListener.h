@@ -6,9 +6,9 @@ namespace entityCat
 	{
 		Walls = 0x0001,
 		Planet_SOI = 0x0002,
-		Planet = 0x0003,
-		Player = 0x0004,
-		Block = 0x0008
+		Planet = 0x0004,
+		Player = 0x0006,
+		Block = 0x0010
 	};
 }
 class CollisionListener : public b2ContactListener
