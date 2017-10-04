@@ -7,13 +7,13 @@
 #include <Engine\Log.h>
 #include <Engine\SpriteBatch.h>
 #include <Engine\DebugRenderer.h>
+#include <poly2tri\poly2tri.h>
 #define ITE std::vector<glm::vec2>::iterator
 
 using namespace Engine;
 
 Level::Level()
 {
-
 }
 
 
