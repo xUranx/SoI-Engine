@@ -43,7 +43,7 @@ namespace p2t {
 struct Edge;
 
 struct Point {
-
+public:
   double x, y;
 
   /// Default constructor does nothing (for performance).
@@ -57,7 +57,7 @@ struct Point {
   std::vector<Edge*> edge_list;
 
   /// Construct using coordinates.
-  Point(double x, double y) : x(x), y(y) {}
+  Point(double _x, double _y) : x(_x), y(_y) {}
 
   /// Set this point to all zeros.
   void set_zero()

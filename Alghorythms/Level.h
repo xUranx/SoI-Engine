@@ -5,6 +5,7 @@
 #include <Box2D\Box2D.h>
 #include <Engine\DebugRenderer.h>
 #include <Engine\SpriteBatch.h>
+#include "poly2tri/poly2tri.h"
 template <typename T>
 using TwoD = std::vector<std::vector<T>>;
 class hexa

@@ -7,7 +7,8 @@
 #include <Engine\Log.h>
 #include <Engine\SpriteBatch.h>
 #include <Engine\DebugRenderer.h>
-#include <poly2tri\poly2tri.h>
+#include <vector>
+#include <list>
 #define ITE std::vector<glm::vec2>::iterator
 
 using namespace Engine;
@@ -54,31 +55,73 @@ void Level::debugPrintRaw()
 
 void Level::genMapData(b2World* world, const glm::vec2 pos, float tWidth)
 {	
+	std::vector<p2t::Point*> pLine;
 	b2Vec2* vertices = new b2Vec2[(mapData.size() * 2) + 4];
+
+	pLine.reserve((mapData.size() * 2) + 4);
+
 	int vpos = 0;
 	int i = 0;
-	for (i = 0; i < mapData.size(); i++)
-	{
-		vertices[vpos++].Set(mapData[i].x - tWidth/2, mapData[i].y);
-	}
-	vertices[vpos++].Set(0, mapData[i].y);
-	vertices[vpos++].Set(0, mapData[0].y - 2);
-	vertices[vpos++].Set(width, mapData[0].y - 2);
-	vertices[vpos++].Set(width, mapData[i].y);
-	for (i; i >= 0; i--)
-	{
-		vertices[vpos++].Set(mapData[i].x + tWidth / 2, mapData[i].y);
-	}
+
+	pLine.push_back(new p2t::Point(mapData[i].x - tWidth / 2, mapData[i].y));
 
 	b2BodyDef bDef;
 	bDef.type = b2_staticBody;
 	bDef.position.Set(pos.x, pos.y);
-	b2PolygonShape pShape;
-	pShape.Set(vertices, (mapData.size() * 2) + 4);
+
+	b2EdgeShape eShape;
 	b2FixtureDef fDef;
-	fDef.shape = &pShape;
+	fDef.shape = &eShape;
 	body = world->CreateBody(&bDef);
+
+	for (i = 1; i < mapData.size(); i++)
+	{
+		eShape.Set(b2Vec2(mapData[vpos].x - tWidth / 2, mapData[vpos].y), b2Vec2(mapData[i].x - tWidth / 2, mapData[i].y));
+		pLine.push_back(new p2t::Point(mapData[i].x - tWidth / 2, mapData[i].y));
+		//vertices[vpos++].Set(mapData[i].x - tWidth/2, mapData[i].y);
+		vpos = i;
+		body->CreateFixture(&fDef);
+	}
+	i--;
+	pLine.push_back(new p2t::Point(0, mapData[i].y));
+	pLine.push_back(new p2t::Point(0, mapData[0].y - 2));
+	pLine.push_back(new p2t::Point(width, mapData[0].y - 2));
+	pLine.push_back(new p2t::Point(width, mapData[i].y));
+	eShape.Set(b2Vec2(mapData[i].x - tWidth / 2, mapData[i].y), b2Vec2(0, mapData[i].y));
 	body->CreateFixture(&fDef);
+	eShape.Set(b2Vec2(0, mapData[i].y), b2Vec2(0, mapData[0].y - 2));
+	body->CreateFixture(&fDef);
+	eShape.Set(b2Vec2(0, mapData[0].y - 2), b2Vec2(0, mapData[i].y));
+	body->CreateFixture(&fDef);
+	eShape.Set(b2Vec2(0, mapData[i].y), b2Vec2(width, mapData[i].y));
+	body->CreateFixture(&fDef);
+	eShape.Set(b2Vec2(width, mapData[i].y), b2Vec2(mapData[i].x + tWidth / 2, mapData[i].y));
+	body->CreateFixture(&fDef);
+	/*vertices[vpos++].Set(0, mapData[i].y);
+	vertices[vpos++].Set(0, mapData[0].y - 2);
+	vertices[vpos++].Set(width, mapData[0].y - 2);
+	vertices[vpos++].Set(width, mapData[i].y);*/
+	pLine.push_back(new p2t::Point(mapData[i].x + tWidth / 2, mapData[i].y));
+	vpos = i;
+	i--;
+	for (i; i >= 0; i--)
+	{
+		eShape.Set(b2Vec2(mapData[vpos].x - tWidth / 2, mapData[vpos].y), b2Vec2(mapData[i].x - tWidth / 2, mapData[i].y));
+		pLine.push_back(new p2t::Point(mapData[i].x + tWidth / 2, mapData[i].y));
+		body->CreateFixture(&fDef);
+		//vertices[vpos++].Set(mapData[i].x + tWidth / 2, mapData[i].y);
+	}
+	eShape.Set(b2Vec2(mapData[0].x - tWidth / 2, mapData[0].y), b2Vec2(mapData[0].x + tWidth / 2, mapData[0].y));
+	body->CreateFixture(&fDef);
+	p2t::CDT* cdt = new p2t::CDT(pLine);
+	cdt->Triangulate();
+	std::vector<p2t::Triangle*> triangles;
+	triangles = cdt->GetTriangles();
+	std::list<p2t::Triangle*> map;
+	map = cdt->GetMap();
+
+
+	
 }
 
 void Level::genRawMapDataOld()

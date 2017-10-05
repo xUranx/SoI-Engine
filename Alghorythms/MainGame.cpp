@@ -70,10 +70,11 @@ void MainGame::gLoop()
 	hudCam.init(sWidth, sHeight);
 	//cam2D.setPos(cam2D.getPos() + glm::vec2(sWidth / 2.0f, sHeight / 2.0f));
 	hudCam.setPos(cam2D.getPos() + glm::vec2(sWidth / 2.0f, sHeight / 2.0f));
-	//cam2D.setScale(18.0f);
+	cam2D.setScale(18.0f);
 	//Event handler
 	SDL_Event e;
 	map.init("Level1", 20, 100);
+	map.genMapData(world.get(), glm::vec2(0, 0), 5);
 	const float CamSpeed = 0.5f;
 	const float ScalSpeed = 0.5f;
 	//While application is running
