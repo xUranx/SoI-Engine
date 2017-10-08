@@ -81,6 +81,7 @@ void MainGame::gLoop()
 	bool sorted = false;
 	while (!quit)
 	{
+		window.fpsCounter();
 		//Handle events on queue
 		while (SDL_PollEvent(&e) != 0)
 		{
@@ -143,6 +144,9 @@ void MainGame::drawGame()
 	GLint pLoc = colorP.getUniformLoc("P");
 	glm::mat4 camMatrix = cam2D.getCameraMatrix();
 	glUniformMatrix4fv(pLoc, 1, GL_FALSE, &(camMatrix[0][0]));
+
+	spriteBatch.begin();
+
 	ColourRGBA8 color;
 	color.setColour(6.0f, 51.0f, 15.0f, 255.0f);
 	glm::vec4 destRect;
@@ -150,6 +154,7 @@ void MainGame::drawGame()
 	destRect.y = Ground.getBody()->GetPosition().y - Ground.getDimensions().y / 2.0f;
 	destRect.z = Ground.getDimensions().x;
 	destRect.w = Ground.getDimensions().y;
+	
 	spriteBatch.draw(destRect, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), NULL, 1.0f, color);
 
 
@@ -158,7 +163,7 @@ void MainGame::drawGame()
 	spriteBatch.renderBatch();
 	drawHUD();
 	glBindTexture(GL_TEXTURE_2D, 0);
-	map.debugPrintRaw();
+	//map.debugPrintRaw();
 	colorP.unuse();
 	SDL_GL_SwapWindow(window.gWindow);
 }

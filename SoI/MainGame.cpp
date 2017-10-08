@@ -180,6 +180,7 @@ void MainGame::drawGame()
 	//Clear the buffers
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(35.0f / 255.0f, 130.0f / 255.0f, 117.0f / 255.0f, 1.0f);
+
 	colorP.use();
 	glActiveTexture(GL_TEXTURE0);
 	GLint textLoc = colorP.getUniformLoc("Textu");
