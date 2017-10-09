@@ -37,18 +37,80 @@ void Level::init(std::string _name, float _width, float _height)
 	genRawMapData();
 
 }
-
+void ConstrainedColor(bool constrain)
+{
+	if (constrain) {
+		// Green
+		glColor3f(0, 1, 0);
+	}
+	else {
+		// Red
+		glColor3f(1, 0, 0);
+	}
+}
 void Level::debugPrintRaw()
 {
-	glLineWidth(2.0);
+	/*glLineWidth(2.0);
 	glColor4f(1.0, 1.0, 0.0, 1.0);
 	int cur = 0;
 	for (int i = 1; i < mapData.size(); i++)
 	{
 		glBegin(GL_LINES);
-		glVertex2f((mapData[cur].x+200)*2, (mapData[cur].y+100)*2);
-		glVertex2f((mapData[i].x+200)*2, (mapData[i].y+100)*2);
+		glVertex2f((mapData[cur].x+100)*4, (mapData[cur].y+50)*4);
+		glVertex2f((mapData[i].x+100)*4, (mapData[i].y+50)*4);
 		cur = i;
+		glEnd();
+	}*/
+	/*for (auto it = map.begin(); it != map.end(); it++) {
+		p2t::Triangle& t = **it;
+		p2t::Point& a = *t.GetPoint(0);
+		p2t::Point& b = *t.GetPoint(1);
+		p2t::Point& c = *t.GetPoint(2);
+		ConstrainedColor(t.constrained_edge[2]);
+		glBegin(GL_LINES);
+		glVertex2f(a.x + 100, a.y + 100);
+		glVertex2f(b.x + 100, b.y + 100);
+		glEnd();
+
+		ConstrainedColor(t.constrained_edge[0]);
+		glBegin(GL_LINES);
+		glVertex2f(b.x + 100, b.y + 100) ;
+		glVertex2f(c.x + 100, c.y + 100);
+		glEnd();
+
+		ConstrainedColor(t.constrained_edge[1]);
+		glBegin(GL_LINES);
+		glVertex2f(c.x + 100, c.y + 100);
+		glVertex2f(a.x + 100, a.y + 100);
+		glEnd();
+	}*/
+
+	for (int i = 0; i < triangles.size(); i++) {
+		p2t::Triangle& t = *triangles[i];
+		p2t::Point& a = *t.GetPoint(0);
+		p2t::Point& b = *t.GetPoint(1);
+		p2t::Point& c = *t.GetPoint(2);
+
+		// Red
+
+		glColor3f(1.0, 0.0, 1.0);
+		glBegin(GL_TRIANGLES);
+		glVertex2f(a.x * 4 + 200, a.y * 4 + 50);
+		glVertex2f(b.x * 4 + 200, b.y * 4 + 50);
+		glVertex2f(c.x * 4 + 200, c.y * 4 + 50);
+		glEnd();
+		
+	}
+
+	// green
+	glColor3f(1.0, 1.0, 0.0);
+
+	for (int i = 0; i < polylines.size(); i++) {
+		std::vector<p2t::Point*> poly = polylines[i];
+		glBegin(GL_LINE_LOOP);
+		for (int j = 0; j < poly.size(); j++) {
+			glVertex2f(poly[j]->x * 4 + 200, poly[j]->y * 4 + 50);
+		}
 		glEnd();
 	}
 }
@@ -106,22 +168,34 @@ void Level::genMapData(b2World* world, const glm::vec2 pos, float tWidth)
 	i--;
 	for (i; i >= 0; i--)
 	{
-		eShape.Set(b2Vec2(mapData[vpos].x - tWidth / 2, mapData[vpos].y), b2Vec2(mapData[i].x - tWidth / 2, mapData[i].y));
+		eShape.Set(b2Vec2(mapData[vpos].x + tWidth / 2, mapData[vpos].y), b2Vec2(mapData[i].x + tWidth / 2, mapData[i].y));
 		pLine.push_back(new p2t::Point(mapData[i].x + tWidth / 2, mapData[i].y));
 		body->CreateFixture(&fDef);
 		//vertices[vpos++].Set(mapData[i].x + tWidth / 2, mapData[i].y);
 	}
 	eShape.Set(b2Vec2(mapData[0].x - tWidth / 2, mapData[0].y), b2Vec2(mapData[0].x + tWidth / 2, mapData[0].y));
 	body->CreateFixture(&fDef);
+
+	polylines.push_back(pLine);
+
 	p2t::CDT* cdt = new p2t::CDT(pLine);
+
 	cdt->Triangulate();
-	std::vector<p2t::Triangle*> triangles;
-	triangles = cdt->GetTriangles();
-	std::list<p2t::Triangle*> map;
-	map = cdt->GetMap();
-
-
 	
+	triangles = cdt->GetTriangles();
+	
+	map = cdt->GetMap();
+	Engine::Message("Map Generated");
+
+}
+
+void Level::draw(Engine::SpriteBatch& sBatch)
+{
+	for (int i = 0; i < triangles.size(); i++)
+	{
+		glm::vec4 destRect;
+		i++;
+	}
 }
 
 void Level::genRawMapDataOld()
@@ -223,13 +297,19 @@ void Level::genRawMapData()
 	int size = (height);
 	
 	mapData.push_back(glm::vec2(width / 2, 0));
-	for (int i = 5; i < size; i+=5)
+	mapData.push_back(glm::vec2(width / 2, 5));
+	int i;
+	for (i = 10; i < size; i+=1)
 	{
 		int r = rand() % width + 2;
 		if (r > width - 2) r -= 2;
 		mapData.push_back(glm::vec2(r,i));
 	}
-	bezier(10);
+	mapData.push_back(glm::vec2(width / 2, i));
+	i += 5;
+	mapData.push_back(glm::vec2(width / 2, i));
+	rMapData = mapData;
+	bezier(40);
 	Engine::Message("Raw Map Data Done");
 }
 
@@ -246,13 +326,13 @@ void Level::bezier(int times)
 		int size = mapData.size();
 		int lastPos = 0;
 		
-		for (int i = 0; i < j+1; i++)
+		/*for (int i = 0; i < j+1; i++)
 		{
 			tempV.push_back(mapData[i]);
 			lastPos = i;
-		}
+		}*/
 		int i = 0;
-		for (i = j+1; i < size-j; i++)
+		for (i = 0; i < size; i++)
 		{
 			const float y = ((mapData[lastPos].y + mapData[i].y) / 2);
 			glm::vec2 temp = glm::vec2((mapData[lastPos].x + mapData[i].x) / 2, y);
@@ -260,10 +340,10 @@ void Level::bezier(int times)
 			lastPos = i;
 
 		}
-		for (i--; i < size; i++)
+		/*for (i--; i < size; i++)
 		{
 			tempV.push_back(mapData[i]);
-		}
+		}*/
 		mapData.clear();
 		mapData = tempV;
 		//std::sort(mapData.begin(), mapData.end(), compFrontToBack);

@@ -2,6 +2,7 @@
 #include <vector>
 #include <glm/glm.hpp>
 #include <array>
+#include <list>
 #include <Box2D\Box2D.h>
 #include <Engine\DebugRenderer.h>
 #include <Engine\SpriteBatch.h>
@@ -22,6 +23,7 @@ public:
 	void bezier(int times);
 	void debugPrintRaw();
 	void genMapData(b2World* world, const glm::vec2 position, float tWidth);
+	void draw(Engine::SpriteBatch& sBatch);
 	b2Body* getBody() const { return body; }
 private:
 	b2Body* body;
@@ -29,6 +31,10 @@ private:
 	void genRawMapData();
 	TwoD<glm::u8> rawMapData;
 	std::vector<glm::vec2> mapData;
+	std::vector<glm::vec2> rMapData;
+	std::list<p2t::Triangle*> map;
+	std::vector<p2t::Triangle*> triangles;
+	std::vector< std::vector<p2t::Point*> > polylines;
 	std::string name;
 	int width;
 	int height;

@@ -74,7 +74,7 @@ void MainGame::gLoop()
 	//Event handler
 	SDL_Event e;
 	map.init("Level1", 20, 100);
-	map.genMapData(world.get(), glm::vec2(0, 0), 5);
+	map.genMapData(world.get(), glm::vec2(0, 0), 4);
 	const float CamSpeed = 0.5f;
 	const float ScalSpeed = 0.5f;
 	//While application is running
@@ -157,13 +157,11 @@ void MainGame::drawGame()
 	
 	spriteBatch.draw(destRect, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), NULL, 1.0f, color);
 
-
-
 	spriteBatch.end();
 	spriteBatch.renderBatch();
 	drawHUD();
 	glBindTexture(GL_TEXTURE_2D, 0);
-	//map.debugPrintRaw();
+	map.debugPrintRaw();
 	colorP.unuse();
 	SDL_GL_SwapWindow(window.gWindow);
 }
