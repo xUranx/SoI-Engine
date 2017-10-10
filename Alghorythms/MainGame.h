@@ -28,6 +28,7 @@ private:
 	Engine::Window window;
 	Engine::GLSLProgram colorP;
 	Engine::SpriteBatch spriteBatch;
+	Engine::SpriteBatch spriteBatchTri;
 	Engine::SpriteBatch UIspriteBatch;
 	Engine::SpriteFont* spriteFont;
 	Engine::Camera2D cam2D;

@@ -32,6 +32,21 @@ namespace Engine {
 		glm::vec2 rotatePoint(glm::vec2 pos, float angle);
 	};
 
+	class GlyhpTri
+	{
+	public:
+		GlyhpTri() {};
+		GlyhpTri(const glm::vec2 destRect[], const glm::vec4& uvRect, GLuint Texture, float Depth, const ColourRGBA8& colour);
+		GLuint texture;
+		float depth;
+
+		Vertex A;
+		Vertex B;
+		Vertex C;
+	private:
+		//glm::vec2 rotatePoint(glm::vec2 pos, float angle);
+	};
+
 	class RenderBatch
 	{
 	public:
@@ -54,6 +69,8 @@ namespace Engine {
 
 		void draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, float depth, const ColourRGBA8& colour);
 
+		void draw(const glm::vec2 destRect[], const glm::vec4& uvRect, GLuint texture, float depth, const ColourRGBA8& colour);
+
 		void draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, float depth, const ColourRGBA8& colour, float angle);
 
 		void draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, float depth, const ColourRGBA8& colour, const glm::vec2& dir);
@@ -61,13 +78,18 @@ namespace Engine {
 		void renderBatch();
 
 	private:
-		void createRenderBatches();
+		int createRenderBatches();
+		void createRenderBatchesTri(int s);
 		void createVertxArray();
 		void sortGLyph();
+		void sortGLyphTri();
 
 		static bool compFrontToBack(Glyhp* a, Glyhp* b);
 		static bool compBackToFront(Glyhp* a, Glyhp* b);
 		static bool compTexture(Glyhp* a, Glyhp* b);
+		static bool compFrontToBackTri(GlyhpTri* a, GlyhpTri* b);
+		static bool compBackToFrontTri(GlyhpTri* a, GlyhpTri* b);
+		static bool compTextureTri(GlyhpTri* a, GlyhpTri* b);
 
 		GLuint vbo = 0;
 		GLuint vao = 0;
@@ -76,6 +98,8 @@ namespace Engine {
 
 		std::vector<Glyhp*> glyphsP;
 		std::vector<Glyhp> glyphs;
+		std::vector<GlyhpTri*> glyphsTriP;
+		std::vector<GlyhpTri> glyphsTri;
 		std::vector<RenderBatch> rBatch;
 	};
 }

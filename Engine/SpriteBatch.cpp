@@ -54,6 +54,21 @@ namespace Engine {
 		topRight.setUV(uvRect.x + uvRect.z, uvRect.y + uvRect.w);
 	}
 
+	GlyhpTri::GlyhpTri(const glm::vec2 destRect[], const glm::vec4 & uvRect, GLuint Texture, float Depth, const ColourRGBA8 & colour)
+	{
+		A.colour = colour;
+		A.setPos(destRect[0].x, destRect[0].y);
+		A.setUV(uvRect.x, uvRect.y);
+
+		B.colour = colour;
+		B.setPos(destRect[1].x, destRect[1].y);
+		B.setUV(uvRect.x, uvRect.y);
+
+		C.colour = colour;
+		C.setPos(destRect[2].x, destRect[2].y);
+		C.setUV(uvRect.x, uvRect.y);
+	}
+
 	glm::vec2 Glyhp::rotatePoint(glm::vec2 pos, float angle)
 	{
 		glm::vec2 newv;
@@ -82,6 +97,7 @@ namespace Engine {
 		sortType = type;
 		rBatch.clear();
 		glyphs.clear();
+		glyphsTri.clear();
 	}
 
 	void SpriteBatch::end()
@@ -91,13 +107,25 @@ namespace Engine {
 		{
 			glyphsP[i] = &glyphs[i];
 		}
+		glyphsTriP.resize(glyphsTri.size());
+		for (int i = 0; i < glyphsTri.size(); i++)
+		{
+			glyphsTriP[i] = &glyphsTri[i];
+		}
 		sortGLyph();
-		createRenderBatches();
+		sortGLyphTri();
+		int s = createRenderBatches();
+		//createRenderBatchesTri(s);
 	}
 
 	void SpriteBatch::draw(const glm::vec4 & destRect, const glm::vec4 & uvRect, GLuint texture, float depth, const ColourRGBA8 & colour)
 	{
 		glyphs.emplace_back(destRect, uvRect, texture, depth, colour);
+	}
+
+	void SpriteBatch::draw(const glm::vec2 destRect[], const glm::vec4 & uvRect, GLuint texture, float depth, const ColourRGBA8 & colour)
+	{
+		glyphsTri.emplace_back(destRect, uvRect, texture, depth, colour);
 	}
 
 	void SpriteBatch::draw(const glm::vec4 & destRect, const glm::vec4 & uvRect, GLuint texture, float depth, const ColourRGBA8 & colour, float angle)
@@ -126,13 +154,13 @@ namespace Engine {
 		glBindVertexArray(0);
 	}
 
-	void SpriteBatch::createRenderBatches()
+	int SpriteBatch::createRenderBatches()
 	{
 		std::vector<Vertex> vertices;
 		vertices.resize(glyphsP.size() * 6);
 		if (glyphsP.empty())
 		{
-			return;
+			return 0;
 		}
 		int offset = 0;
 		int cv = 0;
@@ -163,9 +191,86 @@ namespace Engine {
 			offset += 6;
 		}
 
+		std::vector<Vertex> verticesTri;
+		verticesTri.resize(glyphsTriP.size() * 3);
+		bool Tri = true;
+		if (glyphsTriP.empty())
+		{
+			Tri = false;
+		}
+		else
+		{
+			offset = 0;
+			cv = 0;
+			rBatch.emplace_back(0, 3, glyphsTriP[0]->texture);
+			verticesTri[cv++] = glyphsTriP[0]->A;
+			verticesTri[cv++] = glyphsTriP[0]->B;
+			verticesTri[cv++] = glyphsTriP[0]->C;
+			offset += 3;
+			for (int cg = 1; cg < glyphsTriP.size(); cg++)
+			{
+				if (glyphsTriP[cg]->texture != glyphsTriP[cg - 1]->texture)
+				{
+					rBatch.emplace_back(offset, 3, glyphsTriP[cg]->texture);
+				}
+				else
+				{
+					rBatch.back().numVertices += 3;
+				}
+				verticesTri[cv++] = glyphsTriP[cg]->A;
+				verticesTri[cv++] = glyphsTriP[cg]->B;
+				verticesTri[cv++] = glyphsTriP[cg]->C;
+				offset += 3;
+			}
+		}
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), nullptr, GL_DYNAMIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex) + verticesTri.size() * sizeof(Vertex), nullptr, GL_DYNAMIC_DRAW);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, vertices.size() * sizeof(Vertex), vertices.data());
+		if (Tri)
+		{
+			glBufferSubData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), verticesTri.size() * sizeof(Vertex), verticesTri.data());
+		}
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		return vertices.size();
+	}
+
+	void SpriteBatch::createRenderBatchesTri(int s)
+	{
+		std::vector<Vertex> verticesTri;
+		verticesTri.resize(glyphsTriP.size() * 3);
+		if (glyphsTriP.empty())
+		{
+			return;
+		}
+		int offset = 0;
+		int cv = 0;
+		rBatch.emplace_back(0, 3, glyphsTriP[0]->texture);
+		verticesTri[cv++] = glyphsTriP[0]->A;
+		verticesTri[cv++] = glyphsTriP[0]->B;
+		verticesTri[cv++] = glyphsTriP[0]->C;
+		offset += 3;
+		for (int cg = 1; cg < glyphsTriP.size(); cg++)
+		{
+			if (glyphsTriP[cg]->texture != glyphsTriP[cg - 1]->texture)
+			{
+				rBatch.emplace_back(offset, 3, glyphsTriP[cg]->texture);
+			}
+			else
+			{
+				rBatch.back().numVertices += 3;
+			}
+			verticesTri[cv++] = glyphsTriP[cg]->A;
+			verticesTri[cv++] = glyphsTriP[cg]->B;
+			verticesTri[cv++] = glyphsTriP[cg]->C;
+			offset += 3;
+		}
+
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		if(s==0)
+		{ 
+			glBufferData(GL_ARRAY_BUFFER, verticesTri.size() * sizeof(Vertex), nullptr, GL_DYNAMIC_DRAW);
+		}
+		glBufferSubData(GL_ARRAY_BUFFER, s, verticesTri.size() * sizeof(Vertex), verticesTri.data());
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
@@ -215,10 +320,25 @@ namespace Engine {
 			break;
 		default:
 			break;
-		}
-		
+		}	
 	}
-
+	void SpriteBatch::sortGLyphTri()
+	{
+		switch (sortType)
+		{
+		case GlyphSortType::BACK_TO_FRONT:
+			std::stable_sort(glyphsTriP.begin(), glyphsTriP.end(), compFrontToBackTri);
+			break;
+		case GlyphSortType::FRONT_TO_BACK:
+			std::stable_sort(glyphsTriP.begin(), glyphsTriP.end(), compBackToFrontTri);
+			break;
+		case GlyphSortType::TEXTURE:
+			std::stable_sort(glyphsTriP.begin(), glyphsTriP.end(), compTextureTri);
+			break;
+		default:
+			break;
+		}
+	}
 	bool SpriteBatch::compFrontToBack(Glyhp* a, Glyhp* b)
 	{
 		return (a->depth < b->depth);
@@ -230,6 +350,20 @@ namespace Engine {
 	}
 
 	bool SpriteBatch::compTexture(Glyhp* a, Glyhp* b)
+	{
+		return (a->texture < b->texture);
+	}
+	bool SpriteBatch::compFrontToBackTri(GlyhpTri* a, GlyhpTri* b)
+	{
+		return (a->depth < b->depth);
+	}
+
+	bool SpriteBatch::compBackToFrontTri(GlyhpTri* a, GlyhpTri* b)
+	{
+		return (a->depth > b->depth);
+	}
+
+	bool SpriteBatch::compTextureTri(GlyhpTri* a, GlyhpTri* b)
 	{
 		return (a->texture < b->texture);
 	}

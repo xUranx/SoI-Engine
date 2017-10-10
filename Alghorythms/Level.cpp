@@ -193,11 +193,18 @@ void Level::draw(Engine::SpriteBatch& sBatch)
 {
 	for (int i = 0; i < triangles.size(); i++)
 	{
-		glm::vec4 destRect;
-		i++;
+		Engine::ColourRGBA8 color;
+		color.setColour(6.0f, 51.0f, 15.0f, 255.0f);
+		glm::vec2 destRect[3];
+		destRect[0].x = triangles[i]->GetPoint(0)->x;
+		destRect[0].y = triangles[i]->GetPoint(0)->y;
+		destRect[1].x = triangles[i]->GetPoint(1)->x;
+		destRect[1].y = triangles[i]->GetPoint(1)->y;
+		destRect[2].x = triangles[i]->GetPoint(2)->x;
+		destRect[2].y = triangles[i]->GetPoint(2)->y;
+		sBatch.draw(destRect, glm::vec4(0, 0, 0, 1), NULL, 0, color);
 	}
 }
-
 void Level::genRawMapDataOld()
 {
 	srand(time(NULL));

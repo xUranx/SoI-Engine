@@ -36,6 +36,7 @@ void MainGame::run()
 		else
 		{
 			spriteBatch.init();
+			spriteBatchTri.init();
 			UIspriteBatch.init();
 			spriteFont = new SpriteFont("../SoI/Include/Fonts/font.ttf", 16);
 			b2Vec2 grav(0.0f, -9.81);
@@ -73,7 +74,7 @@ void MainGame::gLoop()
 	cam2D.setScale(18.0f);
 	//Event handler
 	SDL_Event e;
-	map.init("Level1", 20, 100);
+	map.init("Level1", 20, 200);
 	map.genMapData(world.get(), glm::vec2(0, 0), 4);
 	const float CamSpeed = 0.5f;
 	const float ScalSpeed = 0.5f;
@@ -155,13 +156,12 @@ void MainGame::drawGame()
 	destRect.z = Ground.getDimensions().x;
 	destRect.w = Ground.getDimensions().y;
 	
-	spriteBatch.draw(destRect, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), NULL, 1.0f, color);
-
+	map.draw(spriteBatch);
+	spriteBatch.draw(destRect, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), NULL, 0.0f, color);
 	spriteBatch.end();
 	spriteBatch.renderBatch();
 	drawHUD();
 	glBindTexture(GL_TEXTURE_2D, 0);
-	map.debugPrintRaw();
 	colorP.unuse();
 	SDL_GL_SwapWindow(window.gWindow);
 }
