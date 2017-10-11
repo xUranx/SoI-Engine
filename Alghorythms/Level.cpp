@@ -94,7 +94,7 @@ void Level::debugPrintRaw()
 		// Red
 
 		glColor3f(1.0, 0.0, 1.0);
-		glBegin(GL_TRIANGLES);
+		glBegin(GL_LINE_LOOP);
 		glVertex2f(a.x * 4 + 200, a.y * 4 + 50);
 		glVertex2f(b.x * 4 + 200, b.y * 4 + 50);
 		glVertex2f(c.x * 4 + 200, c.y * 4 + 50);
@@ -205,6 +205,7 @@ void Level::draw(Engine::SpriteBatch& sBatch)
 		sBatch.draw(destRect, glm::vec4(0, 0, 0, 1), NULL, 0, color);
 	}
 }
+
 void Level::genRawMapDataOld()
 {
 	srand(time(NULL));
@@ -293,9 +294,6 @@ void Level::genRawMapDataOld()
 
 }
 
-
-
-
 void Level::genRawMapData()
 {
 	//https://gamedev.stackexchange.com/questions/37887/how-do-i-generate-a-smooth-random-horizontal-2d-tunnel
@@ -305,8 +303,9 @@ void Level::genRawMapData()
 	
 	mapData.push_back(glm::vec2(width / 2, 0));
 	mapData.push_back(glm::vec2(width / 2, 5));
+	mapData.push_back(glm::vec2(width / 2, 10));
 	int i;
-	for (i = 10; i < size; i+=1)
+	for (i = 15; i < size; i+=1)
 	{
 		int r = rand() % width + 2;
 		if (r > width - 2) r -= 2;

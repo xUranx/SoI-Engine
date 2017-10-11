@@ -48,6 +48,9 @@
     <ClCompile Include="poly2tri\sweep\advancing_front.cc">
       <Filter>poly2tri</Filter>
     </ClCompile>
+    <ClCompile Include="Ship.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h">
@@ -82,6 +85,9 @@
     </ClInclude>
     <ClInclude Include="poly2tri\sweep\advancing_front.h">
       <Filter>poly2tri</Filter>
+    </ClInclude>
+    <ClInclude Include="Ship.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

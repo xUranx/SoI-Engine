@@ -160,6 +160,7 @@ void MainGame::drawGame()
 	spriteBatch.draw(destRect, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), NULL, 0.0f, color);
 	spriteBatch.end();
 	spriteBatch.renderBatch();
+	//map.debugPrintRaw();
 	drawHUD();
 	glBindTexture(GL_TEXTURE_2D, 0);
 	colorP.unuse();
