@@ -78,6 +78,7 @@ void MainGame::gLoop()
 	map.genMapData(world.get(), glm::vec2(0, 0), 4);
 	const float CamSpeed = 0.5f;
 	const float ScalSpeed = 0.5f;
+	int val = 1;
 	//While application is running
 	bool sorted = false;
 	while (!quit)
@@ -113,6 +114,20 @@ void MainGame::gLoop()
 				case SDLK_e:
 					cam2D.setScale(cam2D.getScale() - ScalSpeed);
 					break;
+				/*case SDLK_t:
+					if (val < 40) 
+					{
+						map.bezier(++val); 
+						map.genMapData(world.get(), glm::vec2(0, 0), 4);
+					}
+					break;
+				case SDLK_g:
+					if (val > 1)
+					{
+						map.bezier(--val); 
+						map.genMapData(world.get(), glm::vec2(0, 0), 4);
+					}
+					break;*/
 				default:
 					break;
 				}

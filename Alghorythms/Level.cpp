@@ -28,15 +28,10 @@ void Level::init(std::string _name, float _width, float _height)
 	height = (int)_height;
 	name = _name;
 
-	rawMapData.resize(height);
-	for (int i = 0; i < height; i++)
-	{
-		rawMapData[i].resize(width);
-	}
-
 	genRawMapData();
 
 }
+
 void ConstrainedColor(bool constrain)
 {
 	if (constrain) {
@@ -48,6 +43,7 @@ void ConstrainedColor(bool constrain)
 		glColor3f(1, 0, 0);
 	}
 }
+
 void Level::debugPrintRaw()
 {
 	/*glLineWidth(2.0);
@@ -117,6 +113,7 @@ void Level::debugPrintRaw()
 
 void Level::genMapData(b2World* world, const glm::vec2 pos, float tWidth)
 {	
+	if(body != nullptr) world->DestroyBody(body);
 	std::vector<p2t::Point*> pLine;
 	b2Vec2* vertices = new b2Vec2[(mapData.size() * 2) + 4];
 
@@ -301,20 +298,22 @@ void Level::genRawMapData()
 	srand(time(NULL));
 	int size = (height);
 	
-	mapData.push_back(glm::vec2(width / 2, 0));
-	mapData.push_back(glm::vec2(width / 2, 5));
-	mapData.push_back(glm::vec2(width / 2, 10));
+	rMapData.push_back(glm::vec2(width / 2, 0));
+	rMapData.push_back(glm::vec2(width / 2, 5));
+	rMapData.push_back(glm::vec2(width / 2, 10));
 	int i;
 	for (i = 15; i < size; i+=1)
 	{
 		int r = rand() % width + 2;
-		if (r > width - 2) r -= 2;
-		mapData.push_back(glm::vec2(r,i));
+		if (r > width - 5) r -= 5;
+		rMapData.push_back(glm::vec2(r,i));
 	}
-	mapData.push_back(glm::vec2(width / 2, i));
+	i += 4;
+	rMapData.push_back(glm::vec2(width / 2, i));
 	i += 5;
-	mapData.push_back(glm::vec2(width / 2, i));
-	rMapData = mapData;
+	rMapData.push_back(glm::vec2(width / 2, i));
+	i += 5;
+	rMapData.push_back(glm::vec2(width / 2, i));
 	bezier(40);
 	Engine::Message("Raw Map Data Done");
 }
@@ -326,6 +325,7 @@ bool Level::compFrontToBack(glm::vec2 a, glm::vec2 b)
 
 void Level::bezier(int times)
 {
+	mapData = rMapData;
 	for (int j = 0; j < times; j++)
 	{
 		std::vector<glm::vec2> tempV;
@@ -346,6 +346,7 @@ void Level::bezier(int times)
 			lastPos = i;
 
 		}
+		//tempV.push_back(glm::vec2(mapData[i - 1].x, mapData[i - 1].y));
 		/*for (i--; i < size; i++)
 		{
 			tempV.push_back(mapData[i]);
