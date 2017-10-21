@@ -4,9 +4,11 @@
 #include <Engine/SpriteBatch.h>
 #include <Engine/Camera2D.h>
 #include <Engine/SpriteFont.h>
+#include <Engine/InputManager.h>
 #include <Box2D/Box2D.h>
 #include "Level.h"
 #include "Box.h"
+#include "Ship.h"
 
 enum GameState
 {
@@ -23,6 +25,7 @@ private:
 	int sWidth;
 	int sHeight;
 	void gLoop();
+	void processInput();
 	bool initShaders();
 	void drawGame();
 	Engine::Window window;
@@ -33,12 +36,15 @@ private:
 	Engine::SpriteFont* spriteFont;
 	Engine::Camera2D cam2D;
 	Engine::Camera2D hudCam;
+	Engine::InputManager inputManager;
 	std::unique_ptr<b2World> world;
 	Box Ground;
 	std::vector<glm::vec4> pos;
 	std::vector<glm::vec4*> posP;
 	static bool compFrontToBack(glm::vec4* a, glm::vec4* b);
 	Level map;
+	Ship ship;
+	Box box;
 	void drawHUD();
 		
 

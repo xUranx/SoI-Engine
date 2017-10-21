@@ -37,6 +37,7 @@ namespace Engine {
 	public:
 		GlyhpTri() {};
 		GlyhpTri(const glm::vec2 destRect[], const glm::vec4& uvRect, GLuint Texture, float Depth, const ColourRGBA8& colour);
+		GlyhpTri(const glm::vec2 destRect[], const glm::vec4 & uvRect, GLuint Texture, float Depth, const ColourRGBA8 & colour, float angle, glm::vec2 pivot);
 		GLuint texture;
 		float depth;
 
@@ -44,7 +45,7 @@ namespace Engine {
 		Vertex B;
 		Vertex C;
 	private:
-		//glm::vec2 rotatePoint(glm::vec2 pos, float angle);
+		glm::vec2 rotatePoint(glm::vec2 pos, float angle, glm::vec2 pivot);
 	};
 
 	class RenderBatch
@@ -69,11 +70,13 @@ namespace Engine {
 
 		void draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, float depth, const ColourRGBA8& colour);
 
-		void draw(const glm::vec2 destRect[], const glm::vec4& uvRect, GLuint texture, float depth, const ColourRGBA8& colour);
-
 		void draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, float depth, const ColourRGBA8& colour, float angle);
 
 		void draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, float depth, const ColourRGBA8& colour, const glm::vec2& dir);
+
+		void draw(const glm::vec2 destRect[], const glm::vec4& uvRect, GLuint texture, float depth, const ColourRGBA8& colour);
+
+		void draw(const glm::vec2 destRect[], const glm::vec4& uvRect, GLuint texture, float depth, const ColourRGBA8& colour, float angle, glm::vec2 pivot);
 
 		void renderBatch();
 

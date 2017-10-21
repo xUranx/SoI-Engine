@@ -30,7 +30,6 @@ namespace Engine {
 		glm::vec2 bl(-hlfDims.x, -hlfDims.y);
 		glm::vec2 br(hlfDims.x, -hlfDims.y);
 		glm::vec2 tr(hlfDims.x, hlfDims.y);
-
 		//RotatePoints
 		tl = rotatePoint(tl, angle) + hlfDims;
 		bl = rotatePoint(bl, angle) + hlfDims;
@@ -67,6 +66,35 @@ namespace Engine {
 		C.colour = colour;
 		C.setPos(destRect[2].x, destRect[2].y);
 		C.setUV(uvRect.x, uvRect.y);
+	}
+
+	GlyhpTri::GlyhpTri(const glm::vec2 destRect[], const glm::vec4 & uvRect, GLuint Texture, float Depth, const ColourRGBA8 & colour, float angle, glm::vec2 pivot)
+	{
+
+		glm::vec2 a = rotatePoint(destRect[0], angle, pivot);
+		glm::vec2 b = rotatePoint(destRect[1], angle, pivot);
+		glm::vec2 c = rotatePoint(destRect[2], angle, pivot);
+
+		A.colour = colour;
+		A.setPos(a.x, a.y);
+		A.setUV(uvRect.x, uvRect.y);
+
+		B.colour = colour;
+		B.setPos(b.x, b.y);
+		B.setUV(uvRect.x, uvRect.y);
+
+		C.colour = colour;
+		C.setPos(c.x, c.y);
+		C.setUV(uvRect.x, uvRect.y);
+	}
+
+	glm::vec2 GlyhpTri::rotatePoint(glm::vec2 pos, float angle, glm::vec2 pivot)
+	{
+		glm::vec2 newv;
+		pos -= pivot;
+		newv.x = pos.x * cos(angle) - pos.y * sin(angle);
+		newv.y = pos.x * sin(angle) + pos.y * cos(angle);
+		return newv + pivot;
 	}
 
 	glm::vec2 Glyhp::rotatePoint(glm::vec2 pos, float angle)
@@ -123,11 +151,6 @@ namespace Engine {
 		glyphs.emplace_back(destRect, uvRect, texture, depth, colour);
 	}
 
-	void SpriteBatch::draw(const glm::vec2 destRect[], const glm::vec4 & uvRect, GLuint texture, float depth, const ColourRGBA8 & colour)
-	{
-		glyphsTri.emplace_back(destRect, uvRect, texture, depth, colour);
-	}
-
 	void SpriteBatch::draw(const glm::vec4 & destRect, const glm::vec4 & uvRect, GLuint texture, float depth, const ColourRGBA8 & colour, float angle)
 	{
 		glyphs.emplace_back(destRect, uvRect, texture, depth, colour, angle);
@@ -140,6 +163,16 @@ namespace Engine {
 		if (dir.y < 0.0f) angle = -angle;
 
 		glyphs.emplace_back(destRect, uvRect, texture, depth, colour, angle);
+	}
+
+	void SpriteBatch::draw(const glm::vec2 destRect[], const glm::vec4 & uvRect, GLuint texture, float depth, const ColourRGBA8 & colour)
+	{
+		glyphsTri.emplace_back(destRect, uvRect, texture, depth, colour);
+	}
+
+	void SpriteBatch::draw(const glm::vec2 destRect[], const glm::vec4 & uvRect, GLuint texture, float depth, const ColourRGBA8 & colour, float angle, glm::vec2 pivot)
+	{
+		glyphsTri.emplace_back(destRect, uvRect, texture, depth, colour, angle, pivot);
 	}
 
 	void SpriteBatch::renderBatch()
@@ -200,9 +233,8 @@ namespace Engine {
 		}
 		else
 		{
-			offset = 0;
 			cv = 0;
-			rBatch.emplace_back(0, 3, glyphsTriP[0]->texture);
+			rBatch.emplace_back(offset, 3, glyphsTriP[0]->texture);
 			verticesTri[cv++] = glyphsTriP[0]->A;
 			verticesTri[cv++] = glyphsTriP[0]->B;
 			verticesTri[cv++] = glyphsTriP[0]->C;

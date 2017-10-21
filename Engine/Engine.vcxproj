@@ -147,6 +147,7 @@
     <ClCompile Include="Camera2D.cpp" />
     <ClCompile Include="DebugRenderer.cpp" />
     <ClCompile Include="ImageLoader.cpp" />
+    <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="IOManager.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="GLSLProgram.cpp" />
@@ -163,6 +164,7 @@
     <ClInclude Include="DebugRenderer.h" />
     <ClInclude Include="GLTexture.h" />
     <ClInclude Include="ImageLoader.h" />
+    <ClInclude Include="InputManager.h" />
     <ClInclude Include="IOManager.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="GLSLProgram.h" />

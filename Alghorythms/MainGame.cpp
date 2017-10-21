@@ -74,13 +74,25 @@ void MainGame::gLoop()
 	cam2D.setScale(18.0f);
 	//Event handler
 	SDL_Event e;
-	map.init("Level1", 20, 200);
-	map.genMapData(world.get(), glm::vec2(0, 0), 4);
+	//map.init("Level1", 20, 200);
+	//map.genMapData(world.get(), glm::vec2(0, 0), 4);
+	glm::vec2 dim[3];
+	dim[0].x = -2.0f;
+	dim[0].y = -2.0f;
+	dim[1].x = 0.0f;
+	dim[1].y = 2.0f;
+	dim[2].x = 2.0f;
+	dim[2].y = -2.0f;
+	ship.init(world.get(), glm::vec2(0, 15), dim, false, 0.5f);
+	GLTexture texture = ResourceManager::getTexture("../SoI/Include/Textures/Block.png");
+	ColourRGBA8 color;
+	box.init(world.get(), glm::vec2(3.0f, 0.0f),texture,color, glm::vec2(5, 5));
 	const float CamSpeed = 0.5f;
 	const float ScalSpeed = 0.5f;
 	int val = 1;
 	//While application is running
 	bool sorted = false;
+	bool force = false;
 	while (!quit)
 	{
 		window.fpsCounter();
@@ -94,49 +106,47 @@ void MainGame::gLoop()
 			}
 			if (e.type == SDL_KEYDOWN)
 			{
-				switch (e.key.keysym.sym)
-				{
-				case SDLK_w:
-					cam2D.setPos(cam2D.getPos() + glm::vec2(0.0f, -CamSpeed));
-					break;
-				case SDLK_s:
-					cam2D.setPos(cam2D.getPos() + glm::vec2(0.0f, CamSpeed));
-					break;
-				case SDLK_a:
-					cam2D.setPos(cam2D.getPos() + glm::vec2(CamSpeed, 0.0f));
-					break;
-				case SDLK_d:
-					cam2D.setPos(cam2D.getPos() + glm::vec2(-CamSpeed, 0.0f));
-					break;
-				case SDLK_q:
-					cam2D.setScale(cam2D.getScale() + ScalSpeed);
-					break;
-				case SDLK_e:
-					cam2D.setScale(cam2D.getScale() - ScalSpeed);
-					break;
-				/*case SDLK_t:
-					if (val < 40) 
-					{
-						map.bezier(++val); 
-						map.genMapData(world.get(), glm::vec2(0, 0), 4);
-					}
-					break;
-				case SDLK_g:
-					if (val > 1)
-					{
-						map.bezier(--val); 
-						map.genMapData(world.get(), glm::vec2(0, 0), 4);
-					}
-					break;*/
-				default:
-					break;
-				}
+				inputManager.pressKey(e.key.keysym.sym);
+			}
+			if (e.type == SDL_KEYUP)
+			{
+				inputManager.releaseKey(e.key.keysym.sym);
 			}
 		}
+
+		if (inputManager.isKeyPressed(SDLK_ESCAPE)) quit = true;
+
+		if (force) ship.getBody()->ApplyForce(50 * ship.getBody()->GetWorldVector(b2Vec2(0, 1)), ship.getBody()->GetWorldPoint(b2Vec2(0,-1)), true);
+		float mass = ship.getBody()->GetMass();
+		world->Step(1.0f / 60.f, 6, 2);
 		cam2D.update();
 		hudCam.update();
 		drawGame();
 	}
+}
+
+void MainGame::processInput()
+{
+		
+	case SDLK_w:
+		cam2D.setPos(cam2D.getPos() + glm::vec2(0.0f, -CamSpeed));
+		break;
+	case SDLK_s:
+		cam2D.setPos(cam2D.getPos() + glm::vec2(0.0f, CamSpeed));
+		break;
+	case SDLK_a:
+		cam2D.setPos(cam2D.getPos() + glm::vec2(CamSpeed, 0.0f));
+		break;
+	case SDLK_d:
+		cam2D.setPos(cam2D.getPos() + glm::vec2(-CamSpeed, 0.0f));
+		break;
+	case SDLK_q:
+		cam2D.setScale(cam2D.getScale() + ScalSpeed);
+		break;
+	case SDLK_e:
+		cam2D.setScale(cam2D.getScale() - ScalSpeed);
+		break;
+	case SDLK_x:
 }
 
 void MainGame::drawGame()
@@ -170,9 +180,10 @@ void MainGame::drawGame()
 	destRect.y = Ground.getBody()->GetPosition().y - Ground.getDimensions().y / 2.0f;
 	destRect.z = Ground.getDimensions().x;
 	destRect.w = Ground.getDimensions().y;
-	
-	map.draw(spriteBatch);
+	box.draw(spriteBatch);
+	//map.draw(spriteBatch);
 	spriteBatch.draw(destRect, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), NULL, 0.0f, color);
+	ship.draw(spriteBatch);
 	spriteBatch.end();
 	spriteBatch.renderBatch();
 	//map.debugPrintRaw();
