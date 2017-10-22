@@ -111,6 +111,15 @@ void Level::debugPrintRaw()
 	}
 }
 
+glm::vec2 rotatePoint(glm::vec2 pos, float angle, glm::vec2 pivot)
+{
+	glm::vec2 newv;
+	pos -= pivot;
+	newv.x = pos.x * cos(angle) - pos.y * sin(angle);
+	newv.y = pos.x * sin(angle) + pos.y * cos(angle);
+	return newv + pivot;
+}
+
 void Level::genMapData(b2World* world, const glm::vec2 pos, float tWidth)
 {	
 	if(body != nullptr) world->DestroyBody(body);
@@ -121,6 +130,8 @@ void Level::genMapData(b2World* world, const glm::vec2 pos, float tWidth)
 
 	int vpos = 0;
 	int i = 0;
+	
+	glm::vec2 pPos(mapData[i].x - tWidth / 2, mapData[i].y);
 
 	pLine.push_back(new p2t::Point(mapData[i].x - tWidth / 2, mapData[i].y));
 
@@ -135,44 +146,82 @@ void Level::genMapData(b2World* world, const glm::vec2 pos, float tWidth)
 
 	for (i = 1; i < mapData.size(); i++)
 	{
-		eShape.Set(b2Vec2(mapData[vpos].x - tWidth / 2, mapData[vpos].y), b2Vec2(mapData[i].x - tWidth / 2, mapData[i].y));
+		glm::vec2 pos(glm::vec2(mapData[i].x - tWidth / 2.0, mapData[i].y - tWidth / 2.0));
+		pos = rotatePoint(pos, -90, mapData[i]);
+		eShape.Set(b2Vec2(mapData[vpos].x - tWidth / 2.0, mapData[vpos].y), b2Vec2(mapData[i].x - tWidth / 2, mapData[i].y));
 		pLine.push_back(new p2t::Point(mapData[i].x - tWidth / 2, mapData[i].y));
-		//vertices[vpos++].Set(mapData[i].x - tWidth/2, mapData[i].y);
+		/*eShape.Set(b2Vec2(pPos.x, pPos.y), b2Vec2(mapData[i].x - tWidth / 2, mapData[i].y));
+		pLine.push_back(new p2t::Point(pos.x, pos.y));*/
+		/*vertices[vpos++].Set(mapData[i].x - tWidth/2, mapData[i].y);*/
 		vpos = i;
+		pPos = pos;
 		body->CreateFixture(&fDef);
 	}
 	i--;
+
+	/*pLine.push_back(new p2t::Point(0, pPos.y));
+	pLine.push_back(new p2t::Point(0, mapData[0].y - 2));
+	pLine.push_back(new p2t::Point(width, mapData[0].y - 2));
+	pLine.push_back(new p2t::Point(width, pPos.y));*/
+
 	pLine.push_back(new p2t::Point(0, mapData[i].y));
 	pLine.push_back(new p2t::Point(0, mapData[0].y - 2));
 	pLine.push_back(new p2t::Point(width, mapData[0].y - 2));
 	pLine.push_back(new p2t::Point(width, mapData[i].y));
 	eShape.Set(b2Vec2(mapData[i].x - tWidth / 2, mapData[i].y), b2Vec2(0, mapData[i].y));
 	body->CreateFixture(&fDef);
+
 	eShape.Set(b2Vec2(0, mapData[i].y), b2Vec2(0, mapData[0].y - 2));
 	body->CreateFixture(&fDef);
-	eShape.Set(b2Vec2(0, mapData[0].y - 2), b2Vec2(0, mapData[i].y));
+
+	eShape.Set(b2Vec2(0, mapData[0].y - 2), b2Vec2(width, mapData[0].y - 2));
 	body->CreateFixture(&fDef);
-	eShape.Set(b2Vec2(0, mapData[i].y), b2Vec2(width, mapData[i].y));
+
+	eShape.Set(b2Vec2(width, mapData[0].y), b2Vec2(width, mapData[i].y));
 	body->CreateFixture(&fDef);
+
 	eShape.Set(b2Vec2(width, mapData[i].y), b2Vec2(mapData[i].x + tWidth / 2, mapData[i].y));
 	body->CreateFixture(&fDef);
-	/*vertices[vpos++].Set(0, mapData[i].y);
-	vertices[vpos++].Set(0, mapData[0].y - 2);
-	vertices[vpos++].Set(width, mapData[0].y - 2);
-	vertices[vpos++].Set(width, mapData[i].y);*/
+	
 	pLine.push_back(new p2t::Point(mapData[i].x + tWidth / 2, mapData[i].y));
+
+	//eShape.Set(b2Vec2(pPos.x, pPos.y), b2Vec2(0, pPos.y));
+	//body->CreateFixture(&fDef);
+
+	//eShape.Set(b2Vec2(0, pPos.y), b2Vec2(0, mapData[0].y - 2));
+	//body->CreateFixture(&fDef);
+
+	//eShape.Set(b2Vec2(0, mapData[0].y - 2), b2Vec2(width, pPos.y));
+	//body->CreateFixture(&fDef);
+	
+	//eShape.Set(b2Vec2(width, pPos.y), b2Vec2(width, pPos.y));
+	//body->CreateFixture(&fDef);
+	//pPos = rotatePoint(glm::vec2(mapData[i].x + tWidth / 2.0, mapData[i].y + tWidth / 2.0), 90.0f, mapData[i]);
+
+	//eShape.Set(b2Vec2(width, pPos.y), b2Vec2(pPos.x, pPos.y));
+	//body->CreateFixture(&fDef);
+
+	//pLine.push_back(new p2t::Point(pPos.x, pPos.y));
 	vpos = i;
 	i--;
 	for (i; i >= 0; i--)
 	{
-		eShape.Set(b2Vec2(mapData[vpos].x + tWidth / 2, mapData[vpos].y), b2Vec2(mapData[i].x + tWidth / 2, mapData[i].y));
+		glm::vec2 pos(glm::vec2(mapData[i].x + tWidth / 2.0, mapData[i].y + tWidth / 2.0));
+		pos = rotatePoint(pos, 90, mapData[i]);
+		eShape.Set(b2Vec2(mapData[vpos].x + tWidth / 2.0, mapData[vpos].y), b2Vec2(mapData[i].x + tWidth / 2, mapData[i].y));
 		pLine.push_back(new p2t::Point(mapData[i].x + tWidth / 2, mapData[i].y));
+		/*eShape.Set(b2Vec2(pPos.x, pPos.y), b2Vec2(pos.x, pos.y));
+		pLine.push_back(new p2t::Point(pos.x, pos.y));*/
 		body->CreateFixture(&fDef);
 		//vertices[vpos++].Set(mapData[i].x + tWidth / 2, mapData[i].y);
+		vpos = i;
+		pPos = pos;
 	}
+	//eShape.Set(b2Vec2(pPos.x, pPos.y), b2Vec2(mapData[0].x + tWidth / 2, mapData[0].y));
+	//body->CreateFixture(&fDef);
 	eShape.Set(b2Vec2(mapData[0].x - tWidth / 2, mapData[0].y), b2Vec2(mapData[0].x + tWidth / 2, mapData[0].y));
 	body->CreateFixture(&fDef);
-
+	//pLine.push_back(new p2t::Point(mapData[0].x + tWidth / 2, mapData[0].y));
 	polylines.push_back(pLine);
 
 	p2t::CDT* cdt = new p2t::CDT(pLine);
@@ -331,14 +380,14 @@ void Level::bezier(int times)
 		std::vector<glm::vec2> tempV;
 		int size = mapData.size();
 		int lastPos = 0;
-		
-		/*for (int i = 0; i < j+1; i++)
+		int i;
+		/*for (i = 0; i < j+1; i++)
 		{
 			tempV.push_back(mapData[i]);
 			lastPos = i;
 		}*/
-		int i = 0;
-		for (i = 0; i < size; i++)
+		tempV.push_back(mapData[0]);
+		for (i = 1; i < size; i++)
 		{
 			const float y = ((mapData[lastPos].y + mapData[i].y) / 2);
 			glm::vec2 temp = glm::vec2((mapData[lastPos].x + mapData[i].x) / 2, y);

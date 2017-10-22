@@ -9,10 +9,10 @@
 #include "Level.h"
 #include "Box.h"
 #include "Ship.h"
-
+#include "GATextDemo.h" 
 enum GameState
 {
-	MainMenu, Game, Exit 
+	MainMenu, Game, Text, Exit 
 };
 
 class MainGame
@@ -46,7 +46,8 @@ private:
 	Ship ship;
 	Box box;
 	void drawHUD();
-		
-
+	GameState gMode;
+	GameState nMode;
+	GATextDemo test;
 };
 

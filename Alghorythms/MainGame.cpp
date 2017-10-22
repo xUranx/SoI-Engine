@@ -39,10 +39,7 @@ void MainGame::run()
 			spriteBatchTri.init();
 			UIspriteBatch.init();
 			spriteFont = new SpriteFont("../SoI/Include/Fonts/font.ttf", 16);
-			b2Vec2 grav(0.0f, -9.81);
-			glm::vec2 dimes = glm::vec2(50.0f, 3.0f);
-			world = std::make_unique<b2World>(grav);
-			Ground.Fixedinit(world.get(), glm::vec2(0.0f, -15.0f), dimes);
+			
 			gLoop();
 		}
 	}
@@ -66,34 +63,19 @@ bool MainGame::initShaders()
 void MainGame::gLoop()
 {
 	//Main loop flag
-	bool quit = false;
+	bool init = true;
 	cam2D.init(sWidth,sHeight);
 	hudCam.init(sWidth, sHeight);
 	//cam2D.setPos(cam2D.getPos() + glm::vec2(sWidth / 2.0f, sHeight / 2.0f));
 	hudCam.setPos(cam2D.getPos() + glm::vec2(sWidth / 2.0f, sHeight / 2.0f));
-	cam2D.setScale(18.0f);
+	gMode = Text;
 	//Event handler
 	SDL_Event e;
-	//map.init("Level1", 20, 200);
-	//map.genMapData(world.get(), glm::vec2(0, 0), 4);
-	glm::vec2 dim[3];
-	dim[0].x = -2.0f;
-	dim[0].y = -2.0f;
-	dim[1].x = 0.0f;
-	dim[1].y = 2.0f;
-	dim[2].x = 2.0f;
-	dim[2].y = -2.0f;
-	ship.init(world.get(), glm::vec2(0, 15), dim, false, 0.5f);
-	GLTexture texture = ResourceManager::getTexture("../SoI/Include/Textures/Block.png");
-	ColourRGBA8 color;
-	box.init(world.get(), glm::vec2(3.0f, 0.0f),texture,color, glm::vec2(5, 5));
 	const float CamSpeed = 0.5f;
 	const float ScalSpeed = 0.5f;
 	int val = 1;
 	//While application is running
-	bool sorted = false;
-	bool force = false;
-	while (!quit)
+	while (gMode != Exit)
 	{
 		window.fpsCounter();
 		//Handle events on queue
@@ -102,7 +84,7 @@ void MainGame::gLoop()
 			//User requests quit
 			if (e.type == SDL_QUIT)
 			{
-				quit = true;
+				gMode = Exit;
 			}
 			if (e.type == SDL_KEYDOWN)
 			{
@@ -113,12 +95,66 @@ void MainGame::gLoop()
 				inputManager.releaseKey(e.key.keysym.sym);
 			}
 		}
+		
+		if (inputManager.isKeyPressed(SDLK_ESCAPE)) gMode = Exit;
 
-		if (inputManager.isKeyPressed(SDLK_ESCAPE)) quit = true;
+		switch (gMode)
+		{
+		case Game:
+			if (init)
+			{
+				b2Vec2 grav(0.0f, -9.81);
+				glm::vec2 dimes = glm::vec2(50.0f, 3.0f);
+				world = std::make_unique<b2World>(grav);
+				Ground.Fixedinit(world.get(), glm::vec2(0.0f, -15.0f), dimes);
+				cam2D.setScale(18.0f);
+				init = false;
+				map.init("Level1", 20, 200);
+				map.genMapData(world.get(), glm::vec2(0, 0), 5);
+				glm::vec2 dim[3];
+				dim[0].x = -2.0f;
+				dim[0].y = -2.0f;
+				dim[1].x = 0.0f;
+				dim[1].y = 2.0f;
+				dim[2].x = 2.0f;
+				dim[2].y = -2.0f;
+				ship.init(world.get(), glm::vec2(21, 5), dim, false, 0.4f);
+				GLTexture texture = ResourceManager::getTexture("../SoI/Include/Textures/Block.png");
+				ColourRGBA8 color;
+				//box.init(world.get(), glm::vec2(3.0f, 0.0f),texture,color, glm::vec2(5, 5));
+				
+			}
+			cam2D.setPos(glm::vec2(ship.getBody()->GetPosition().x, ship.getBody()->GetPosition().y));
+			processInput();
+			world->Step(1.0f / 60.f, 6, 2);
+			if (nMode != Game && nMode != NULL)
+			{
+				delete(&world);
+				world = nullptr;
+				gMode = nMode;
+			}
+			break;
+		case Text:
+			if (init)
+			{
+				init = false;
+				test.start();
+			}
+			test.run();
 
-		if (force) ship.getBody()->ApplyForce(50 * ship.getBody()->GetWorldVector(b2Vec2(0, 1)), ship.getBody()->GetWorldPoint(b2Vec2(0,-1)), true);
-		float mass = ship.getBody()->GetMass();
-		world->Step(1.0f / 60.f, 6, 2);
+			if (test.getSegFound()) gMode = Exit;
+
+			if (nMode != Text && nMode != NULL)
+			{
+				delete(&test);
+				gMode = nMode;
+			}
+		default:
+			break;
+		}
+
+		//cam2D.setPos(glm::vec2(ship.getBody()->GetPosition().x, ship.getBody()->GetPosition().y));
+
 		cam2D.update();
 		hudCam.update();
 		drawGame();
@@ -127,32 +163,35 @@ void MainGame::gLoop()
 
 void MainGame::processInput()
 {
+	const float CamSpeed = 0.2f;
+	const float ScalSpeed = 0.2f;
+	static float dir;
+	if(inputManager.isKeyPressed(SDLK_w)) cam2D.setPos(cam2D.getPos() + glm::vec2(0.0f, -CamSpeed));
 		
-	case SDLK_w:
-		cam2D.setPos(cam2D.getPos() + glm::vec2(0.0f, -CamSpeed));
-		break;
-	case SDLK_s:
-		cam2D.setPos(cam2D.getPos() + glm::vec2(0.0f, CamSpeed));
-		break;
-	case SDLK_a:
+	if (inputManager.isKeyPressed(SDLK_s)) cam2D.setPos(cam2D.getPos() + glm::vec2(0.0f, CamSpeed));
+		
+	if (inputManager.isKeyPressed(SDLK_a))
 		cam2D.setPos(cam2D.getPos() + glm::vec2(CamSpeed, 0.0f));
-		break;
-	case SDLK_d:
+	if (inputManager.isKeyPressed(SDLK_d))
 		cam2D.setPos(cam2D.getPos() + glm::vec2(-CamSpeed, 0.0f));
-		break;
-	case SDLK_q:
+	if (inputManager.isKeyPressed(SDLK_q))
 		cam2D.setScale(cam2D.getScale() + ScalSpeed);
-		break;
-	case SDLK_e:
+	if (inputManager.isKeyPressed(SDLK_e))
 		cam2D.setScale(cam2D.getScale() - ScalSpeed);
-		break;
-	case SDLK_x:
+	if (inputManager.isKeyPressed(SDLK_z))
+		dir = 0.2f;
+	else if (inputManager.isKeyPressed(SDLK_c))
+		dir = -0.2f;
+	else 
+		dir = 0.0f;
+	if (inputManager.isKeyPressed(SDLK_x))
+		ship.getBody()->ApplyForce(50 * ship.getBody()->GetWorldVector(b2Vec2(0.0f + dir, 1 )), ship.getBody()->GetWorldPoint(b2Vec2(0,-1)), true);
+	if (inputManager.isKeyPressed(SDLK_j))
+		ship.getBody()->SetTransform(ship.getBody()->GetPosition(), 0);
 }
 
 void MainGame::drawGame()
 {
-
-
 	//set base depth
 	glClearDepth(1.0);
 	//Clear the buffers
@@ -172,21 +211,28 @@ void MainGame::drawGame()
 	glUniformMatrix4fv(pLoc, 1, GL_FALSE, &(camMatrix[0][0]));
 
 	spriteBatch.begin();
+	if (gMode == MainMenu)
+	{
 
-	ColourRGBA8 color;
-	color.setColour(6.0f, 51.0f, 15.0f, 255.0f);
-	glm::vec4 destRect;
-	destRect.x = Ground.getBody()->GetPosition().x - Ground.getDimensions().x / 2.0f;
-	destRect.y = Ground.getBody()->GetPosition().y - Ground.getDimensions().y / 2.0f;
-	destRect.z = Ground.getDimensions().x;
-	destRect.w = Ground.getDimensions().y;
-	box.draw(spriteBatch);
-	//map.draw(spriteBatch);
-	spriteBatch.draw(destRect, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), NULL, 0.0f, color);
-	ship.draw(spriteBatch);
-	spriteBatch.end();
-	spriteBatch.renderBatch();
-	//map.debugPrintRaw();
+	}
+	else if (gMode == Game)
+	{
+		ColourRGBA8 color;
+		color.setColour(6.0f, 51.0f, 15.0f, 255.0f);
+		glm::vec4 destRect;
+		destRect.x = Ground.getBody()->GetPosition().x - Ground.getDimensions().x / 2.0f;
+		destRect.y = Ground.getBody()->GetPosition().y - Ground.getDimensions().y / 2.0f;
+		destRect.z = Ground.getDimensions().x;
+		destRect.w = Ground.getDimensions().y;
+		//box.draw(spriteBatch);
+		map.draw(spriteBatch);
+		spriteBatch.draw(destRect, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), NULL, 0.0f, color);
+		ship.draw(spriteBatch);
+		spriteBatch.end();
+		spriteBatch.renderBatch();
+		//map.debugPrintRaw();
+	}
+	
 	drawHUD();
 	glBindTexture(GL_TEXTURE_2D, 0);
 	colorP.unuse();
@@ -212,6 +258,10 @@ void MainGame::drawHUD()
 	{
 		fps = window.getfps();
 		framecounter = 0;
+	}
+	if (gMode == Text)
+	{
+		test.print(UIspriteBatch, *spriteFont);
 	}
 	sprintf_s(buffer, "FPS: %d", fps);
 	spriteFont->draw(UIspriteBatch, buffer, glm::vec2(20, 20), glm::vec2(1.0f), 0.0f, colour);
