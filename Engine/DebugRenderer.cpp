@@ -164,6 +164,24 @@ namespace Engine {
 		indices.push_back(start);
 	}
 
+	void DebugRenderer::drawLine(const glm::vec2 & p1, const glm::vec2 & p2, const ColourRGBA8 colour)
+	{
+		int i = debugVertex.size();
+		debugVertex.resize(debugVertex.size() + 2);
+
+		debugVertex[i].position = p1;
+		debugVertex[i + 1].position = p2;
+
+		for (int j = i; j < i + 2; j++)
+		{
+			debugVertex[j].colour = colour;
+		}
+		indices.reserve(indices.size() + 2);
+
+		indices.push_back(i);
+		indices.push_back(i + 1);
+	}
+
 	void DebugRenderer::render(const glm::mat4& pMat, float lineWidth)
 	{
 		shaderProc.use();

@@ -5,6 +5,7 @@
 #include <Engine/Camera2D.h>
 #include <Engine/SpriteFont.h>
 #include <Engine/InputManager.h>
+#include <Engine/DebugRenderer.h>
 #include <Box2D/Box2D.h>
 #include "Level.h"
 #include "Box.h"
@@ -37,11 +38,13 @@ private:
 	Engine::Camera2D cam2D;
 	Engine::Camera2D hudCam;
 	Engine::InputManager inputManager;
+	Engine::DebugRenderer dRender;
 	std::unique_ptr<b2World> world;
 	Box Ground;
 	std::vector<glm::vec4> pos;
 	std::vector<glm::vec4*> posP;
 	static bool compFrontToBack(glm::vec4* a, glm::vec4* b);
+	bool renderDebug = false;
 	Level map;
 	Ship ship;
 	Box box;

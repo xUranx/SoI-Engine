@@ -14,6 +14,7 @@ namespace Engine {
 		void end();
 		void drawBox(const glm::vec4& destRect, const ColourRGBA8 colour, float angle);
 		void drawCircle(const glm::vec2& center, const ColourRGBA8 colour, float radius);
+		void drawLine(const glm::vec2& p1, const glm::vec2& p2, const ColourRGBA8 colour);
 		void render(const glm::mat4& pMat, float lineWidth);
 		void dispose();
 

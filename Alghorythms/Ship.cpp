@@ -144,5 +144,13 @@ void Ship::raycast()
 	for (int i = 0; i < 3;i++)
 	{
 		body->GetWorld()->RayCast(callback, rays[i].p1, rays[i].p2);
+		ray[i] = callback->getHit();
+		rays[i].hitPoint = callback->getHitPoint();
 	}
 }
+
+void Ship::debugDraw(Engine::DebugRenderer dRender)
+{
+
+}
+

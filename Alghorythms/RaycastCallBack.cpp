@@ -14,14 +14,18 @@ RaycastCallBack::~RaycastCallBack()
 
 float32 RaycastCallBack::ReportFixture(b2Fixture * fixture, const b2Vec2 & point, const b2Vec2 & normal, float32 fraction)
 {
+	fixtu = fixture;
+	hitPoint = point;
+	norm = normal;
+	frag = fraction;
 	if (fixture->GetFilterData().categoryBits == entityCat::Walls)
 	{
-		static_cast<Ship*>(fixture->GetBody()->GetUserData())->setRay(true);
+		hit = true;
 		return fraction;
 	}
 	else
 	{
-		static_cast<Ship*>(fixture->GetBody()->GetUserData())->setRay(false);
+		hit = false;
 		return -1;
 	}
 }

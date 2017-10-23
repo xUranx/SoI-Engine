@@ -4,6 +4,7 @@
 #include <Engine\SpriteBatch.h>
 #include "poly2tri/poly2tri.h"
 #include "RaycastCallBack.h"
+#include <Engine\DebugRenderer.h>
 class Thruster
 {
 public:
@@ -28,6 +29,7 @@ struct Ray
 {
 	b2Vec2 p1;
 	b2Vec2 p2;
+	b2Vec2 hitPoint;
 };
 class Ship
 {
@@ -40,8 +42,7 @@ public:
 	b2Body* getBody() { return body; }
 	void raycast();
 	bool getRay(int i) const { return ray[i];}
-
-	void setRay(bool t) { ray[curRay] = t; }
+	void debugDraw(Engine::DebugRenderer dRender);
 private:
 	b2Body* body = nullptr;
 	b2Fixture* fixture = nullptr;
@@ -51,7 +52,6 @@ private:
 	float rayLenght = 5;
 	bool ray[3];
 	Ray rays[3];
-	int curRay = NULL;
 	RaycastCallBack* callback;
 };
 

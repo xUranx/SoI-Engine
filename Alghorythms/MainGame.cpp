@@ -25,7 +25,7 @@ MainGame::~MainGame()
 
 void MainGame::run()
 {
-	if (!window.init("DataStructures", sWidth, sHeight, 0))
+	if (!window.init("Genetic Algorithm", sWidth, sHeight, 0))
 	{
 		fatal_error("Failed to Init");
 	}
@@ -67,6 +67,7 @@ void MainGame::gLoop()
 {
 	//Main loop flag
 	bool init = true;
+	renderDebug = false;
 	cam2D.init(sWidth,sHeight);
 	hudCam.init(sWidth, sHeight);
 	//cam2D.setPos(cam2D.getPos() + glm::vec2(sWidth / 2.0f, sHeight / 2.0f));
@@ -125,7 +126,7 @@ void MainGame::gLoop()
 				GLTexture texture = ResourceManager::getTexture("../SoI/Include/Textures/Block.png");
 				ColourRGBA8 color;
 				//box.init(world.get(), glm::vec2(3.0f, 0.0f),texture,color, glm::vec2(5, 5));
-				
+				dRender.init();
 			}
 			cam2D.setPos(glm::vec2(ship.getBody()->GetPosition().x, ship.getBody()->GetPosition().y));
 			processInput();
@@ -242,6 +243,14 @@ void MainGame::drawGame()
 	drawHUD();
 	glBindTexture(GL_TEXTURE_2D, 0);
 	colorP.unuse();
+
+	if (renderDebug)
+	{
+		//dRender.drawCircle(glm::vec2(b.getBody()->GetPosition().x, b.getBody()->GetPosition().y), color, b.getDimensions().x / 2.0f);
+		dRender.end();
+		dRender.render(camMatrix, 2.0f);
+	}
+
 	SDL_GL_SwapWindow(window.gWindow);
 }
 
