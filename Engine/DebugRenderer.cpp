@@ -6,7 +6,7 @@ const char* VERT_SRC = R"(#version 130
 	//The vertex shader operates on each vertex
 
 	//input data from the VBO. Each vertex is 2 floats
-	in vec2 vertexPosition;
+in vec2 vertexPosition;
 in vec4 vertexColor;
 
 out vec2 fragmentPosition;
@@ -31,7 +31,7 @@ void main() {
 const char* FRAG_SRC = R"(#version 130
 	//The fragment shader operates on each pixel in a given polygon
 
-	in vec2 fragmentPosition;
+in vec2 fragmentPosition;
 in vec4 fragmentColor;
 
 //This is the 3 component float vector that gets outputted to the screen

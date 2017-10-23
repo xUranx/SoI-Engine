@@ -100,7 +100,7 @@ void MainGame::gLoop()
 	const float CamSpeed = 0.5f;
 	const float ScalSpeed = 0.5f;
 	bool isforceOn = false;
-	//renderDebug = true;
+	renderDebug = true;
 	while (!quit)
 	{
 		xtime += 0.01;

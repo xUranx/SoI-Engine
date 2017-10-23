@@ -29,6 +29,7 @@ private:
 	void processInput();
 	bool initShaders();
 	void drawGame();
+	void drawHUD();
 	Engine::Window window;
 	Engine::GLSLProgram colorP;
 	Engine::SpriteBatch spriteBatch;
@@ -48,7 +49,6 @@ private:
 	Level map;
 	Ship ship;
 	Box box;
-	void drawHUD();
 	GameState gMode;
 	GameState nMode;
 	GATextDemo test;

@@ -42,7 +42,7 @@ void MainGame::run()
 			spriteBatchTri.init();
 			UIspriteBatch.init();
 			spriteFont = new SpriteFont("../SoI/Include/Fonts/font.ttf", 16);
-			
+			dRender.init();
 			gLoop();
 		}
 	}
@@ -67,7 +67,7 @@ void MainGame::gLoop()
 {
 	//Main loop flag
 	bool init = true;
-	renderDebug = false;
+	renderDebug = true;
 	cam2D.init(sWidth,sHeight);
 	hudCam.init(sWidth, sHeight);
 	//cam2D.setPos(cam2D.getPos() + glm::vec2(sWidth / 2.0f, sHeight / 2.0f));
@@ -116,18 +116,19 @@ void MainGame::gLoop()
 				map.init("Level1", 20, 200);
 				map.genMapData(world.get(), glm::vec2(0, 0), 5);
 				glm::vec2 dim[3];
-				dim[0].x = -2.0f;
+				dim[0].x = -1.5f;
 				dim[0].y = -2.0f;
 				dim[1].x = 0.0f;
 				dim[1].y = 2.0f;
-				dim[2].x = 2.0f;
+				dim[2].x = 1.5f;
 				dim[2].y = -2.0f;
 				ship.init(world.get(), glm::vec2(21, 5), dim, false, 0.4f);
 				GLTexture texture = ResourceManager::getTexture("../SoI/Include/Textures/Block.png");
 				ColourRGBA8 color;
 				//box.init(world.get(), glm::vec2(3.0f, 0.0f),texture,color, glm::vec2(5, 5));
-				dRender.init();
+				
 			}
+			ship.raycast();
 			cam2D.setPos(glm::vec2(ship.getBody()->GetPosition().x, ship.getBody()->GetPosition().y));
 			processInput();
 			world->Step(1.0f / 60.f, 6, 2);
@@ -186,13 +187,13 @@ void MainGame::processInput()
 	if (inputManager.isKeyPressed(SDLK_e))
 		cam2D.setScale(cam2D.getScale() - ScalSpeed);
 	if (inputManager.isKeyPressed(SDLK_z))
-		dir = 0.2f;
+		dir = 0.05f;
 	else if (inputManager.isKeyPressed(SDLK_c))
-		dir = -0.2f;
+		dir = -0.05f;
 	else 
 		dir = 0.0f;
 	if (inputManager.isKeyPressed(SDLK_x))
-		ship.getBody()->ApplyForce(50 * ship.getBody()->GetWorldVector(b2Vec2(0.0f + dir, 1 )), ship.getBody()->GetWorldPoint(b2Vec2(0,-1)), true);
+		ship.getBody()->ApplyForce(40 * ship.getBody()->GetWorldVector(b2Vec2(0.0f + dir, 1 )), ship.getBody()->GetWorldPoint(b2Vec2(0,-1)), true);
 	if (inputManager.isKeyPressed(SDLK_j))
 		ship.getBody()->SetTransform(ship.getBody()->GetPosition(), 0);
 }
@@ -246,7 +247,10 @@ void MainGame::drawGame()
 
 	if (renderDebug)
 	{
-		//dRender.drawCircle(glm::vec2(b.getBody()->GetPosition().x, b.getBody()->GetPosition().y), color, b.getDimensions().x / 2.0f);
+		if (gMode == Game)
+		{
+			ship.debugDraw(dRender);
+		}
 		dRender.end();
 		dRender.render(camMatrix, 2.0f);
 	}

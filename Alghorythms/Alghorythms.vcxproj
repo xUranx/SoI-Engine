@@ -154,7 +154,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Box.cpp" />
+    <ClCompile Include="Car.cpp" />
     <ClCompile Include="CollisionListener.cpp" />
+    <ClCompile Include="GAShip.cpp" />
     <ClCompile Include="GATextDemo.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -169,7 +171,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Box.h" />
+    <ClInclude Include="Car.h" />
     <ClInclude Include="CollisionListener.h" />
+    <ClInclude Include="GAShip.h" />
     <ClInclude Include="GATextDemo.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="MainGame.h" />

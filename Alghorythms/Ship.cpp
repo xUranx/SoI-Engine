@@ -136,21 +136,43 @@ void Ship::raycast()
 {
 	for (int i = 0; i < 3; i++)
 	{
-		rays[i].p1 = body->GetWorldPoint(b2Vec2(0, 1));
+		rays[i].p1 = body->GetWorldPoint(b2Vec2(0, 0.8f));
 	}
-	rays[0].p2 = rays[0].p1 + rayLenght * b2Vec2(sinf(body->GetAngle()), cosf(body->GetAngle()));
-	rays[1].p2 = rays[1].p1 + rayLenght * b2Vec2(sinf(body->GetAngle()), cosf(body->GetAngle() + 10 * DEGTORAD));
-	rays[2].p2 = rays[2].p1 + rayLenght * b2Vec2(sinf(body->GetAngle()), cosf(body->GetAngle() - 10 * DEGTORAD));
+	rays[0].p2 = rays[0].p1 + rayLenght * b2Vec2(sinf(-body->GetAngle()), cosf(-body->GetAngle()));
+	rays[1].p2 = rays[1].p1 + rayLenght * b2Vec2(sinf(-body->GetAngle() + 25 * DEGTORAD), cosf(-body->GetAngle() + 25 * DEGTORAD));
+	rays[2].p2 = rays[2].p1 + rayLenght * b2Vec2(sinf(-body->GetAngle() - 25 * DEGTORAD), cosf(-body->GetAngle() - 25 * DEGTORAD));
 	for (int i = 0; i < 3;i++)
 	{
-		body->GetWorld()->RayCast(callback, rays[i].p1, rays[i].p2);
-		ray[i] = callback->getHit();
-		rays[i].hitPoint = callback->getHitPoint();
+		callback.init();
+		body->GetWorld()->RayCast(&callback, rays[i].p1, rays[i].p2);
+		ray[i] = callback.getHit();
+		if(ray[i])
+			rays[i].hitPoint = callback.getHitPoint();
+		else
+		{
+			rays[i].hitPoint = rays[i].p2;
+		}
 	}
+
 }
 
-void Ship::debugDraw(Engine::DebugRenderer dRender)
+void Ship::debugDraw(Engine::DebugRenderer& dRender)
 {
-
+	Engine::ColourRGBA8 color;
+	for (int i = 0;i < 3;i++)
+	{
+		if (ray[i])
+		{
+			glm::vec4 destRect;
+			destRect.x = rays[i].hitPoint.x - 0.1f;
+			destRect.y = rays[i].hitPoint.y - 0.1f;
+			destRect.z = 0.2f;
+			destRect.w = 0.2f;
+			dRender.drawLine(glm::vec2(rays[i].p1.x, rays[i].p1.y), glm::vec2(rays[i].hitPoint.x, rays[i].hitPoint.y),color);
+			dRender.drawBox(destRect, color, 0);
+		}
+		else
+			dRender.drawLine(glm::vec2(rays[i].p1.x, rays[i].p1.y), glm::vec2(rays[i].p2.x, rays[i].p2.y), color);
+	}
 }
 

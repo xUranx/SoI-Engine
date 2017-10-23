@@ -42,7 +42,7 @@ public:
 	b2Body* getBody() { return body; }
 	void raycast();
 	bool getRay(int i) const { return ray[i];}
-	void debugDraw(Engine::DebugRenderer dRender);
+	void debugDraw(Engine::DebugRenderer& dRender);
 private:
 	b2Body* body = nullptr;
 	b2Fixture* fixture = nullptr;
@@ -52,6 +52,6 @@ private:
 	float rayLenght = 5;
 	bool ray[3];
 	Ray rays[3];
-	RaycastCallBack* callback;
+	RaycastCallBack callback;
 };
 

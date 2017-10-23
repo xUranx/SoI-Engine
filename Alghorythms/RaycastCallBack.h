@@ -6,6 +6,7 @@ public:
 	RaycastCallBack();
 	~RaycastCallBack();
 
+	void init();
 	float32 ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float32 fraction);
 	b2Vec2 getHitPoint() const { return hitPoint; }
 	bool getHit() const { return hit; }
