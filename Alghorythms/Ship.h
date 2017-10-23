@@ -3,6 +3,7 @@
 #include <Box2D\Box2D.h>
 #include <Engine\SpriteBatch.h>
 #include "poly2tri/poly2tri.h"
+#include "RaycastCallBack.h"
 class Thruster
 {
 public:
@@ -23,6 +24,11 @@ private:
 	std::vector<p2t::Triangle*> triangles;
 };
 
+struct Ray
+{
+	b2Vec2 p1;
+	b2Vec2 p2;
+};
 class Ship
 {
 public:
@@ -32,11 +38,20 @@ public:
 	void draw(Engine::SpriteBatch& sBatch);
 	void TogglePower() { if (power)power = false; else power = true; }
 	b2Body* getBody() { return body; }
+	void raycast();
+	bool getRay(int i) const { return ray[i];}
+
+	void setRay(bool t) { ray[curRay] = t; }
 private:
 	b2Body* body = nullptr;
 	b2Fixture* fixture = nullptr;
 	b2Vec2 dimens[3];
 	Thruster thruster;
 	bool power = false;
+	float rayLenght = 5;
+	bool ray[3];
+	Ray rays[3];
+	int curRay = NULL;
+	RaycastCallBack* callback;
 };
 

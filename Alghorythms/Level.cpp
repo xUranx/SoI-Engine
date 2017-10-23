@@ -138,12 +138,10 @@ void Level::genMapData(b2World* world, const glm::vec2 pos, float tWidth)
 	b2BodyDef bDef;
 	bDef.type = b2_staticBody;
 	bDef.position.Set(pos.x, pos.y);
-
 	b2EdgeShape eShape;
 	b2FixtureDef fDef;
 	fDef.shape = &eShape;
 	body = world->CreateBody(&bDef);
-
 	for (i = 1; i < mapData.size(); i++)
 	{
 		glm::vec2 pos(glm::vec2(mapData[i].x - tWidth / 2.0, mapData[i].y - tWidth / 2.0));

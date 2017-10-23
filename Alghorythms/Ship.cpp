@@ -2,6 +2,9 @@
 #include "CollisionListener.h"
 using namespace entityCat;
 
+#define DEGTORAD 0.0174532925199432957f
+#define RADTODEG 57.295779513082320876f
+
 Thruster::Thruster()
 {
 }
@@ -46,7 +49,7 @@ b2FixtureDef Thruster::init(bool rand, b2Body* b, float scale)
 	fDef.density = 1.0f;
 	fDef.friction = 0.3f;
 	fDef.filter.categoryBits = Player;
-	//fDef.filter.maskBits = Walls;
+	fDef.filter.maskBits = Walls;
 	b->CreateFixture(&fDef);
 
 	p2t::CDT* cdt = new p2t::CDT(pLine);
@@ -107,6 +110,7 @@ void Ship::init(b2World* world, const glm::vec2 position, const glm::vec2 dimens
 	fDef.density = 1.0f;
 	fDef.friction = 0.3f;
 	fDef.filter.categoryBits = Player;
+	fDef.filter.maskBits = Walls;
 	fixture = body->CreateFixture(&fDef);
 	thruster.init(rand, body, scale);
 	body->SetUserData(this);
@@ -126,4 +130,19 @@ void Ship::draw(Engine::SpriteBatch& sBatch)
 	destRect[2].y = dimens[2].y + pos.y;
 	sBatch.draw(destRect, glm::vec4(0, 0, 0, 1), NULL, 0, color, body->GetAngle(), glm::vec2(pos.x,pos.y));
 	thruster.draw(sBatch, body);
+}
+
+void Ship::raycast()
+{
+	for (int i = 0; i < 3; i++)
+	{
+		rays[i].p1 = body->GetWorldPoint(b2Vec2(0, 1));
+	}
+	rays[0].p2 = rays[0].p1 + rayLenght * b2Vec2(sinf(body->GetAngle()), cosf(body->GetAngle()));
+	rays[1].p2 = rays[1].p1 + rayLenght * b2Vec2(sinf(body->GetAngle()), cosf(body->GetAngle() + 10 * DEGTORAD));
+	rays[2].p2 = rays[2].p1 + rayLenght * b2Vec2(sinf(body->GetAngle()), cosf(body->GetAngle() - 10 * DEGTORAD));
+	for (int i = 0; i < 3;i++)
+	{
+		body->GetWorld()->RayCast(callback, rays[i].p1, rays[i].p2);
+	}
 }

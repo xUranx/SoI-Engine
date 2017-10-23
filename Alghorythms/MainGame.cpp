@@ -8,6 +8,9 @@
 
 using namespace Engine;
 
+#define DEGTORAD 0.0174532925199432957f
+#define RADTODEG 57.295779513082320876f
+
 MainGame::MainGame()
 {
 	sWidth = 1024;
@@ -68,7 +71,7 @@ void MainGame::gLoop()
 	hudCam.init(sWidth, sHeight);
 	//cam2D.setPos(cam2D.getPos() + glm::vec2(sWidth / 2.0f, sHeight / 2.0f));
 	hudCam.setPos(cam2D.getPos() + glm::vec2(sWidth / 2.0f, sHeight / 2.0f));
-	gMode = Text;
+	gMode = Game;
 	//Event handler
 	SDL_Event e;
 	const float CamSpeed = 0.5f;
@@ -140,9 +143,12 @@ void MainGame::gLoop()
 				init = false;
 				test.start();
 			}
-			test.run();
+			
 
-			if (test.getSegFound()) gMode = Exit;
+			if (!test.getSegFound())
+			{
+				test.run();
+			}
 
 			if (nMode != Text && nMode != NULL)
 			{
@@ -247,6 +253,7 @@ bool MainGame::compFrontToBack(glm::vec4* a, glm::vec4* b)
 void MainGame::drawHUD()
 {
 	char buffer[256];
+	char buffer2[256];
 	UIspriteBatch.begin();
 	static int fps;
 	GLint pLoc = colorP.getUniformLoc("P");
@@ -265,6 +272,11 @@ void MainGame::drawHUD()
 	}
 	sprintf_s(buffer, "FPS: %d", fps);
 	spriteFont->draw(UIspriteBatch, buffer, glm::vec2(20, 20), glm::vec2(1.0f), 0.0f, colour);
+	if (gMode == Game)
+	{
+		sprintf_s(buffer2, "Angle: %f", ship.getBody()->GetAngle() * RADTODEG);
+		spriteFont->draw(UIspriteBatch, buffer2, glm::vec2(20, 40), glm::vec2(1.0f), 0.0f, colour);
+	}
 	UIspriteBatch.end();
 	UIspriteBatch.renderBatch();
 }

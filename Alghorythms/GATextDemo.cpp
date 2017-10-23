@@ -37,6 +37,8 @@ bool GATextDemo::start()
 
 void GATextDemo::run()
 {
+	generation++;
+	Parents.clear();
 	for (int i = 0; i < pop.Members.size(); i++)
 	{
 		pop.Members.at(i).fitnes = 0;
@@ -63,15 +65,19 @@ void GATextDemo::run()
 				pop.Members.at(i).DNA.at(j) = (unsigned char)rand() % 96 + 32;
 		}
 	}
-	
 }
 
 void GATextDemo::print(Engine::SpriteBatch& sBatch, Engine::SpriteFont& sFont)
 {
 	Engine::ColourRGBA8 colour;
 	char buffer[256];
+	char buffer2[256];
+	char buffer3[256];
 	int dnaz = DNA.size() * 10;
 	sprintf_s(buffer, "Gen: %d Population: %d Highest Fitness: %d FitnessTo: %d", generation, pop.Members.size(), Parents[0].fitnes, dnaz);
 	sFont.draw(sBatch, buffer, glm::vec2(20, 40), glm::vec2(1.0f), 0.0f, colour);
-	Parents.clear();
+	sprintf_s(buffer2, "Text to get: %s", DNA.c_str());
+	sFont.draw(sBatch, buffer2, glm::vec2(20, 60), glm::vec2(1.0f), 0.0f, colour);
+	sprintf_s(buffer3, "Strongest Text: %s", Parents.at(0).DNA.c_str());
+	sFont.draw(sBatch, buffer3, glm::vec2(20, 80), glm::vec2(1.0f), 0.0f, colour);
 }
