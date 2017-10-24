@@ -41,7 +41,7 @@ void MainGame::run()
 			spriteBatch.init();
 			spriteBatchTri.init();
 			UIspriteBatch.init();
-			spriteFont = new SpriteFont("../SoI/Include/Fonts/font.ttf", 16);
+			spriteFont = new SpriteFont("Include/Fonts/OpenSansRegular.ttf", 20);
 			dRender.init();
 			gLoop();
 		}
@@ -54,7 +54,7 @@ void MainGame::run()
 bool MainGame::initShaders()
 {
 	bool success = true;
-	success = colorP.compileShaders("../SoI/Shaders/colorShading.vert", "../SoI/Shaders/colorShading.frag");
+	success = colorP.compileShaders("Shaders/colorShading.vert", "Shaders/colorShading.frag");
 	colorP.addAtribute("vertexPosition");
 	colorP.addAtribute("vertexColour");
 	colorP.addAtribute("vertexUV");
@@ -67,12 +67,12 @@ void MainGame::gLoop()
 {
 	//Main loop flag
 	bool init = true;
-	renderDebug = true;
+	renderDebug = false;
 	cam2D.init(sWidth,sHeight);
 	hudCam.init(sWidth, sHeight);
 	//cam2D.setPos(cam2D.getPos() + glm::vec2(sWidth / 2.0f, sHeight / 2.0f));
 	hudCam.setPos(cam2D.getPos() + glm::vec2(sWidth / 2.0f, sHeight / 2.0f));
-	gMode = Game;
+	gMode = GACar;
 	//Event handler
 	SDL_Event e;
 	const float CamSpeed = 0.5f;
@@ -108,10 +108,10 @@ void MainGame::gLoop()
 			if (init)
 			{
 				b2Vec2 grav(0.0f, -9.81);
-				glm::vec2 dimes = glm::vec2(50.0f, 3.0f);
 				world = std::make_unique<b2World>(grav);
+				glm::vec2 dimes = glm::vec2(50.0f, 3.0f);
 				Ground.Fixedinit(world.get(), glm::vec2(0.0f, -15.0f), dimes);
-				cam2D.setScale(18.0f);
+				cam2D.setScale(5.0f);
 				init = false;
 				map.init("Level1", 20, 200);
 				map.genMapData(world.get(), glm::vec2(0, 0), 5);
@@ -138,6 +138,20 @@ void MainGame::gLoop()
 				world = nullptr;
 				gMode = nMode;
 			}
+			break;
+		case GACar:
+			if (init)
+			{
+				init = false;
+				b2Vec2 grav(0.0f, -9.81);
+				world = std::make_unique<b2World>(grav);
+				glm::vec2 dimes = glm::vec2(100.0f, 3.0f);
+				Ground.Fixedinit(world.get(), glm::vec2(45.0f, -15.0f), dimes);
+				car.init(world.get(), glm::vec2(0, -10));
+				cam2D.setScale(18.0f);
+			}
+			cam2D.setPos(glm::vec2(car.getBody()->GetPosition().x, car.getBody()->GetPosition().y));
+			world->Step(1.0f / 60.f, 6, 2);
 			break;
 		case Text:
 			if (init)
@@ -171,6 +185,8 @@ void MainGame::gLoop()
 
 void MainGame::processInput()
 {
+	if (gMode == Game)
+	{
 	const float CamSpeed = 0.2f;
 	const float ScalSpeed = 0.2f;
 	static float dir;
@@ -186,16 +202,17 @@ void MainGame::processInput()
 		cam2D.setScale(cam2D.getScale() + ScalSpeed);
 	if (inputManager.isKeyPressed(SDLK_e))
 		cam2D.setScale(cam2D.getScale() - ScalSpeed);
-	if (inputManager.isKeyPressed(SDLK_z))
-		dir = 0.05f;
-	else if (inputManager.isKeyPressed(SDLK_c))
-		dir = -0.05f;
-	else 
-		dir = 0.0f;
-	if (inputManager.isKeyPressed(SDLK_x))
-		ship.getBody()->ApplyForce(40 * ship.getBody()->GetWorldVector(b2Vec2(0.0f + dir, 1 )), ship.getBody()->GetWorldPoint(b2Vec2(0,-1)), true);
-	if (inputManager.isKeyPressed(SDLK_j))
-		ship.getBody()->SetTransform(ship.getBody()->GetPosition(), 0);
+		if (inputManager.isKeyPressed(SDLK_z))
+			dir = 0.05f;
+		else if (inputManager.isKeyPressed(SDLK_c))
+			dir = -0.05f;
+		else
+			dir = 0.0f;
+		if (inputManager.isKeyPressed(SDLK_x))
+			ship.getBody()->ApplyForce(40 * ship.getBody()->GetWorldVector(b2Vec2(0.0f + dir, 1)), ship.getBody()->GetWorldPoint(b2Vec2(0, -1)), true);
+		if (inputManager.isKeyPressed(SDLK_j))
+			ship.getBody()->SetTransform(ship.getBody()->GetPosition(), 0);
+	}
 }
 
 void MainGame::drawGame()
@@ -236,11 +253,22 @@ void MainGame::drawGame()
 		map.draw(spriteBatch);
 		spriteBatch.draw(destRect, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), NULL, 0.0f, color);
 		ship.draw(spriteBatch);
-		spriteBatch.end();
-		spriteBatch.renderBatch();
 		//map.debugPrintRaw();
 	}
-	
+	if (gMode == GACar)
+	{
+		ColourRGBA8 color;
+		color.setColour(6.0f, 51.0f, 15.0f, 255.0f);
+		glm::vec4 destRect;
+		destRect.x = Ground.getBody()->GetPosition().x - Ground.getDimensions().x / 2.0f;
+		destRect.y = Ground.getBody()->GetPosition().y - Ground.getDimensions().y / 2.0f;
+		destRect.z = Ground.getDimensions().x;
+		destRect.w = Ground.getDimensions().y;
+		spriteBatch.draw(destRect, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), NULL, 0.0f, color);
+		car.draw(spriteBatch);
+	}
+	spriteBatch.end();
+	spriteBatch.renderBatch();
 	drawHUD();
 	glBindTexture(GL_TEXTURE_2D, 0);
 	colorP.unuse();
@@ -289,6 +317,10 @@ void MainGame::drawHUD()
 	{
 		sprintf_s(buffer2, "Angle: %f", ship.getBody()->GetAngle() * RADTODEG);
 		spriteFont->draw(UIspriteBatch, buffer2, glm::vec2(20, 40), glm::vec2(1.0f), 0.0f, colour);
+	}
+	else if (gMode == GACar)
+	{
+
 	}
 	UIspriteBatch.end();
 	UIspriteBatch.renderBatch();

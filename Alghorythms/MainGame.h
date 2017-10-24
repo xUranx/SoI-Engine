@@ -11,9 +11,10 @@
 #include "Box.h"
 #include "Ship.h"
 #include "GATextDemo.h" 
+#include "Car.h"
 enum GameState
 {
-	MainMenu, Game, Text, Exit 
+	MainMenu, Game, Text, GACar, Exit
 };
 
 class MainGame
@@ -42,6 +43,7 @@ private:
 	Engine::DebugRenderer dRender;
 	std::unique_ptr<b2World> world;
 	Box Ground;
+	Car car;
 	std::vector<glm::vec4> pos;
 	std::vector<glm::vec4*> posP;
 	static bool compFrontToBack(glm::vec4* a, glm::vec4* b);
