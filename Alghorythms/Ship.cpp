@@ -158,11 +158,12 @@ void Ship::raycast()
 
 void Ship::debugDraw(Engine::DebugRenderer& dRender)
 {
-	Engine::ColourRGBA8 color;
 	for (int i = 0;i < 3;i++)
 	{
+		Engine::ColourRGBA8 color;
 		if (ray[i])
 		{
+			color.setColour(255.0f, 0.0f, 0.0f, 255.0f);
 			glm::vec4 destRect;
 			destRect.x = rays[i].hitPoint.x - 0.1f;
 			destRect.y = rays[i].hitPoint.y - 0.1f;
@@ -172,6 +173,7 @@ void Ship::debugDraw(Engine::DebugRenderer& dRender)
 			dRender.drawBox(destRect, color, 0);
 		}
 		else
+			//color.setColour(255.0f, 255.0f, 255.0f, 255.0f);
 			dRender.drawLine(glm::vec2(rays[i].p1.x, rays[i].p1.y), glm::vec2(rays[i].p2.x, rays[i].p2.y), color);
 	}
 }

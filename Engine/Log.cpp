@@ -26,11 +26,22 @@ namespace Engine {
 #else
 	extern void fatal_error(std::string error)
 	{
-
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,
+			"Error",
+			error.c_str(),
+			NULL);
+		SDL_Quit();
+		exit(1);
 	}
 	extern void fatal_error(std::string error, std::string ctx)
 	{
-
+		error.append(" " + ctx);
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,
+			"Error",
+			error.c_str(),
+			NULL);
+		SDL_Quit();
+		exit(1);
 	}
 	extern void Message(std::string msg)
 	{
