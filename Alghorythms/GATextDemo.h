@@ -3,6 +3,7 @@
 #include <vector>
 #include <Engine\SpriteFont.h>
 #include <Engine\SpriteBatch.h>
+
 struct Member
 {
 	std::string DNA;

@@ -72,7 +72,7 @@ void MainGame::gLoop()
 	hudCam.init(sWidth, sHeight);
 	//cam2D.setPos(cam2D.getPos() + glm::vec2(sWidth / 2.0f, sHeight / 2.0f));
 	hudCam.setPos(cam2D.getPos() + glm::vec2(sWidth / 2.0f, sHeight / 2.0f));
-	gMode = GACar;
+	gMode = GCar;
 	//Event handler
 	SDL_Event e;
 	const float CamSpeed = 0.5f;
@@ -139,18 +139,20 @@ void MainGame::gLoop()
 				gMode = nMode;
 			}
 			break;
-		case GACar:
+		case GCar:
 			if (init)
 			{
 				init = false;
 				b2Vec2 grav(0.0f, -9.81);
 				world = std::make_unique<b2World>(grav);
-				glm::vec2 dimes = glm::vec2(100.0f, 3.0f);
-				Ground.Fixedinit(world.get(), glm::vec2(45.0f, -15.0f), dimes);
-				car.init(world.get(), glm::vec2(0, -10));
+				glm::vec2 dimes = glm::vec2(300.0f, 3.0f);
+				Ground.Fixedinit(world.get(), glm::vec2(140.0f, -15.0f), dimes);
+				Evo.init(world.get());
+				//car.init(world.get(), glm::vec2(0, -13));
 				cam2D.setScale(18.0f);
 			}
-			cam2D.setPos(glm::vec2(car.getBody()->GetPosition().x, car.getBody()->GetPosition().y));
+			Evo.run(cam2D);
+			//cam2D.setPos(glm::vec2(car.getBody()->GetPosition().x, car.getBody()->GetPosition().y));
 			world->Step(1.0f / 60.f, 6, 2);
 			break;
 		case Text:
@@ -255,7 +257,7 @@ void MainGame::drawGame()
 		ship.draw(spriteBatch);
 		//map.debugPrintRaw();
 	}
-	if (gMode == GACar)
+	if (gMode == GCar)
 	{
 		ColourRGBA8 color;
 		color.setColour(6.0f, 51.0f, 15.0f, 255.0f);
@@ -265,7 +267,8 @@ void MainGame::drawGame()
 		destRect.z = Ground.getDimensions().x;
 		destRect.w = Ground.getDimensions().y;
 		spriteBatch.draw(destRect, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), NULL, 0.0f, color);
-		car.draw(spriteBatch);
+		//car.draw(spriteBatch);
+		Evo.draw(spriteBatch);
 	}
 	spriteBatch.end();
 	spriteBatch.renderBatch();
@@ -318,7 +321,7 @@ void MainGame::drawHUD()
 		sprintf_s(buffer2, "Angle: %f", ship.getBody()->GetAngle() * RADTODEG);
 		spriteFont->draw(UIspriteBatch, buffer2, glm::vec2(20, 40), glm::vec2(1.0f), 0.0f, colour);
 	}
-	else if (gMode == GACar)
+	else if (gMode == GCar)
 	{
 
 	}

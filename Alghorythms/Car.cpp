@@ -12,38 +12,50 @@ Tire::Tire()
 
 Tire::~Tire()
 {
+	//body->GetWorld()->DestroyJoint(joint);
+	//body->GetWorld()->DestroyBody(body);
+	//body = nullptr;
+	//joint = nullptr;
 }
 
-void Tire::init(b2World * world, bool ra)
+void Tire::init(b2World * world, float rad, float friction, Engine::ColourRGBA8 color)
 {
-	colour.setColour(25, 25, 25, 255);
+	colour = color;
 	b2BodyDef bDef;
 	bDef.position.SetZero();
 	bDef.type = b2_dynamicBody;
 	body = world->CreateBody(&bDef);
 
 	b2CircleShape cShape;
-	cShape.m_p.Set(0,0);
-	if(ra)
-	{
-		srand(time(NULL));
-		radius = rand() % 20 / 10;
-		cShape.m_radius = radius;
-	}
-	else
-	{
-		radius = 3;
-		cShape.m_radius = radius;
-	}
+	cShape.m_p.SetZero();
+	radius = rad;
+	cShape.m_radius = radius;
 	b2FixtureDef fDef;
 	fDef.shape = &cShape;
 	fDef.density = 1;
-	fDef.friction = 2.0f;
+	fDef.friction = friction;
 	fDef.filter.categoryBits = entityCat::Player;
 	fDef.filter.maskBits = entityCat::Walls;
 	body->CreateFixture(&fDef);
 	body->SetUserData(this);
-	texture = Engine::ResourceManager::getTexture("Include/Textures/tire.png");
+	texture = Engine::ResourceManager::getTexture("Include/Textures/tire2.png");
+}
+
+void Tire::initJoint(b2Body* aBody, glm::vec4 pos, bool on)
+{
+	b2RevoluteJointDef rDef;
+	rDef.bodyA = aBody;
+	rDef.bodyB = body;
+	rDef.collideConnected = false;
+
+	rDef.localAnchorA.Set(pos.x, pos.y);
+	rDef.localAnchorB.Set(pos.z, pos.w);
+
+	rDef.maxMotorTorque = 100;
+	rDef.motorSpeed = -360 * DEGTORAD;
+	rDef.enableMotor = on;
+	joint = (b2RevoluteJoint*)body->GetWorld()->CreateJoint(&rDef);
+	joint->SetUserData(this);
 }
 
 void Tire::draw(Engine::SpriteBatch& sBatch)
@@ -54,7 +66,7 @@ void Tire::draw(Engine::SpriteBatch& sBatch)
 	destRect.y = body->GetPosition().y - radius;
 	destRect.z = radius*2.0f;
 	destRect.w = radius*2.0f;
-	sBatch.draw(destRect, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture.id, 1.0f, colour, body->GetAngle());
+	sBatch.draw(destRect, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture.id, 0.0f, colour, body->GetAngle());
 }
 
 
@@ -65,20 +77,23 @@ Car::Car()
 
 Car::~Car()
 {
+	//body->GetWorld()->DestroyBody(body);
+	//body = nullptr;
 }
 
-void Car::init(b2World * world, glm::vec2 Pos)
+void Car::init(b2World * world, glm::vec4 Pos, Engine::ColourRGBA8 color)
 {
-	colour.setColour(255, 128, 43, 255);
+	colour = color;
 	b2BodyDef bDef;
 	bDef.position.Set(Pos.x, Pos.y);
 	bDef.type = b2_dynamicBody;
 	body = world->CreateBody(&bDef);
 
 	b2PolygonShape bShape;
-	bShape.SetAsBox(3,1);
-	dimensions.x = 6;
-	dimensions.y = 2;
+	dimensions.x = Pos.z;
+	dimensions.y = Pos.w;
+	bShape.SetAsBox(dimensions.x/2 ,dimensions.y/2);
+	
 	b2FixtureDef fDef;
 	fDef.shape = &bShape;
 	fDef.density = 1;
@@ -88,29 +103,8 @@ void Car::init(b2World * world, glm::vec2 Pos)
 	body->CreateFixture(&fDef);
 	body->SetUserData(this);
 
-	Tire tire1;
-	Tire tire2;
 
-	tire1.init(world, false);
-	tires.push_back(tire1);
-	tire2.init(world, false);
-	tires.push_back(tire2);
-
-	b2RevoluteJointDef rDef;
-	rDef.bodyA = body;
-	rDef.bodyB = tires[0].getBody();
-	rDef.collideConnected = false;
-
-	rDef.localAnchorA.Set(1, 0.5);
-	rDef.localAnchorB.Set(0, 0);
-
-	rDef.maxMotorTorque = 100;
-	rDef.motorSpeed = -360 * 5 * DEGTORAD;
-	rDef.enableMotor = true;
-	tires[0].setJoint((b2RevoluteJoint*)world->CreateJoint(&rDef));
-	rDef.bodyB = tires[1].getBody();
-	rDef.localAnchorA.Set(-1, 0.5);
-	tires[1].setJoint((b2RevoluteJoint*)world->CreateJoint(&rDef));
+	
 }
 
 void Car::draw(Engine::SpriteBatch & sBatch)

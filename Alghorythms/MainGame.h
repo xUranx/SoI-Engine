@@ -12,9 +12,10 @@
 #include "Ship.h"
 #include "GATextDemo.h" 
 #include "Car.h"
+#include "GACar.h"
 enum GameState
 {
-	MainMenu, Game, Text, GACar, Exit
+	MainMenu, Game, Text, GCar, Exit
 };
 
 class MainGame
@@ -54,5 +55,6 @@ private:
 	GameState gMode;
 	GameState nMode;
 	GATextDemo test;
+	GACar Evo;
 };
 
