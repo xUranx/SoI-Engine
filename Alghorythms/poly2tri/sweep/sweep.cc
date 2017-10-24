@@ -109,8 +109,8 @@ void Sweep::EdgeEvent(SweepContext& tcx, Point& ep, Point& eq, Triangle* triangl
   if (IsEdgeSideOfTriangle(*triangle, ep, eq)) {
     return;
   }
-
-  Point* p1 = triangle->PointCCW(point);
+  Point* p1 = nullptr;
+  p1 = triangle->PointCCW(point);
   Orientation o1 = Orient2d(eq, *p1, ep);
   if (o1 == COLLINEAR) {
     if( triangle->Contains(&eq, p1)) {
@@ -126,8 +126,8 @@ void Sweep::EdgeEvent(SweepContext& tcx, Point& ep, Point& eq, Triangle* triangl
     }
     return;
   }
-
-  Point* p2 = triangle->PointCW(point);
+  Point* p2 = nullptr;
+  p2 = triangle->PointCW(point);
   Orientation o2 = Orient2d(eq, *p2, ep);
   if (o2 == COLLINEAR) {
     if( triangle->Contains(&eq, p2)) {

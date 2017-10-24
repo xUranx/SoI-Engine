@@ -31,10 +31,10 @@ b2FixtureDef Thruster::init(bool rand, b2Body* b, float scale)
 	}
 	std::vector<p2t::Point*> pLine;
 	dimens[0].Set(-1, 1);
-	dimens[1].Set(-1, 0);
+	dimens[1].Set(-1.0, 0);
 	dimens[2].Set(-0.5, -1);
 	dimens[3].Set(0.5, -1);
-	dimens[4].Set(1, 0);
+	dimens[4].Set(1.0, 0);
 	dimens[5].Set(1, 1);
 	
 	for (int i = 0; i < 6; i++)
