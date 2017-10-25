@@ -18,7 +18,7 @@ public:
 	void init(b2World* world);
 	void run(Engine::Camera2D& cam2d);
 	void draw(Engine::SpriteBatch& sBatch);
-	void print(Engine::SpriteBatch&, Engine::SpriteFont& sFont);
+	void print(Engine::SpriteBatch& sBatch, Engine::SpriteFont& sFont);
 	bool getSegFound() const { return SeqFound; }
 private:
 	struct Member

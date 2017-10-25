@@ -3,7 +3,7 @@
 #include <random>
 #include <time.h>
 #include <algorithm>
-
+#include <Engine\Log.h>
 
 GACar::GACar()
 {
@@ -18,7 +18,7 @@ void GACar::init(b2World * world)
 {
 	int popu;
 	//std::cout << "Population: "; std::cin >> popu;
-	setMembers(200);
+	setMembers(100);
 
 
 	srand(time(NULL));
@@ -48,11 +48,12 @@ void GACar::init(b2World * world)
 			float rad = (float)(rand() % 30 + 1) / 10;
 			Tire t;
 			t.init(world, rad, 0.5, color);
+			int radd = rad * 10;
 			memberr->car.Tinit(t ,j);
-			destRect.x = rand() % a / 10;
-			destRect.y = rand() % b / 10;
-			destRect.z = rand() % 15 / 10;
-			destRect.w = rand() % 15 / 10;
+			destRect.x = (rand() % a - a / 2) / 10;
+			destRect.y = (rand() % b - b / 2) / 10;
+			destRect.z = (rand() % radd - radd/2) / 10;
+			destRect.w = (rand() % radd - radd/2)  / 10;
 			bool on;
 			if (rand() % 10 < 5)
 				on = true;
@@ -79,7 +80,7 @@ void GACar::run(Engine::Camera2D& cam2d)
 		{
 			if (Members[i]->car.getBody()->IsAwake())
 			{
-				if (Members[i]->fitness + 1 < (int)Members[i]->car.getBody()->GetPosition().x)
+				if (Members[i]->fitness + 3 < (int)Members[i]->car.getBody()->GetPosition().x)
 				{
 					Members[i]->fitness = (int)Members[i]->car.getBody()->GetPosition().x;
 					if (Members[i]->fitness > higFit)
@@ -127,6 +128,7 @@ void GACar::run(Engine::Camera2D& cam2d)
 	cam2d.setPos(glm::vec2(Members[m]->car.getBody()->GetPosition().x, Members[m]->car.getBody()->GetPosition().y));
 	if (sleep >= Members.size())
 	{
+		//Engine::fatal_error("End");
 		std::sort(Members.begin(), Members.end(), [](Member* a, Member* b) {return a->fitness > b->fitness; });
 		int tF = 0;
 		for (auto& b : Members)
@@ -134,6 +136,36 @@ void GACar::run(Engine::Camera2D& cam2d)
 			tF += b->fitness;
 		}
 		int med = tF / Members.size();
+		for (int i = 0;i < Members.size(); i++)
+		{
+			if (med < Members[i]->fitness)
+			{
+				Parents.push_back(*Members[i]);
+				delete(Members[i]);
+				Members[i] = nullptr;
+			}
+			else
+			{
+				int tC = Members[i]->car.getTireCount();
+				for (int j = 0; j < tC; j++)
+				{
+					Members[i]->car.getBody()->GetWorld()->DestroyBody(Members[i]->car.getTire(j).getBody());
+				}
+				
+				Members[i]->car.getBody()->GetWorld()->DestroyBody(Members[i]->car.getBody());
+				delete(Members[i]);
+				Members[i] = nullptr;
+			}
+		}
+		if(Parents.size() % 2)
+		{
+			int tC = Parents[Parents.size()-1].car.getTireCount();
+			for (int j = 0; j < tC; j++)
+				Parents[Parents.size() - 1].car.getBody()->GetWorld()->
+				DestroyBody(Parents[Parents.size() - 1].car.getTire(j).getBody());
+			Parents.erase(Parents.end()-1);
+		}
+		int i = 0;
 	}
 
 }
@@ -144,4 +176,14 @@ void GACar::draw(Engine::SpriteBatch & sBatch)
 	{
 		Members[i]->car.draw(sBatch);
 	}
+}
+
+void GACar::print(Engine::SpriteBatch& sBatch, Engine::SpriteFont& sFont)
+{
+	Engine::ColourRGBA8 colour;
+	char buffer[256];
+
+	sprintf_s(buffer, "Gen: %d Population: %d Highest Fitness: %d Sleeping: %d/%d", generation, Members.size(), higFit, sleep, Members.size());
+	sFont.draw(sBatch, buffer, glm::vec2(20, 50), glm::vec2(1.0f), 0.0f, colour);
+	
 }

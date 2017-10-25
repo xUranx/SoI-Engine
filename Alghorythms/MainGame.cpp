@@ -41,7 +41,7 @@ void MainGame::run()
 			spriteBatch.init();
 			spriteBatchTri.init();
 			UIspriteBatch.init();
-			spriteFont = new SpriteFont("Include/Fonts/OpenSansRegular.ttf", 20);
+			spriteFont = new SpriteFont("Include/Fonts/OpenSansRegular.ttf", 32);
 			dRender.init();
 			gLoop();
 		}
@@ -111,7 +111,7 @@ void MainGame::gLoop()
 				world = std::make_unique<b2World>(grav);
 				glm::vec2 dimes = glm::vec2(50.0f, 3.0f);
 				Ground.Fixedinit(world.get(), glm::vec2(0.0f, -15.0f), dimes);
-				cam2D.setScale(5.0f);
+				cam2D.setScale(30.0f);
 				init = false;
 				map.init("Level1", 20, 200);
 				map.genMapData(world.get(), glm::vec2(0, 0), 5);
@@ -315,15 +315,15 @@ void MainGame::drawHUD()
 		test.print(UIspriteBatch, *spriteFont);
 	}
 	sprintf_s(buffer, "FPS: %d", fps);
-	spriteFont->draw(UIspriteBatch, buffer, glm::vec2(20, 20), glm::vec2(1.0f), 0.0f, colour);
+	spriteFont->draw(UIspriteBatch, buffer, glm::vec2(10, 8), glm::vec2(1.0f), 0.0f, colour);
 	if (gMode == Game)
 	{
 		sprintf_s(buffer2, "Angle: %f", ship.getBody()->GetAngle() * RADTODEG);
-		spriteFont->draw(UIspriteBatch, buffer2, glm::vec2(20, 40), glm::vec2(1.0f), 0.0f, colour);
+		spriteFont->draw(UIspriteBatch, buffer2, glm::vec2(10, 40), glm::vec2(1.0f), 0.0f, colour);
 	}
 	else if (gMode == GCar)
 	{
-
+		Evo.print(UIspriteBatch, *spriteFont);
 	}
 	UIspriteBatch.end();
 	UIspriteBatch.renderBatch();

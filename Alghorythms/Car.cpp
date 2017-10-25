@@ -47,7 +47,6 @@ void Tire::initJoint(b2Body* aBody, glm::vec4 pos, bool on)
 	rDef.bodyA = aBody;
 	rDef.bodyB = body;
 	rDef.collideConnected = false;
-
 	rDef.localAnchorA.Set(pos.x, pos.y);
 	rDef.localAnchorB.Set(pos.z, pos.w);
 
@@ -97,7 +96,7 @@ void Car::init(b2World * world, glm::vec4 Pos, Engine::ColourRGBA8 color)
 	b2FixtureDef fDef;
 	fDef.shape = &bShape;
 	fDef.density = 1;
-	fDef.friction = 0.3f;
+	fDef.friction = 1;
 	fDef.filter.categoryBits = entityCat::Player;
 	fDef.filter.maskBits = entityCat::Walls;
 	body->CreateFixture(&fDef);
@@ -118,6 +117,6 @@ void Car::draw(Engine::SpriteBatch & sBatch)
 	destRect.y = body->GetPosition().y - dimensions.y / 2.0f;
 	destRect.z = dimensions.x;
 	destRect.w = dimensions.y;
-	sBatch.draw(destRect, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), NULL, 2.0f, colour, body->GetAngle());
+	sBatch.draw(destRect, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), NULL, 1.0f, colour, body->GetAngle());
 }
 
