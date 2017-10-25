@@ -50,10 +50,10 @@ void GACar::init(b2World * world)
 			t.init(world, rad, 0.5, color);
 			int radd = rad * 10;
 			memberr->car.Tinit(t ,j);
-			destRect.x = (rand() % a - a / 2) / 10;
-			destRect.y = (rand() % b - b / 2) / 10;
-			destRect.z = (rand() % radd - radd/2) / 10;
-			destRect.w = (rand() % radd - radd/2)  / 10;
+			destRect.x = (float)(rand() % a - a / 2) / 10;
+			destRect.y = (float)(rand() % b - b / 2) / 10;
+			destRect.z = (float)(rand() % radd - radd/2) / 10;
+			destRect.w = (float)(rand() % radd - radd/2)  / 10;
 			bool on;
 			if (rand() % 10 < 5)
 				on = true;
