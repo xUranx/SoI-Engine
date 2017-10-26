@@ -15,7 +15,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zDataStructures", "DataStru
 		{CFCCC2A4-BF61-45F2-B570-B808E0425564} = {CFCCC2A4-BF61-45F2-B570-B808E0425564}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Alghorythms", "Alghorythms\Alghorythms.vcxproj", "{E52F7AA7-6353-41A7-B874-6035D2F33F01}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GeneticAlgorithm", "GeneticAlgorithm\GeneticAlgorithm.vcxproj", "{E52F7AA7-6353-41A7-B874-6035D2F33F01}"
 	ProjectSection(ProjectDependencies) = postProject
 		{CFCCC2A4-BF61-45F2-B570-B808E0425564} = {CFCCC2A4-BF61-45F2-B570-B808E0425564}
 	EndProjectSection
