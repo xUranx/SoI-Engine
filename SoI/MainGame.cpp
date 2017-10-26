@@ -37,7 +37,7 @@ void MainGame::run()
 		std::uniform_real_distribution<float> xPos(-15.0f, 15.0f);
 		std::uniform_real_distribution<float> yPos(10.0f, 40.0f);
 		std::uniform_real_distribution<float> size(0.5f, 2.5f);
-		const int num_box = 100;
+		const int num_box = 200;
 		GLTexture texture = ResourceManager::getTexture("Include/Textures/Block.png");
 		ColourRGBA8 color;
 		for (int i = 0; i < num_box; i++)
@@ -97,8 +97,6 @@ void MainGame::gLoop()
 	SDL_Event e;
 
 	//While application is running
-	const float CamSpeed = 0.5f;
-	const float ScalSpeed = 0.5f;
 	bool isforceOn = false;
 	renderDebug = true;
 	while (!quit)
@@ -116,50 +114,16 @@ void MainGame::gLoop()
 			}
 			if (e.type == SDL_KEYDOWN)
 			{
-				switch (e.key.keysym.sym)
-				{
-				case SDLK_ESCAPE:
-					quit = true;
-					break;
-				case SDLK_w:
-					cam2D.setPos(cam2D.getPos() + glm::vec2(0.0f, -CamSpeed));
-					break;
-				case SDLK_s :
-					cam2D.setPos(cam2D.getPos() + glm::vec2(0.0f, CamSpeed));
-					break;
-				case SDLK_a:
-					cam2D.setPos(cam2D.getPos() + glm::vec2(CamSpeed, 0.0f));
-					break;
-				case SDLK_d:
-					cam2D.setPos(cam2D.getPos() + glm::vec2(-CamSpeed, 0.0f));
-					break;
-				case SDLK_q:
-					cam2D.setScale(cam2D.getScale() + ScalSpeed);
-					break;
-				case SDLK_e:
-					cam2D.setScale(cam2D.getScale() - ScalSpeed);
-					break;
-				case SDLK_x:
-					//boxes[0]->getBody()->ApplyLinearImpulse(b2Vec2{ 0.0f,1.0f }, boxes[0]->getBody()->GetWorldCenter(),true);
-					if (isforceOn)
-					{
-						boxes[0]->getBody()->SetGravityScale(1);
-						isforceOn = false;
-						boxes[0]->getBody()->SetLinearDamping(0);
-					}
-					else
-					{
-						boxes[0]->getBody()->SetGravityScale(0);
-						isforceOn = true;
-						boxes[0]->getBody()->SetLinearDamping(0.1f);
-					}
-					
-					break;
-				default:
-					break;
-				}
+				inputManager.pressKey(e.key.keysym.sym);
 			}
+			if (e.type == SDL_KEYUP)
+			{
+				inputManager.releaseKey(e.key.keysym.sym);
+			}
+		
 		}
+		processInput();
+		if (inputManager.isKeyPressed(SDLK_ESCAPE)) quit = true;
 		world->Step(1.0f / 60.f, 6, 2);
 		b2Vec2 dir = ball.getBody()->GetPosition() - boxes[0]->getBody()->GetPosition();
 		if (isforceOn) boxes[0]->getBody()->ApplyForce(10* dir,boxes[0]->getBody()->GetWorldCenter(), true);
@@ -169,6 +133,25 @@ void MainGame::gLoop()
 
 	}
 	//dRender.dispose();
+}
+
+void MainGame::processInput()
+{
+	const float CamSpeed = 0.2f;
+	const float ScalSpeed = 0.2f;
+	static float dir;
+	if (inputManager.isKeyPressed(SDLK_s)) cam2D.setPos(cam2D.getPos() + glm::vec2(0.0f, -CamSpeed));
+
+	if (inputManager.isKeyPressed(SDLK_w)) cam2D.setPos(cam2D.getPos() + glm::vec2(0.0f, CamSpeed));
+
+	if (inputManager.isKeyPressed(SDLK_d))
+		cam2D.setPos(cam2D.getPos() + glm::vec2(CamSpeed, 0.0f));
+	if (inputManager.isKeyPressed(SDLK_a))
+		cam2D.setPos(cam2D.getPos() + glm::vec2(-CamSpeed, 0.0f));
+	if (inputManager.isKeyPressed(SDLK_q))
+		cam2D.setScale(cam2D.getScale() + ScalSpeed);
+	if (inputManager.isKeyPressed(SDLK_e))
+		cam2D.setScale(cam2D.getScale() - ScalSpeed);
 }
 
 void MainGame::drawGame()

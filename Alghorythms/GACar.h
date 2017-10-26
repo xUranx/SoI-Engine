@@ -26,7 +26,7 @@ private:
 		Car car;
 		int fitness;
 	};
-	int ch = 0;
+	int ch = -60*5;
 	int higFit = 0;
 	int m = 0;
 	int sleep = 0;

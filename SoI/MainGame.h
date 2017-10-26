@@ -6,6 +6,7 @@
 #include <Engine/SpriteBatch.h>
 #include <Engine/SpriteFont.h>
 #include <Engine/DebugRenderer.h>
+#include <Engine/InputManager.h>
 #include <Box2D\Box2D.h>
 #include "Box.h"
 #include <vector>
@@ -31,6 +32,7 @@ private:
 	void gLoop();
 	//std::vector<Engine::Sprite*> _sprite;
 	void drawGame();
+	void processInput();
 	void drawHUD();
 	float xtime;
 	Engine::Camera2D cam2D;
@@ -41,6 +43,7 @@ private:
 	Engine::SpriteBatch UIspriteBatch;
 	Engine::SpriteFont* spriteFont;
 	Engine::DebugRenderer dRender;
+	Engine::InputManager inputManager;
 	CollisionListener ColList;
 	std::unique_ptr<b2World> world;
 	std::vector<Box*> boxes;

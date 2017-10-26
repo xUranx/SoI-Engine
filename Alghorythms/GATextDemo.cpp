@@ -50,7 +50,8 @@ void GATextDemo::run()
 		if (pop.Members.at(i).fitnes == DNA.size() * 10)
 			SeqFound = true;
 	}
-	std::sort(pop.Members.begin(), pop.Members.end(), [](Member &a, Member &b) {return a.fitnes > b.fitnes; });
+	std::sort(pop.Members.begin(), pop.Members.end(), 
+		[](Member &a, Member &b) {return a.fitnes > b.fitnes; });
 
 	Parents.push_back(pop.Members.at(0));
 	Parents.push_back(pop.Members.at(1));

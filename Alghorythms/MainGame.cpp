@@ -67,7 +67,7 @@ void MainGame::gLoop()
 {
 	//Main loop flag
 	bool init = true;
-	renderDebug = false;
+	renderDebug = true;
 	cam2D.init(sWidth,sHeight);
 	hudCam.init(sWidth, sHeight);
 	//cam2D.setPos(cam2D.getPos() + glm::vec2(sWidth / 2.0f, sHeight / 2.0f));
