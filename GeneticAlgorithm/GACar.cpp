@@ -18,7 +18,7 @@ void GACar::init(b2World * world)
 {
 	int popu;
 	//std::cout << "Population: "; std::cin >> popu;
-	setMembers(500);
+	setMembers(300);
 
 
 	srand(time(NULL));
@@ -205,10 +205,7 @@ void GACar::run(Engine::Camera2D& cam2d)
 				int b = destRect.w * 10;
 				for (int j = 0; j < memberr->car.getTireCount(); j++)
 				{
-					color.r = rand() % 255;
-					color.g = rand() % 255;
-					color.b = rand() % 255;
-					color.a = 255;
+					color = memberr->car.getTire(j).getColour();
 					float rad = (float)(rand() % 30 + 1) / 10;
 					Tire t;
 					t.init(Parents[i].car.getBody()->GetWorld(), rad, 0.5, color);
