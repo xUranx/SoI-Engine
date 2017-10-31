@@ -25,6 +25,8 @@ MainGame::~MainGame()
 
 void MainGame::run()
 {
+	std::string sysName = SDL_GetPlatform();
+	Message(sysName);
 	if (!window.init("Genetic Algorithm", sWidth, sHeight, 0))
 	{
 		fatal_error("Failed to Init");
