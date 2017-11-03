@@ -104,9 +104,6 @@
     <ClInclude Include="Ship.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GATextDemo.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="RaycastCallBack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -117,6 +114,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GACar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GATextDemo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

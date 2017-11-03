@@ -309,12 +309,13 @@ namespace Engine {
 	//private
 	void SpriteBatch::createVertxArray()
 	{
+#ifdef WIN32
 		if (vao == 0)
 		{
 			glGenVertexArrays(1, &vao);
 		}
-
 		glBindVertexArray(vao);
+#endif
 
 		if (vbo == 0)
 		{

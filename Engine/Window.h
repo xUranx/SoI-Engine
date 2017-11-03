@@ -1,6 +1,10 @@
 #pragma once
+#ifdef WIN32
+
+
 #include <SDL.h>
 #include <string>
+
 namespace Engine {
 	enum WindowFlags { INVS = 0x1, FULLSCREEN = 0x2, BORDELES = 0x4 };
 
@@ -39,3 +43,4 @@ namespace Engine {
 	};
 
 }
+#endif //WIN32

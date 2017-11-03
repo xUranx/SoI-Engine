@@ -1,8 +1,7 @@
+#ifdef WIN32
 #include "Window.h"
-#include <glew.h>
 #include "Log.h"
-
-
+#include <glew.h>
 namespace Engine {
 
 	Window::Window()
@@ -137,3 +136,4 @@ namespace Engine {
 		currentFrame++;
 	}
 }
+#endif

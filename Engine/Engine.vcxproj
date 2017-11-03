@@ -92,6 +92,13 @@
     <Lib>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32.lib;opengl32.lib;Box2D.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
+    <PostBuildEvent>
+      <Command>copy $(OutDir)$(ProjectName).lib $(SolutionDir)Android\lib /Y
+copy $(OutDir)$(ProjectName).lib $(SolutionDir)Deps\lib\$(Configuration) /Y
+rename $(SolutionDir)Android\lib\$(ProjectName).lib lib$(ProjectName).lib
+copy $(ProjectDir)*.h  $(SolutionDir)Android\include\win32\Engine /Y
+copy $(ProjectDir)*.h  $(SolutionDir)Deps\include\$(ProjectName) /Y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -122,6 +129,13 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
+    <PostBuildEvent>
+      <Command>copy $(OutDir)$(ProjectName).lib $(SolutionDir)Android\lib /Y
+copy $(OutDir)$(ProjectName).lib $(SolutionDir)Deps\lib\$(Configuration) /Y
+rename $(SolutionDir)Android\lib\$(ProjectName).lib lib$(ProjectName).lib
+copy $(ProjectDir)*.h  $(SolutionDir)Android\include\win32\Engine /Y
+copy $(ProjectDir)*.h  $(SolutionDir)Deps\include\$(ProjectName) /Y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
