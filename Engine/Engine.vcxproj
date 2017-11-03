@@ -96,7 +96,8 @@
       <Command>copy $(OutDir)$(ProjectName).lib $(SolutionDir)Android\lib /Y
 copy $(OutDir)$(ProjectName).lib $(SolutionDir)Deps\lib\$(Configuration) /Y
 rename $(SolutionDir)Android\lib\$(ProjectName).lib lib$(ProjectName).lib
-copy $(ProjectDir)*.h  $(SolutionDir)Android\include\win32\Engine /Y
+mkdir $(SolutionDir)Android\include\$(ProjectName)
+copy $(ProjectDir)*.h  $(SolutionDir)Android\include\$(ProjectName) /Y
 copy $(ProjectDir)*.h  $(SolutionDir)Deps\include\$(ProjectName) /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -133,7 +134,8 @@ copy $(ProjectDir)*.h  $(SolutionDir)Deps\include\$(ProjectName) /Y</Command>
       <Command>copy $(OutDir)$(ProjectName).lib $(SolutionDir)Android\lib /Y
 copy $(OutDir)$(ProjectName).lib $(SolutionDir)Deps\lib\$(Configuration) /Y
 rename $(SolutionDir)Android\lib\$(ProjectName).lib lib$(ProjectName).lib
-copy $(ProjectDir)*.h  $(SolutionDir)Android\include\win32\Engine /Y
+mkdir $(SolutionDir)Android\include\$(ProjectName)
+copy $(ProjectDir)*.h  $(SolutionDir)Android\include\$(ProjectName) /Y
 copy $(ProjectDir)*.h  $(SolutionDir)Deps\include\$(ProjectName) /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>

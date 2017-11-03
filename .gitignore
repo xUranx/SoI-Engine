@@ -36,3 +36,4 @@ packages/
 /Android/build/android/build
 /Android/build/android/app/build
 
+/Android/include/Engine
