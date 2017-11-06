@@ -1,8 +1,9 @@
 #pragma once
 #include <string>
-#ifdef WIN32
+#include "Debug.h"
+#if defined(WIN32) && !defined(_FES)
 #include <glew.h>
-#elif __ANDROID__
+#elif defined(__ANDROID__) || defined(_FES)
 #include <GLES2/gl2.h>
 #endif
 

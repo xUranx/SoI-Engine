@@ -70,12 +70,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir)\Deps\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Android\include\win32;$(SolutionDir)\Deps\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\Deps\lib\Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LibraryPath>$(SolutionDir)\Deps\lib\Debug;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)\Deps\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Android\include\win32;$(SolutionDir)\Deps\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -98,7 +98,10 @@ copy $(OutDir)$(ProjectName).lib $(SolutionDir)Deps\lib\$(Configuration) /Y
 rename $(SolutionDir)Android\lib\$(ProjectName).lib lib$(ProjectName).lib
 mkdir $(SolutionDir)Android\include\$(ProjectName)
 copy $(ProjectDir)*.h  $(SolutionDir)Android\include\$(ProjectName) /Y
-copy $(ProjectDir)*.h  $(SolutionDir)Deps\include\$(ProjectName) /Y</Command>
+mkdir $(SolutionDir)Deps\include\$(ProjectName)
+copy $(ProjectDir)*.h  $(SolutionDir)Deps\include\$(ProjectName) /Y
+mkdir $(SolutionDir)Android\source\$(ProjectName)
+copy $(ProjectDir)*.cpp  $(SolutionDir)Android\source\$(ProjectName) /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -136,7 +139,10 @@ copy $(OutDir)$(ProjectName).lib $(SolutionDir)Deps\lib\$(Configuration) /Y
 rename $(SolutionDir)Android\lib\$(ProjectName).lib lib$(ProjectName).lib
 mkdir $(SolutionDir)Android\include\$(ProjectName)
 copy $(ProjectDir)*.h  $(SolutionDir)Android\include\$(ProjectName) /Y
-copy $(ProjectDir)*.h  $(SolutionDir)Deps\include\$(ProjectName) /Y</Command>
+mkdir $(SolutionDir)Deps\include\$(ProjectName)
+copy $(ProjectDir)*.h  $(SolutionDir)Deps\include\$(ProjectName) /Y
+mkdir $(SolutionDir)Android\source\$(ProjectName)
+copy $(ProjectDir)*.cpp  $(SolutionDir)Android\source\$(ProjectName) /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -177,6 +183,7 @@ copy $(ProjectDir)*.h  $(SolutionDir)Deps\include\$(ProjectName) /Y</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera2D.h" />
+    <ClInclude Include="Debug.h" />
     <ClInclude Include="DebugRenderer.h" />
     <ClInclude Include="GLTexture.h" />
     <ClInclude Include="ImageLoader.h" />
