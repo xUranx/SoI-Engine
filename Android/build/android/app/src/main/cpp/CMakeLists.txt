@@ -36,6 +36,8 @@ target_link_libraries(native-activity
                       app-glue
                       EGL
                       SDL2
+                      Freetype-6
+                      SDL2_ttf
                       SDL2main
                       GLESv2
                       log)

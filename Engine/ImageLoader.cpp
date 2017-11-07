@@ -2,6 +2,24 @@
 #include "picoPNG.h"
 #include "IOManager.h"
 #include "Log.h"
+
+
+#ifndef WIN32
+#include <sstream>
+namespace std
+{
+	template <typename T>
+	string to_string(T value)
+	{
+		ostringstream os;
+		os << value;
+		return os.str();
+	}
+}
+#endif
+
+
+
 namespace Engine {
 
 	GLTexture ImageLoader::loadPNG(std::string filepath)

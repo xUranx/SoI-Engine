@@ -3,7 +3,9 @@
 #include "SpriteBatch.h"
 #include "Log.h"
 #include <SDL.h>
-
+#ifndef GL_BGRA
+#define GL_BGRA 0x80E1
+#endif
 int closestPow2(int i) {
     i--;
     int pi = 1;

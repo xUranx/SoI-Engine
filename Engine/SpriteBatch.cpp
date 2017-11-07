@@ -31,10 +31,15 @@ namespace Engine {
 		glm::vec2 br(hlfDims.x, -hlfDims.y);
 		glm::vec2 tr(hlfDims.x, hlfDims.y);
 		//RotatePoints
-		tl = rotatePoint(tl, angle) + hlfDims;
-		bl = rotatePoint(bl, angle) + hlfDims;
-		br = rotatePoint(br, angle) + hlfDims;
-		tr = rotatePoint(tr, angle) + hlfDims;
+		tl = rotatePoint(tl, angle);
+		bl = rotatePoint(bl, angle);
+		br = rotatePoint(br, angle);
+		tr = rotatePoint(tr, angle);
+
+		tl += hlfDims;
+		bl += hlfDims;
+		br += hlfDims;
+		tr += hlfDims;
 
 		topLeft.colour = colour;
 		topLeft.setPos(destRect.x + tl.x, destRect.y + tl.y);
@@ -92,9 +97,9 @@ namespace Engine {
 	{
 		glm::vec2 newv;
 		pos -= pivot;
-		newv.x = pos.x * cos(angle) - pos.y * sin(angle);
-		newv.y = pos.x * sin(angle) + pos.y * cos(angle);
-		return newv + pivot;
+		newv.x = (pos.x * cos(angle) - pos.y * sin(angle)) + pivot.x;
+		newv.y = (pos.x * sin(angle) + pos.y * cos(angle)) + pivot.y;
+		return newv;
 	}
 
 	glm::vec2 Glyhp::rotatePoint(glm::vec2 pos, float angle)
