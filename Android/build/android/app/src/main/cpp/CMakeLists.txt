@@ -24,6 +24,7 @@ add_library(native-activity SHARED
 
 target_include_directories(native-activity PRIVATE
                             ../../../../../../include
+                            ../../../../../../include/SDL
                             ../../../../../../include/Engine
                             ../../../../../../GraphicsTest
                             ../../../../../../include/android
@@ -34,6 +35,8 @@ target_link_libraries(native-activity
                       android
                       app-glue
                       EGL
+                      SDL2
+                      SDL2main
                       GLESv2
                       log)
 

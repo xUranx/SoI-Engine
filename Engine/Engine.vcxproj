@@ -85,6 +85,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -95,7 +96,7 @@
     <PostBuildEvent>
       <Command>copy $(OutDir)$(ProjectName).lib $(SolutionDir)Android\lib /Y
 copy $(OutDir)$(ProjectName).lib $(SolutionDir)Deps\lib\$(Configuration) /Y
-rename $(SolutionDir)Android\lib\$(ProjectName).lib lib$(ProjectName).lib
+rename $(SolutionDir)Android\lib\$(ProjectName).lib lib$(ProjectName).lib /Y
 mkdir $(SolutionDir)Android\include\$(ProjectName)
 copy $(ProjectDir)*.h  $(SolutionDir)Android\include\$(ProjectName) /Y
 mkdir $(SolutionDir)Deps\include\$(ProjectName)
@@ -136,7 +137,7 @@ copy $(ProjectDir)*.cpp  $(SolutionDir)Android\source\$(ProjectName) /Y</Command
     <PostBuildEvent>
       <Command>copy $(OutDir)$(ProjectName).lib $(SolutionDir)Android\lib /Y
 copy $(OutDir)$(ProjectName).lib $(SolutionDir)Deps\lib\$(Configuration) /Y
-rename $(SolutionDir)Android\lib\$(ProjectName).lib lib$(ProjectName).lib
+rename $(SolutionDir)Android\lib\$(ProjectName).lib lib$(ProjectName).lib /Y
 mkdir $(SolutionDir)Android\include\$(ProjectName)
 copy $(ProjectDir)*.h  $(SolutionDir)Android\include\$(ProjectName) /Y
 mkdir $(SolutionDir)Deps\include\$(ProjectName)
