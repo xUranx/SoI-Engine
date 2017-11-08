@@ -10,7 +10,6 @@
 #include <OGL/OGL.h>
 #include <cstdlib>
 #include <core/Log.h>
-
 namespace engine
 {
 	OGLGraphicsSystem::OGLGraphicsSystem(Window* window)
@@ -90,7 +89,11 @@ namespace engine
         // ANativeWindow buffers to match, using EGL_NATIVE_VISUAL_ID.
 		eglGetConfigAttrib(m_eglDisplay, config, EGL_NATIVE_VISUAL_ID, &format);
 		m_eglSurface = eglCreateWindowSurface(m_eglDisplay, config, window->getNativeWindow(), NULL);
+#ifndef WIN32
 		EGLint contextAttribs[] = { EGL_CONTEXT_CLIENT_VERSION, 2, EGL_NONE, EGL_NONE };
+#else
+		EGLint contextAttribs[] = { EGL_CONTEXT_CLIENT_VERSION, 3, EGL_NONE, EGL_NONE };
+#endif
 		m_eglContext = eglCreateContext(m_eglDisplay, config, NULL, contextAttribs);
 
 		if (eglMakeCurrent(m_eglDisplay, m_eglSurface, m_eglSurface, m_eglContext) == EGL_FALSE) {
@@ -108,7 +111,7 @@ namespace engine
 		LOGI("  GL_VERSION: %s", glGetString(GL_VERSION));
 		LOGI("  GL_EXTENSIONS: %s", glGetString(GL_EXTENSIONS));
 		LOGI("Surface size: %dx%d", w, h);
-		
+
 		m_active = true;
 	}
 

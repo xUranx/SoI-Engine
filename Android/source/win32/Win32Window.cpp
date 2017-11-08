@@ -65,7 +65,7 @@ namespace engine
 		wndclass.lpfnWndProc = (WNDPROC)WindowProc;
 		wndclass.hInstance = hInstance;
 		wndclass.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
-		wndclass.lpszClassName = L"opengles2.0";
+		wndclass.lpszClassName = L"opengles3.0";
 
 		if (!RegisterClass(&wndclass))
 			return; // fail!
@@ -82,7 +82,7 @@ namespace engine
 		AdjustWindowRect(&windowRect, wStyle, FALSE);
 		
 		m_hwnd = CreateWindow(
-			L"opengles2.0",
+			L"opengles3.0",
 			title.c_str(),
 			wStyle,
 			0,
