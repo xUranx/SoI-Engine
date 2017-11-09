@@ -1,5 +1,5 @@
 #include "IOManager.h"
-
+#ifdef WIN32
 #include <fstream>
 namespace Engine {
 	bool IOManager::readFileToBuffer(std::string filePath, std::vector<unsigned char>& buffer)
@@ -45,3 +45,15 @@ namespace Engine {
 		return true;
 	}
 }
+#else
+namespace Engine {
+	bool IOManager::readFileToBuffer(std::string filePath, std::vector<unsigned char>& buffer)
+	{
+
+	}
+	bool IOManager::readFileToBuffer(std::string filePath, std::string & buffer)
+	{
+
+	}
+}
+#endif

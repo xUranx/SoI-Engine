@@ -12,6 +12,7 @@
 #include <core/Log.h>
 namespace engine
 {
+
 	OGLGraphicsSystem::OGLGraphicsSystem(Window* window)
 		: GraphicsSystem()
 		, m_window(window)
@@ -112,6 +113,7 @@ namespace engine
 		LOGI("  GL_EXTENSIONS: %s", glGetString(GL_EXTENSIONS));
 		LOGI("Surface size: %dx%d", w, h);
 
+		glBindVertexArray(0);
 		m_active = true;
 	}
 
