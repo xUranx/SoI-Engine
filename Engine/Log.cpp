@@ -3,7 +3,7 @@
 #include <cstdlib>
 #include <SDL.h>
 namespace Engine {
-#ifdef _DEBUG
+#if defined(_DEBUG) && defined(WIN32)
 	extern void fatal_error(std::string error)
 	{
 		std::cout << "Error: " << error << std::endl;
@@ -23,7 +23,7 @@ namespace Engine {
 		std::cout << "Info: " << msg << std::endl;
 	}
 
-#else
+#elif WIN32
 	extern void fatal_error(std::string error)
 	{
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,
@@ -42,6 +42,19 @@ namespace Engine {
 			NULL);
 		SDL_Quit();
 		exit(1);
+	}
+	extern void Message(std::string msg)
+	{
+
+	}
+#else
+	extern void fatal_error(std::string error)
+	{
+	
+	}
+	extern void fatal_error(std::string error, std::string ctx)
+	{
+	
 	}
 	extern void Message(std::string msg)
 	{

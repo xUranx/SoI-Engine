@@ -182,20 +182,17 @@ namespace Engine {
 
 	void SpriteBatch::renderBatch()
 	{
-#ifdef WIN32
 		glBindVertexArray(vao);
-#else 
 
-#endif
 		for (int i = 0; i < rBatch.size(); i++)
 		{
 			glBindTexture(GL_TEXTURE_2D, rBatch[i].texture);
 
 			glDrawArrays(GL_TRIANGLES, rBatch[i].offset, rBatch[i].numVertices);
 		}
-#ifdef WIN32
+
 		glBindVertexArray(0);
-#endif
+
 	}
 
 	int SpriteBatch::createRenderBatches()
@@ -320,14 +317,13 @@ namespace Engine {
 	//private
 	void SpriteBatch::createVertxArray()
 	{
-#ifdef WIN32
 
 		if (vao == 0)
 		{
 			glGenVertexArrays(1, &vao);
 		}
 		glBindVertexArray(vao);
-#endif
+
 		if (vbo == 0)
 		{
 			glGenBuffers(1, &vbo);
@@ -348,6 +344,7 @@ namespace Engine {
 		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, uv));
 
 		glBindVertexArray(0);
+
 	}
 	void SpriteBatch::sortGLyph()
 	{

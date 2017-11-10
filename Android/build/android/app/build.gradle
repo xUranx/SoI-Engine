@@ -3,17 +3,16 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion = 25
     buildToolsVersion = '26.0.2'
-
     defaultConfig {
         applicationId = 'fi.kamk.SamiLap1.EngineApp'
-        minSdkVersion 14
-        targetSdkVersion  25
+        minSdkVersion 18
+        targetSdkVersion 25
         ndk {
             abiFilters 'x86', 'x86_64', 'armeabi', 'armeabi-v7a', 'arm64-v8a'
         }
         externalNativeBuild {
             cmake {
-                arguments '-DANDROID_PLATFORM=android-14',
+                arguments '-DANDROID_PLATFORM=android-18',
                         '-DANDROID_TOOLCHAIN=clang', '-DANDROID_STL=gnustl_static'
             }
         }
@@ -30,10 +29,13 @@ android {
             path 'src/main/cpp/CMakeLists.txt'
         }
     }
+    compileSdkVersion 25
+    productFlavors {
+    }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:25.2.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.1'
 }
