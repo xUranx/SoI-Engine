@@ -17,6 +17,7 @@ struct AndroidEngine
     ASensorManager* sensorManager;
     const ASensor* accelerometerSensor;
     ASensorEventQueue* sensorEventQueue;
+    SDL_Window* gWindow;
 
     engine::Ref<engine::OGLGraphicsSystem> graphics;
     engine::Ref<engine::GraphicsApplication> application;
@@ -37,8 +38,6 @@ struct AndroidEngine
 /// Initialize an EGL context for the current display.
 int AndroidEngine::initDisplay()
 {
-    SDL_Window* gWindow;
-    gWindow = SDL_CreateWindow("name",0,0,720,200,SDL_WINDOW_OPENGL);
     window = new engine::AndroidWindow(app->window);
     graphics = new engine::OGLGraphicsSystem(window);
     window->setGraphics(graphics);
@@ -166,7 +165,6 @@ void android_main(struct android_app* state)
     struct AndroidEngine engine;
     // Make sure glue isn't stripped.
     app_dummy();
-
     memset(&engine, 0, sizeof(engine));
     state->userData = &engine;
     state->onAppCmd = AndroidEngine::onCmd;
