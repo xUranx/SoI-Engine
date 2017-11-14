@@ -7,13 +7,13 @@
 #include <TestApplication.h>
 #include <AndroidWindow.h>
 #include <core/ElapsedTimer.h>
+#include <SDL.h>
 //#include <win32/Engine/Camera2D.h>
 ///
 /// Shared state for our app.
 struct AndroidEngine
 {
     struct android_app* app;
-
     ASensorManager* sensorManager;
     const ASensor* accelerometerSensor;
     ASensorEventQueue* sensorEventQueue;
@@ -37,6 +37,8 @@ struct AndroidEngine
 /// Initialize an EGL context for the current display.
 int AndroidEngine::initDisplay()
 {
+    SDL_Window* gWindow;
+    gWindow = SDL_CreateWindow("name",0,0,720,200,SDL_WINDOW_OPENGL);
     window = new engine::AndroidWindow(app->window);
     graphics = new engine::OGLGraphicsSystem(window);
     window->setGraphics(graphics);

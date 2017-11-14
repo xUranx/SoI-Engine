@@ -31,6 +31,9 @@
     <output url="file://$MODULE_DIR$/build/intermediates/classes/debug" />
     <output-test url="file://$MODULE_DIR$/build/intermediates/classes/test/debug" />
     <exclude-output />
+    <content url="file://$USER_HOME$/AppData/Local/Android/Sdk/ndk-bundle/sources/android/native_app_glue">
+      <sourceFolder url="file://$USER_HOME$/AppData/Local/Android/Sdk/ndk-bundle/sources/android/native_app_glue" isTestSource="false" />
+    </content>
     <content url="file://$MODULE_DIR$/../../../GraphicsTest">
       <sourceFolder url="file://$MODULE_DIR$/../../../GraphicsTest" isTestSource="false" />
     </content>
@@ -120,17 +123,11 @@
     <content url="file://$MODULE_DIR$/../../../source">
       <sourceFolder url="file://$MODULE_DIR$/../../../source" isTestSource="false" />
     </content>
-    <content url="file://$MODULE_DIR$/../../../source/Engine">
-      <sourceFolder url="file://$MODULE_DIR$/../../../source/Engine" isTestSource="false" />
-    </content>
     <content url="file://$MODULE_DIR$/../../../source/OGL">
       <sourceFolder url="file://$MODULE_DIR$/../../../source/OGL" isTestSource="false" />
     </content>
     <content url="file://$MODULE_DIR$/../../../source/android">
       <sourceFolder url="file://$MODULE_DIR$/../../../source/android" isTestSource="false" />
-    </content>
-    <content url="file://$USER_HOME$/ndk-bundle/sources/android/native_app_glue">
-      <sourceFolder url="file://$USER_HOME$/ndk-bundle/sources/android/native_app_glue" isTestSource="false" />
     </content>
     <orderEntry type="jdk" jdkName="Android API 25 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
