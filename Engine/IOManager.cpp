@@ -1,4 +1,7 @@
 #include "IOManager.h"
+#ifndef WIN32
+#include "android/asset_manager.h"
+#endif
 #ifdef WIN32
 #include <fstream>
 namespace Engine {
@@ -46,9 +49,13 @@ namespace Engine {
 	}
 }
 #else
+
 namespace Engine {
 	bool IOManager::readFileToBuffer(std::string filePath, std::vector<unsigned char>& buffer)
 	{
+        static AAsset* file = AAssetManager_open(m_asset, filePath.c_str(), 0);
+        size_t fLenght = AAsset_getLength(file);
+        
 
 	}
 	bool IOManager::readFileToBuffer(std::string filePath, std::string & buffer)

@@ -10,7 +10,7 @@ file(GLOB ANDROID_SOURCES ../../../../../../source/android/*.cpp)
 
 file(GLOB ENGINE_SOURCES ../../../../../../source/*.cpp)
 
-file(GLOB ENGINES_SOURCES ../../../../../../source/Engine/*.cpp)
+file(GLOB ENGINES_SOURCES ../../../../../../../Engine/*.cpp)
 
 file(GLOB OGL_SOURCES ../../../../../../source/OGL/*.cpp)
 
@@ -29,10 +29,10 @@ add_library(native-activity SHARED
 
 target_include_directories(native-activity PRIVATE
                             ../../../../../../include
-                            ../../../../../../include/Engine
                             ../../../../../../GraphicsTest
                             ../../../../../../include/android
                             ../../../../../../../Deps/include
+                            ../../../../../../../Engine
                            ${ANDROID_NDK}/sources/android/native_app_glue)
 
 # add lib dependencies

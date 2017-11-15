@@ -13,10 +13,11 @@
 namespace engine
 {
 
-	TestApplication::TestApplication(Window* window, GraphicsSystem* graphics)
+	TestApplication::TestApplication(Window* window, GraphicsSystem* graphics, AAssetManager* asset)
 		: GraphicsApplication(window, graphics)
-		, m_totalTime(0.0f)
+		, m_totalTime(0.0f), m_asset(asset)
 	{
+
 	}
 
 

@@ -127,14 +127,14 @@
     <content url="file://$MODULE_DIR$/../../../source">
       <sourceFolder url="file://$MODULE_DIR$/../../../source" isTestSource="false" />
     </content>
-    <content url="file://$MODULE_DIR$/../../../source/Engine">
-      <sourceFolder url="file://$MODULE_DIR$/../../../source/Engine" isTestSource="false" />
-    </content>
     <content url="file://$MODULE_DIR$/../../../source/OGL">
       <sourceFolder url="file://$MODULE_DIR$/../../../source/OGL" isTestSource="false" />
     </content>
     <content url="file://$MODULE_DIR$/../../../source/android">
       <sourceFolder url="file://$MODULE_DIR$/../../../source/android" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../../../Engine">
+      <sourceFolder url="file://$MODULE_DIR$/../../../../Engine" isTestSource="false" />
     </content>
     <orderEntry type="jdk" jdkName="Android API 25 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />

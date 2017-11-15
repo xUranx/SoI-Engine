@@ -9,6 +9,7 @@
 
 #include <graphics/GraphicsApplication.h>
 #include <core/Log.h>
+#include <android/asset_manager.h>
 
 namespace engine
 {
@@ -19,7 +20,7 @@ namespace engine
 		public GraphicsApplication
 	{
 	public:
-		TestApplication(Window* window, GraphicsSystem* graphics);
+		TestApplication(Window* window, GraphicsSystem* graphics, AAssetManager* asset);
 
 		~TestApplication();
 
@@ -31,6 +32,7 @@ namespace engine
 
 	private:
 		float						m_totalTime;
+		AAssetManager* m_asset;
 	};
 
 }
