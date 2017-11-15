@@ -7,7 +7,10 @@
 #include <TestApplication.h>
 #include <AndroidWindow.h>
 #include <core/ElapsedTimer.h>
+#include <Engine/IOManager.h>
 #include <SDL.h>
+#include <IOManager.h>
+
 //#include <win32/Engine/Camera2D.h>
 ///
 /// Shared state for our app.
@@ -45,6 +48,7 @@ int AndroidEngine::initDisplay()
     window->setApplication(application);
     frameTimer = new engine::ElapsedTimer();
     frameTimer->reset();
+    Engine::IOManager::m_asset = app->activity->assetManager;
     return 0;
 }
 

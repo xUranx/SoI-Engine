@@ -12,9 +12,7 @@ namespace Engine {
 		static bool readFileToBuffer(std::string filePath, std::vector<unsigned char>& buffer);
 		static bool readFileToBuffer(std::string filePath, std::string& buffer);
 #ifndef WIN32
-		void init(AAssetManager *asset) { m_asset = asset;}
-	private:
-		static AAssetManager* m_asset;
+        static AAssetManager* m_asset;
 #endif // !WIN32
 	};
 }
