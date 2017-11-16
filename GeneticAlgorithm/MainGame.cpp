@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <math.h>
 #include <iostream>
+#include <Engine\IOManager.h>
 
 using namespace Engine;
 
@@ -48,7 +49,6 @@ void MainGame::run()
 			gLoop();
 		}
 	}
-
 	//Free resources and close SDL
 	window.close();
 }

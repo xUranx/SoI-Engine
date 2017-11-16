@@ -140,8 +140,6 @@ copy $(OutDir)$(ProjectName).lib $(SolutionDir)Deps\lib\$(Configuration) /Y
 rename $(SolutionDir)Android\lib\$(ProjectName).lib lib$(ProjectName).lib /Y
 mkdir $(SolutionDir)Android\include\$(ProjectName)
 copy $(ProjectDir)*.h  $(SolutionDir)Android\include\$(ProjectName) /Y
-mkdir $(SolutionDir)Deps\include\$(ProjectName)
-copy $(ProjectDir)*.h  $(SolutionDir)Deps\include\$(ProjectName) /Y
 mkdir $(SolutionDir)Android\source\$(ProjectName)
 copy $(ProjectDir)*.cpp  $(SolutionDir)Android\source\$(ProjectName) /Y</Command>
     </PostBuildEvent>

@@ -148,11 +148,25 @@ namespace detail
 	template<typename T, qualifier Q>
 	GLM_FUNC_QUALIFIER tquat<T, Q>::tquat(vec<3, T, Q> const& u, vec<3, T, Q> const& v)
 	{
-		vec<3, T, Q> const LocalW(cross(u, v));
-		T Dot = detail::compute_dot<vec<3, T, Q>, T, detail::is_aligned<Q>::value>::call(u, v);
-		tquat<T, Q> q(T(1) + Dot, LocalW.x, LocalW.y, LocalW.z);
+		T norm_u_norm_v = sqrt(dot(u, u) * dot(v, v));
+		T real_part = norm_u_norm_v + dot(u, v);
+		vec<3, T, Q> t;
 
-		*this = normalize(q);
+		if(real_part < static_cast<T>(1.e-6f) * norm_u_norm_v)
+		{
+			// If u and v are exactly opposite, rotate 180 degrees
+			// around an arbitrary orthogonal axis. Axis normalisation
+			// can happen later, when we normalise the quaternion.
+			real_part = static_cast<T>(0);
+			t = abs(u.x) > abs(u.z) ? vec<3, T, Q>(-u.y, u.x, static_cast<T>(0)) : vec<3, T, Q>(static_cast<T>(0), -u.z, u.y);
+		}
+		else
+		{
+			// Otherwise, build quaternion the standard way.
+			t = cross(u, v);
+		}
+
+	    *this = normalize(tquat<T, Q>(real_part, t.x, t.y, t.z));
 	}
 
 	template<typename T, qualifier Q>
@@ -363,6 +377,13 @@ namespace detail
 	}
 
 	// -- Operations --
+
+	template<typename T, qualifier Q>
+	GLM_FUNC_QUALIFIER T dot(tquat<T, Q> const& x, tquat<T, Q> const& y)
+	{
+		GLM_STATIC_ASSERT(std::numeric_limits<T>::is_iec559, "'dot' accepts only floating-point inputs");
+		return detail::compute_dot<tquat<T, Q>, T, detail::is_aligned<Q>::value>::call(x, y);
+	}
 
 	template<typename T, qualifier Q>
 	GLM_FUNC_QUALIFIER T length(tquat<T, Q> const& q)
@@ -648,39 +669,20 @@ namespace detail
 		T biggestVal = sqrt(fourBiggestSquaredMinus1 + static_cast<T>(1)) * static_cast<T>(0.5);
 		T mult = static_cast<T>(0.25) / biggestVal;
 
-		tquat<T, Q> Result;
 		switch(biggestIndex)
 		{
 		case 0:
-			Result.w = biggestVal;
-			Result.x = (m[1][2] - m[2][1]) * mult;
-			Result.y = (m[2][0] - m[0][2]) * mult;
-			Result.z = (m[0][1] - m[1][0]) * mult;
-			break;
+			return tquat<T, Q>(biggestVal, (m[1][2] - m[2][1]) * mult, (m[2][0] - m[0][2]) * mult, (m[0][1] - m[1][0]) * mult);
 		case 1:
-			Result.w = (m[1][2] - m[2][1]) * mult;
-			Result.x = biggestVal;
-			Result.y = (m[0][1] + m[1][0]) * mult;
-			Result.z = (m[2][0] + m[0][2]) * mult;
-			break;
+			return tquat<T, Q>((m[1][2] - m[2][1]) * mult, biggestVal, (m[0][1] + m[1][0]) * mult, (m[2][0] + m[0][2]) * mult);
 		case 2:
-			Result.w = (m[2][0] - m[0][2]) * mult;
-			Result.x = (m[0][1] + m[1][0]) * mult;
-			Result.y = biggestVal;
-			Result.z = (m[1][2] + m[2][1]) * mult;
-			break;
+			return tquat<T, Q>((m[2][0] - m[0][2]) * mult, (m[0][1] + m[1][0]) * mult, biggestVal, (m[1][2] + m[2][1]) * mult);
 		case 3:
-			Result.w = (m[0][1] - m[1][0]) * mult;
-			Result.x = (m[2][0] + m[0][2]) * mult;
-			Result.y = (m[1][2] + m[2][1]) * mult;
-			Result.z = biggestVal;
-			break;
-			
-		default:					// Silence a -Wswitch-default warning in GCC. Should never actually get here. Assert is just for sanity.
+			return tquat<T, Q>((m[0][1] - m[1][0]) * mult, (m[2][0] + m[0][2]) * mult, (m[1][2] + m[2][1]) * mult, biggestVal);
+		default: // Silence a -Wswitch-default warning in GCC. Should never actually get here. Assert is just for sanity.
 			assert(false);
-			break;
+			return tquat<T, Q>(1, 0, 0, 0);
 		}
-		return Result;
 	}
 
 	template<typename T, qualifier Q>

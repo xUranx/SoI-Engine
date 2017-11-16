@@ -15,7 +15,7 @@ namespace glm
 	GLM_FUNC_QUALIFIER genType min(genType x, genType y)
 	{
 		GLM_STATIC_ASSERT(std::numeric_limits<genType>::is_iec559 || std::numeric_limits<genType>::is_integer || GLM_UNRESTRICTED_GENTYPE, "'min' only accept floating-point or integer inputs");
-		return x < y ? x : y;
+		return (y < x) ? y : x;
 	}
 
 	// max
@@ -24,7 +24,7 @@ namespace glm
 	{
 		GLM_STATIC_ASSERT(std::numeric_limits<genType>::is_iec559 || std::numeric_limits<genType>::is_integer || GLM_UNRESTRICTED_GENTYPE, "'max' only accept floating-point or integer inputs");
 
-		return x > y ? x : y;
+		return (x < y) ? y : x;
 	}
 
 	// abs
@@ -195,7 +195,7 @@ namespace detail
 		GLM_FUNC_QUALIFIER static vec<L, T, Q> call(vec<L, T, Q> const& x)
 		{
 			T const Shift(static_cast<T>(sizeof(T) * 8 - 1));
-			vec<L, T, Q> const y(vec<L, typename make_unsigned<T>::type, P>(-x) >> typename make_unsigned<T>::type(Shift));
+			vec<L, T, Q> const y(vec<L, typename make_unsigned<T>::type, Q>(-x) >> typename make_unsigned<T>::type(Shift));
 
 			return (x >> Shift) | y;
 		}
@@ -582,7 +582,7 @@ namespace detail
 	template<typename genType>
 	GLM_FUNC_QUALIFIER genType step(genType edge, genType x)
 	{
-		return mix(static_cast<genType>(1), static_cast<genType>(0), glm::lessThan(x, edge));
+		return mix(static_cast<genType>(1), static_cast<genType>(0), x < edge);
 	}
 
 	template<length_t L, typename T, qualifier Q>
