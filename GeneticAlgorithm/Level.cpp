@@ -4,9 +4,9 @@
 #include <time.h>
 #include <iostream>
 #include <algorithm>
-#include <Engine\Log.h>
-#include <Engine\SpriteBatch.h>
-#include <Engine\DebugRenderer.h>
+#include <Engine\Include\Log.h>
+#include <Engine\Include\SpriteBatch.h>
+#include <Engine\Include\DebugRenderer.h>
 #include <vector>
 #include <list>
 #define ITE std::vector<glm::vec2>::iterator

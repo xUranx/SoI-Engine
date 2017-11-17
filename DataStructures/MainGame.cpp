@@ -1,6 +1,6 @@
 #include "MainGame.h"
-#include <Engine\Log.h>
-#include <Engine\ResourceManager.h>
+#include <Engine\Include\Log.h>
+#include <Engine\Include\ResourceManager.h>
 #include <random>
 #include <algorithm>
 #include <math.h>
@@ -46,7 +46,7 @@ void MainGame::run()
 bool MainGame::initShaders()
 {
 	bool success = true;
-	success = colorP.compileShaders("../SoI/Shaders/colorShading.vert", "../SoI/Shaders/colorShading.frag");
+	success = colorP.compileShaders("../SoI/Assets/Shaders/colorShading.vert", "../SoI/Assets/Shaders/colorShading.frag");
 	colorP.addAtribute("vertexPosition");
 	colorP.addAtribute("vertexColour");
 	colorP.addAtribute("vertexUV");
@@ -165,7 +165,7 @@ void MainGame::drawGame()
 	glUniformMatrix4fv(pLoc, 1, GL_FALSE, &(camMatrix[0][0]));
 
 	spriteBatch.begin();
-	//static GLTexture texture = ResourceManager::getTexture("Include/Textures/Block.png");
+	//static GLTexture texture = ResourceManager::getTexture("assets/Textures/Block.png");
 	ColourRGBA8 color = { 255, 255, 255, 255 };
 	//for (auto& b : boxes)
 	//{

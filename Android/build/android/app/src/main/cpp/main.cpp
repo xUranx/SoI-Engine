@@ -7,9 +7,8 @@
 #include <TestApplication.h>
 #include <AndroidWindow.h>
 #include <core/ElapsedTimer.h>
-#include <Engine/IOManager.h>
-#include <SDL.h>
 #include <IOManager.h>
+#include <SDL.h>
 
 //#include <win32/Engine/Camera2D.h>
 ///

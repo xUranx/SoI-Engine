@@ -1,8 +1,8 @@
 #pragma once
-#include <Engine/Window.h>
-#include <Engine/GLSLProgram.h>
-#include <Engine/SpriteBatch.h>
-#include <Engine/Camera2D.h>
+#include <Engine\Include\/Window.h>
+#include <Engine\Include\/GLSLProgram.h>
+#include <Engine\Include\/SpriteBatch.h>
+#include <Engine\Include\/Camera2D.h>
 
 enum GameState
 {

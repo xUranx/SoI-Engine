@@ -1,8 +1,8 @@
 #include "MainGame.h"
-#include <Engine\Log.h>
+#include <Engine\Include\Log.h>
 #include <iostream>
-#include <Engine\SpriteBatch.h>
-#include <Engine\ResourceManager.h>
+#include <Engine\Include\SpriteBatch.h>
+#include <Engine\Include\ResourceManager.h>
 #include <random>
 #include <time.h>
 using namespace Engine;
@@ -38,7 +38,7 @@ void MainGame::run()
 		std::uniform_real_distribution<float> yPos(10.0f, 40.0f);
 		std::uniform_real_distribution<float> size(0.5f, 2.5f);
 		const int num_box = 200;
-		GLTexture texture = ResourceManager::getTexture("Include/Textures/Block.png");
+		GLTexture texture = ResourceManager::getTexture("assets/Textures/Block.png");
 		ColourRGBA8 color;
 		for (int i = 0; i < num_box; i++)
 		{
@@ -49,12 +49,12 @@ void MainGame::run()
 		Ground.Fixedinit(world.get(), glm::vec2(0.0f, -18.0), dimes);
 
 		ball.init(world.get(), glm::vec2(0.0f, 0.0f), 5.0f);
-		GLTexture texturep = ResourceManager::getTexture("Include/Textures/Char.png");
+		GLTexture texturep = ResourceManager::getTexture("assets/Textures/Char.png");
 		player.init(world.get(), glm::vec2(6.0f,10.0f), color, texturep, glm::vec2(0.8f,3.0f));
 
 		spriteBatch.init();
 		UIspriteBatch.init();
-		spriteFont = new SpriteFont("Include/Fonts/font.ttf", 16);
+		spriteFont = new SpriteFont("assets/Fonts/font.ttf", 16);
 
 		cam2D.init(sWidth, sHeight);
 		hudCam.init(sWidth, sHeight);
@@ -79,7 +79,7 @@ void MainGame::run()
 bool MainGame::initShaders()
 {
 	bool success = true;
-	success = colorP.compileShaders("Shaders/colorShading.vert", "Shaders/colorShading.frag");
+	success = colorP.compileShaders("assets/Shaders/colorShading.vert", "assets/Shaders/colorShading.frag");
 	colorP.addAtribute("vertexPosition");
 	colorP.addAtribute("vertexColour");
 	colorP.addAtribute("vertexUV");
@@ -206,12 +206,12 @@ void MainGame::drawGame()
 	destRect.z = ball.getRadius()*2.0f;
 	destRect.w = ball.getRadius()*2.0f;
 	color.setColour(255.0f, 255.0f, 255.0f, 255.0f);
-	static GLTexture texture2 = ResourceManager::getTexture("Include/Textures/rock_type_planet.png");
+	static GLTexture texture2 = ResourceManager::getTexture("assets/Textures/rock_type_planet.png");
 	spriteBatch.draw(destRect, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture2.id, 1.0f, color);
 
 	/*glm::vec4 pos(0.0f, 0.0f, 50.0f, 50.0f);
 	glm::vec4 uv(0.0f, 0.0f, 1.0f, 1.0f);
-	static GLTexture texture = ResourceManager::getTexture("Include/Textures/Block.png");
+	static GLTexture texture = ResourceManager::getTexture("assets/Textures/Block.png");
 	GLuint id = texture.id;
 	spriteBatch.draw(pos, uv, id, 0.0f, color, 45.0f);*/
 

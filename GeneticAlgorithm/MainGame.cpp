@@ -1,12 +1,11 @@
 #include "MainGame.h"
-#include <Engine\Log.h>
-#include <Engine\ResourceManager.h>
+#include <Engine\Include\Log.h>
+#include <Engine\Include\ResourceManager.h>
 #include <random>
 #include <algorithm>
 #include <math.h>
 #include <iostream>
-#include <Engine\IOManager.h>
-
+#include <Engine\Include\IOManager.h>
 using namespace Engine;
 
 #define DEGTORAD 0.0174532925199432957f
@@ -22,7 +21,6 @@ MainGame::MainGame()
 MainGame::~MainGame()
 {
 }
-
 
 void MainGame::run()
 {
@@ -44,7 +42,7 @@ void MainGame::run()
 			spriteBatch.init();
 			spriteBatchTri.init();
 			UIspriteBatch.init();
-			spriteFont = new SpriteFont("Include/Fonts/OpenSansRegular.ttf", 32);
+			spriteFont = new SpriteFont("assets/Fonts/OpenSansRegular.ttf", 32);
 			dRender.init();
 			gLoop();
 		}
@@ -56,7 +54,7 @@ void MainGame::run()
 bool MainGame::initShaders()
 {
 	bool success = true;
-	success = colorP.compileShaders("Shaders/colorShading.vert", "Shaders/colorShading.frag");
+	success = colorP.compileShaders("assets/Shaders/colorShading.vert", "assets/Shaders/colorShading.frag");
 	colorP.addAtribute("vertexPosition");
 	colorP.addAtribute("vertexColour");
 	colorP.addAtribute("vertexUV");

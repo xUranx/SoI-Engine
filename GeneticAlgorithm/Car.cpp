@@ -2,7 +2,7 @@
 #include "CollisionListener.h"
 #include <random>
 #include <time.h>
-#include <Engine\ResourceManager.h>
+#include <Engine\Include\ResourceManager.h>
 #define DEGTORAD 0.0174532925199432957f
 #define RADTODEG 57.295779513082320876f
 
@@ -38,7 +38,7 @@ void Tire::init(b2World * world, float rad, float friction, Engine::ColourRGBA8 
 	fDef.filter.maskBits = entityCat::Walls;
 	body->CreateFixture(&fDef);
 	body->SetUserData(this);
-	texture = Engine::ResourceManager::getTexture("Include/Textures/tire2.png");
+	texture = Engine::ResourceManager::getTexture("assets/Textures/tire2.png");
 }
 
 void Tire::initJoint(b2Body* aBody, glm::vec4 pos, bool on)

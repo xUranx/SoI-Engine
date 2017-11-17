@@ -4,8 +4,8 @@
 #include <array>
 #include <list>
 #include <Box2D\Box2D.h>
-#include <Engine\DebugRenderer.h>
-#include <Engine\SpriteBatch.h>
+#include <Engine\Include\DebugRenderer.h>
+#include <Engine\Include\SpriteBatch.h>
 #include "poly2tri/poly2tri.h"
 template <typename T>
 using TwoD = std::vector<std::vector<T>>;

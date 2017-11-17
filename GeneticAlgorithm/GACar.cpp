@@ -3,7 +3,7 @@
 #include <random>
 #include <time.h>
 #include <algorithm>
-#include <Engine\Log.h>
+#include <Engine\Include\Log.h>
 
 GACar::GACar()
 {
@@ -18,7 +18,7 @@ void GACar::init(b2World * world)
 {
 	int popu;
 	//std::cout << "Population: "; std::cin >> popu;
-	setMembers(100);
+	setMembers(500);
 
 
 	srand(time(NULL));

@@ -1,8 +1,8 @@
 #pragma once
 #include <string>
 #include <vector>
-#include <Engine\SpriteFont.h>
-#include <Engine\SpriteBatch.h>
+#include <Engine\Include\SpriteFont.h>
+#include <Engine\Include\SpriteBatch.h>
 
 struct Member
 {

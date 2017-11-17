@@ -1,8 +1,8 @@
 #pragma once
 #include <Box2D\Box2D.h>
 #include <glm\glm.hpp>
-#include <Engine\Vertex.h>
-#include <Engine\Log.h>
+#include <Engine\Include\Vertex.h>
+#include <Engine\Include\Log.h>
 class Planet
 {
 public:

@@ -91,11 +91,10 @@ namespace engine
 		eglGetConfigAttrib(m_eglDisplay, config, EGL_NATIVE_VISUAL_ID, &format);
 		m_eglSurface = eglCreateWindowSurface(m_eglDisplay, config, window->getNativeWindow(), NULL);
 #ifndef WIN32
-		//EGLint contextAttribs[] = { EGL_CONTEXT_CLIENT_VERSION, 2, EGL_NONE, EGL_NONE };
+		EGLint contextAttribs[] = { EGL_CONTEXT_CLIENT_VERSION, 2, EGL_NONE, EGL_NONE };
 #else
 		EGLint contextAttribs[] = { EGL_CONTEXT_CLIENT_VERSION, 3, EGL_NONE, EGL_NONE };
 #endif
-		EGLint contextAttribs[] = { EGL_CONTEXT_CLIENT_VERSION, 3, EGL_NONE, EGL_NONE };
 		m_eglContext = eglCreateContext(m_eglDisplay, config, NULL, contextAttribs);
 
 		if (eglMakeCurrent(m_eglDisplay, m_eglSurface, m_eglSurface, m_eglContext) == EGL_FALSE) {
@@ -133,8 +132,6 @@ namespace engine
 			glViewport(0, 0, m_window->getWidth(), m_window->getHeight());
 		glClearColor(red, green, blue, 0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        GLuint vao;
-        glGenVertexArrays(1, &vao);
 	}
 	
 	

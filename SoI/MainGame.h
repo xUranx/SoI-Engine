@@ -1,12 +1,12 @@
 #pragma once
-#include <Engine/Window.h>
-#include <Engine/Sprite.h>
-#include <Engine/GLSLProgram.h>
-#include <Engine/Camera2D.h>
-#include <Engine/SpriteBatch.h>
-#include <Engine/SpriteFont.h>
-#include <Engine/DebugRenderer.h>
-#include <Engine/InputManager.h>
+#include <Engine\Include\/Window.h>
+#include <Engine\Include\/Sprite.h>
+#include <Engine\Include\/GLSLProgram.h>
+#include <Engine\Include\/Camera2D.h>
+#include <Engine\Include\/SpriteBatch.h>
+#include <Engine\Include\/SpriteFont.h>
+#include <Engine\Include\/DebugRenderer.h>
+#include <Engine\Include\/InputManager.h>
 #include <Box2D\Box2D.h>
 #include "Box.h"
 #include <vector>
@@ -30,7 +30,7 @@ private:
 	bool renderDebug = true;
 	int sWidth, sHeight;
 	void gLoop();
-	//std::vector<Engine::Sprite*> _sprite;
+	//std::vector<Engine\Include\::Sprite*> _sprite;
 	void drawGame();
 	void processInput();
 	void drawHUD();

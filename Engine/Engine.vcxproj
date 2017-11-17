@@ -70,12 +70,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir)Android\include\win32;$(SolutionDir)\Deps\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Android\include\win32;$(SolutionDir)\Deps\include;$(ProjectDir)Include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\Deps\lib\Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LibraryPath>$(SolutionDir)\Deps\lib\Debug;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(SolutionDir)Android\include\win32;$(SolutionDir)\Deps\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Android\include\win32;$(SolutionDir)\Deps\include;$(ProjectDir)Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -94,15 +94,8 @@
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32.lib;opengl32.lib;Box2D.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
     <PostBuildEvent>
-      <Command>copy $(OutDir)$(ProjectName).lib $(SolutionDir)Android\lib /Y
-copy $(OutDir)$(ProjectName).lib $(SolutionDir)Deps\lib\$(Configuration) /Y
-rename $(SolutionDir)Android\lib\$(ProjectName).lib lib$(ProjectName).lib /Y
-mkdir $(SolutionDir)Android\include\$(ProjectName)
-copy $(ProjectDir)*.h  $(SolutionDir)Android\include\$(ProjectName) /Y
-mkdir $(SolutionDir)Deps\include\$(ProjectName)
-copy $(ProjectDir)*.h  $(SolutionDir)Deps\include\$(ProjectName) /Y
-mkdir $(SolutionDir)Android\source\$(ProjectName)
-copy $(ProjectDir)*.cpp  $(SolutionDir)Android\source\$(ProjectName) /Y</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -135,13 +128,8 @@ copy $(ProjectDir)*.cpp  $(SolutionDir)Android\source\$(ProjectName) /Y</Command
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PostBuildEvent>
-      <Command>copy $(OutDir)$(ProjectName).lib $(SolutionDir)Android\lib /Y
-copy $(OutDir)$(ProjectName).lib $(SolutionDir)Deps\lib\$(Configuration) /Y
-rename $(SolutionDir)Android\lib\$(ProjectName).lib lib$(ProjectName).lib /Y
-mkdir $(SolutionDir)Android\include\$(ProjectName)
-copy $(ProjectDir)*.h  $(SolutionDir)Android\include\$(ProjectName) /Y
-mkdir $(SolutionDir)Android\source\$(ProjectName)
-copy $(ProjectDir)*.cpp  $(SolutionDir)Android\source\$(ProjectName) /Y</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -165,39 +153,39 @@ copy $(ProjectDir)*.cpp  $(SolutionDir)Android\source\$(ProjectName) /Y</Command
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Camera2D.cpp" />
-    <ClCompile Include="DebugRenderer.cpp" />
-    <ClCompile Include="ImageLoader.cpp" />
-    <ClCompile Include="InputManager.cpp" />
-    <ClCompile Include="IOManager.cpp" />
-    <ClCompile Include="Log.cpp" />
-    <ClCompile Include="GLSLProgram.cpp" />
-    <ClCompile Include="picoPNG.cpp" />
-    <ClCompile Include="ResourceManager.cpp" />
-    <ClCompile Include="Sprite.cpp" />
-    <ClCompile Include="SpriteBatch.cpp" />
-    <ClCompile Include="SpriteFont.cpp" />
-    <ClCompile Include="TextureCahce.cpp" />
-    <ClCompile Include="Window.cpp" />
+    <ClCompile Include="Source\Camera2D.cpp" />
+    <ClCompile Include="Source\DebugRenderer.cpp" />
+    <ClCompile Include="Source\GLSLProgram.cpp" />
+    <ClCompile Include="Source\ImageLoader.cpp" />
+    <ClCompile Include="Source\InputManager.cpp" />
+    <ClCompile Include="Source\IOManager.cpp" />
+    <ClCompile Include="Source\Log.cpp" />
+    <ClCompile Include="Source\picoPNG.cpp" />
+    <ClCompile Include="Source\ResourceManager.cpp" />
+    <ClCompile Include="Source\Sprite.cpp" />
+    <ClCompile Include="Source\SpriteBatch.cpp" />
+    <ClCompile Include="Source\SpriteFont.cpp" />
+    <ClCompile Include="Source\TextureCahce.cpp" />
+    <ClCompile Include="Source\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Camera2D.h" />
-    <ClInclude Include="Debug.h" />
-    <ClInclude Include="DebugRenderer.h" />
-    <ClInclude Include="GLTexture.h" />
-    <ClInclude Include="ImageLoader.h" />
-    <ClInclude Include="InputManager.h" />
-    <ClInclude Include="IOManager.h" />
-    <ClInclude Include="Log.h" />
-    <ClInclude Include="GLSLProgram.h" />
-    <ClInclude Include="picoPNG.h" />
-    <ClInclude Include="ResourceManager.h" />
-    <ClInclude Include="Sprite.h" />
-    <ClInclude Include="SpriteBatch.h" />
-    <ClInclude Include="SpriteFont.h" />
-    <ClInclude Include="TextureCahce.h" />
-    <ClInclude Include="Vertex.h" />
-    <ClInclude Include="Window.h" />
+    <ClInclude Include="Include\Camera2D.h" />
+    <ClInclude Include="Include\Debug.h" />
+    <ClInclude Include="Include\DebugRenderer.h" />
+    <ClInclude Include="Include\GLSLProgram.h" />
+    <ClInclude Include="Include\GLTexture.h" />
+    <ClInclude Include="Include\ImageLoader.h" />
+    <ClInclude Include="Include\InputManager.h" />
+    <ClInclude Include="Include\IOManager.h" />
+    <ClInclude Include="Include\Log.h" />
+    <ClInclude Include="Include\picoPNG.h" />
+    <ClInclude Include="Include\ResourceManager.h" />
+    <ClInclude Include="Include\Sprite.h" />
+    <ClInclude Include="Include\SpriteBatch.h" />
+    <ClInclude Include="Include\SpriteFont.h" />
+    <ClInclude Include="Include\TextureCahce.h" />
+    <ClInclude Include="Include\Vertex.h" />
+    <ClInclude Include="Include\Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
