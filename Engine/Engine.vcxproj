@@ -167,6 +167,7 @@ copy $(ProjectDir)Include\*.h $(SolutionDir)Android\include\Engine\Include  /Y</
     <ClCompile Include="Source\SpriteFont.cpp" />
     <ClCompile Include="Source\TextureCahce.cpp" />
     <ClCompile Include="Source\Window.cpp" />
+    <ClCompile Include="Source\TextInput.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Camera2D.h" />
@@ -186,6 +187,7 @@ copy $(ProjectDir)Include\*.h $(SolutionDir)Android\include\Engine\Include  /Y</
     <ClInclude Include="Include\TextureCahce.h" />
     <ClInclude Include="Include\Vertex.h" />
     <ClInclude Include="Include\Window.h" />
+    <ClInclude Include="Include\TextInput.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
