@@ -20,7 +20,7 @@ message("LIBS = ${A_LIBS}")
 add_library(native-activity SHARED
             ${ANDROID_SOURCES}
             ${ENGINE_SOURCES}
-             ${ENGINES_SOURCES}
+            ${ENGINES_SOURCES}
             ${OGL_SOURCES}
             ../../../../../../GraphicsTest/TestApplication.cpp
             main.cpp)
