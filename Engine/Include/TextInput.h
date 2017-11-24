@@ -5,8 +5,9 @@ namespace Engine
 {
 	enum InputMode
 	{
-		Active
-
+		All,
+		Numbers,
+		Letters
 	};
 	enum onEnd
 	{
@@ -17,11 +18,10 @@ namespace Engine
 	class TextInput
 	{
 	public:
-		TextInput();
-		~TextInput();
-		onEnd textInput(InputMode mode, std::string& buffer);
+		/*#Modes ALL, Numbers only, Letters only*/
+		static onEnd textInput(InputMode mode, std::string& buffer);
 	private:
-		SDL_Event ev;
+		static SDL_Event ev;
 	};
 }
 

@@ -4,7 +4,7 @@
           package="fi.kamk.SamiLap1.EngineApp"
           android:versionCode="1"
           android:versionName="1.0">
-  <uses-feature android:glEsVersion="0x00030000" android:required="true" />
+  <!--uses-feature android:glEsVersion="0x00030000" android:required="true" /-->
   <!-- This .apk has no Java code itself, so set hasCode to false. -->
   <application
       android:allowBackup="false"

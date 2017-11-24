@@ -19,7 +19,6 @@ struct AndroidEngine
     ASensorManager* sensorManager;
     const ASensor* accelerometerSensor;
     ASensorEventQueue* sensorEventQueue;
-    SDL_Window* gWindow;
 
     engine::Ref<engine::OGLGraphicsSystem> graphics;
     engine::Ref<engine::GraphicsApplication> application;
