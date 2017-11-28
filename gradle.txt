@@ -1,0 +1,4 @@
+ sourceSets {
+        // let gradle pack the shared library into apk
+        main.jniLibs.srcDirs = ['../../../alib']
+    }

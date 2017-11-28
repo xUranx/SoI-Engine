@@ -7,8 +7,10 @@
 #include <TestApplication.h>
 #include <AndroidWindow.h>
 #include <core/ElapsedTimer.h>
-#include <IOManager.h>
+//#include <IOManager.h>
 #include <SDL.h>
+#include <string>
+#include <cstring>
 
 //#include <win32/Engine/Camera2D.h>
 ///
@@ -46,7 +48,7 @@ int AndroidEngine::initDisplay()
     window->setApplication(application);
     frameTimer = new engine::ElapsedTimer();
     frameTimer->reset();
-    Engine::IOManager::m_asset = app->activity->assetManager;
+    //Engine::IOManager::m_asset = app->activity->assetManager;
     return 0;
 }
 

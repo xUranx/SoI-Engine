@@ -4,7 +4,7 @@ android {
     compileSdkVersion = 25
     buildToolsVersion = '26.0.2'
     defaultConfig {
-        applicationId = 'fi.kamk.SamiLap1.EngineApp'
+        applicationId = 'fi.kamk.SamiL.EngineApp'
         minSdkVersion 18
         targetSdkVersion 25
         ndk {
@@ -24,10 +24,7 @@ android {
                     'proguard-rules.pro'
         }
     }
-    sourceSets {
-        // let gradle pack the shared library into apk
-        main.jniLibs.srcDirs = ['../../../alib']
-    }
+
     externalNativeBuild {
         cmake {
             path 'src/main/cpp/CMakeLists.txt'
