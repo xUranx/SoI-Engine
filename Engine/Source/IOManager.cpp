@@ -60,7 +60,7 @@ namespace Engine {
 		}
         int fLenght = AAsset_getLength(file);
 		buffer.resize(fLenght);
-		AAsset_read(file,(char*)&(buffer[0]), BUFSIZ);
+		AAsset_read(file,(char*)&(buffer[0]), fLenght);
 		AAsset_close(file);
 		return true;
 	}
@@ -73,7 +73,7 @@ namespace Engine {
 		}
 		int fLenght = AAsset_getLength(file);
 		buffer.resize(fLenght);
-		AAsset_read(file,(char*)&(buffer[0]), BUFSIZ);
+		AAsset_read(file,(char*)&(buffer[0]), fLenght);
 		AAsset_close(file);
 		return true;
 	}

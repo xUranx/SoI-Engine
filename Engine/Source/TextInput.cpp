@@ -4,6 +4,11 @@
 #ifdef WIN32
 namespace Engine {
 
+	void TextBox::init(glm::vec2 dimms, glm::vec2 pos)
+	{
+		m_dimens = dimms;
+		m_pos = pos;
+	}
 	onEnd TextInput::textInput(InputMode mode, std::string & buffer)
 	{
 		onEnd send = Focus;
