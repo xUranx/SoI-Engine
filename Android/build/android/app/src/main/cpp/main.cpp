@@ -48,7 +48,6 @@ int AndroidEngine::initDisplay()
     window->setApplication(application);
     frameTimer = new engine::ElapsedTimer();
     frameTimer->reset();
-    Engine::IOManager::m_asset = app->activity->assetManager;
     return 0;
 }
 

@@ -11,7 +11,7 @@
 #include <math.h>
 //#include <Log.h>
 #include <Engine/Include/IOManager.h>
-
+#include <GLES3/gl3.h>
 namespace engine
 {
 
@@ -19,10 +19,10 @@ namespace engine
 		: GraphicsApplication(window, graphics)
 		, m_totalTime(0.0f), m_asset(asset)
 	{
+		Engine::IOManager::m_asset = asset;
         std::string file;
-        LOGI("Test");
         Engine::IOManager::readFileToBuffer("Shaders/colorShading.vert", file);
-        LOGI("File: /s" , file.c_str());
+        LOGI("File: %s" , file.c_str());
         file.clear();
 	}
 
