@@ -31,7 +31,7 @@ namespace Engine {
 
 		if (IOManager::readFileToBuffer(filepath, in) == false)
 		{
-			fatal_error("Failed to load PNG file  to buffer");
+			fatal_error("Failed to load PNG file  to buffer: " + filepath);
 		}
 
 		unsigned long width, height;

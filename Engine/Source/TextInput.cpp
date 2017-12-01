@@ -4,10 +4,11 @@
 #ifdef WIN32
 namespace Engine {
 
-	void TextBox::init(glm::vec2 dimms, glm::vec2 pos)
+	void TextBox::init(glm::vec2 dimms, glm::vec2 pos, InputMode mode)
 	{
 		m_dimens = dimms;
 		m_pos = pos;
+		m_mode = mode;
 	}
 	onEnd TextInput::textInput(InputMode mode, std::string & buffer)
 	{

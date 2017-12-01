@@ -33,10 +33,16 @@ android {
     compileSdkVersion 25
     productFlavors {
     }
+    sourceSets{
+        main{
+            jniLibs.srcDirs = ['../../../alib']
+        }
+    }
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:25.2.0'
-    compile 'com.android.support.constraint:constraint-layout:1.0.1'
+    compile fileTree(include: ['*.'], dir: 'libs')
+    compile 'com.android.support:appcompat-v7:25.4.0'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
 }

@@ -23,7 +23,7 @@
         <option name="MANIFEST_FILE_RELATIVE_PATH" value="/src/main/AndroidManifest.xml" />
         <option name="RES_FOLDER_RELATIVE_PATH" value="/src/main/res" />
         <option name="RES_FOLDERS_RELATIVE_PATH" value="file://$MODULE_DIR$/src/main/res" />
-        <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/src/main/Assets" />
+        <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/src/main/assets" />
       </configuration>
     </facet>
   </component>
@@ -31,9 +31,6 @@
     <output url="file://$MODULE_DIR$/build/intermediates/classes/debug" />
     <output-test url="file://$MODULE_DIR$/build/intermediates/classes/test/debug" />
     <exclude-output />
-    <content url="file://$USER_HOME$/AppData/Local/Android/Sdk/ndk-bundle/sources/android/native_app_glue">
-      <sourceFolder url="file://$USER_HOME$/AppData/Local/Android/Sdk/ndk-bundle/sources/android/native_app_glue" isTestSource="false" />
-    </content>
     <content url="file://$MODULE_DIR$/../../../GraphicsTest">
       <sourceFolder url="file://$MODULE_DIR$/../../../GraphicsTest" isTestSource="false" />
     </content>
@@ -80,7 +77,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/androidTestDebug/shaders" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/res" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/src/main/Assets" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/assets" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/aidl" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/jni" isTestSource="false" />
@@ -122,6 +119,7 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/tmp" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/transforms" />
       <excludeFolder url="file://$MODULE_DIR$/build/outputs" />
+      <excludeFolder url="file://$MODULE_DIR$/build/reports" />
       <excludeFolder url="file://$MODULE_DIR$/build/tmp" />
     </content>
     <content url="file://$MODULE_DIR$/../../../source">
@@ -136,19 +134,22 @@
     <content url="file://$MODULE_DIR$/../../../../Engine/Source">
       <sourceFolder url="file://$MODULE_DIR$/../../../../Engine/Source" isTestSource="false" />
     </content>
+    <content url="file://$USER_HOME$/ndk-bundle/sources/android/native_app_glue">
+      <sourceFolder url="file://$USER_HOME$/ndk-bundle/sources/android/native_app_glue" isTestSource="false" />
+    </content>
     <orderEntry type="jdk" jdkName="Android API 25 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="com.android.support:support-media-compat-25.2.0" level="project" />
-    <orderEntry type="library" name="com.android.support:support-compat-25.2.0" level="project" />
-    <orderEntry type="library" name="com.android.support:support-annotations:25.2.0@jar" level="project" />
-    <orderEntry type="library" name="com.android.support.constraint:constraint-layout-solver:1.0.1@jar" level="project" />
-    <orderEntry type="library" name="com.android.support:support-core-utils-25.2.0" level="project" />
-    <orderEntry type="library" name="com.android.support:animated-vector-drawable-25.2.0" level="project" />
-    <orderEntry type="library" name="com.android.support.constraint:constraint-layout-1.0.1" level="project" />
-    <orderEntry type="library" name="com.android.support:support-core-ui-25.2.0" level="project" />
-    <orderEntry type="library" name="com.android.support:appcompat-v7-25.2.0" level="project" />
-    <orderEntry type="library" name="com.android.support:support-vector-drawable-25.2.0" level="project" />
-    <orderEntry type="library" name="com.android.support:support-v4-25.2.0" level="project" />
-    <orderEntry type="library" name="com.android.support:support-fragment-25.2.0" level="project" />
+    <orderEntry type="library" name="com.android.support:animated-vector-drawable-25.4.0" level="project" />
+    <orderEntry type="library" name="com.android.support:support-annotations:25.4.0@jar" level="project" />
+    <orderEntry type="library" name="com.android.support.constraint:constraint-layout-solver:1.0.2@jar" level="project" />
+    <orderEntry type="library" name="com.android.support:support-core-utils-25.4.0" level="project" />
+    <orderEntry type="library" name="com.android.support.constraint:constraint-layout-1.0.2" level="project" />
+    <orderEntry type="library" name="com.android.support:support-v4-25.4.0" level="project" />
+    <orderEntry type="library" name="com.android.support:support-vector-drawable-25.4.0" level="project" />
+    <orderEntry type="library" name="com.android.support:support-fragment-25.4.0" level="project" />
+    <orderEntry type="library" name="com.android.support:support-media-compat-25.4.0" level="project" />
+    <orderEntry type="library" name="com.android.support:appcompat-v7-25.4.0" level="project" />
+    <orderEntry type="library" name="com.android.support:support-core-ui-25.4.0" level="project" />
+    <orderEntry type="library" name="com.android.support:support-compat-25.4.0" level="project" />
   </component>
 </module>

@@ -123,7 +123,7 @@ void MainGame::gLoop()
 				dim[2].x = 1.5f;
 				dim[2].y = -2.0f;
 				ship.init(world.get(), glm::vec2(21, 5), dim, false, 0.4f);
-				GLTexture texture = ResourceManager::getTexture("../SoI/Include/Textures/Block.png");
+				GLTexture texture = ResourceManager::getTexture("Assets/Textures/Block.png");
 				ColourRGBA8 color;
 				//box.init(world.get(), glm::vec2(3.0f, 0.0f),texture,color, glm::vec2(5, 5));
 				

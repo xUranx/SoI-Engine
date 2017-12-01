@@ -19,11 +19,17 @@ namespace Engine
 	class TextBox
 	{
 	public:
-		void init(glm::vec2 dimms, glm::vec2 pos);
+		void init(glm::vec2 dimms, glm::vec2 pos, InputMode mode);
+
+		onEnd update();
+
+		//#Give buffer
+		void getText(std::string& buff) { buff = text; }
 	private:
 		glm::vec2 m_dimens;
 		glm::vec2 m_pos;
 		std::string& text;
+		InputMode m_mode;
 	};
 	class TextInput
 	{

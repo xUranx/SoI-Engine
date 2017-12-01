@@ -37,6 +37,7 @@ void Box::Fixedinit(b2World * world, const glm::vec2 position, const glm::vec2 d
 {
 	dimens = dimensions;
 	b2BodyDef bDef;
+	bDef.type = b2_staticBody;
 	bDef.position.Set(position.x, position.y);
 
 	body = world->CreateBody(&bDef);
@@ -44,7 +45,12 @@ void Box::Fixedinit(b2World * world, const glm::vec2 position, const glm::vec2 d
 	b2PolygonShape bShape;
 	bShape.SetAsBox(dimensions.x / 2.0f, dimensions.y / 2.0f);
 
-	body->CreateFixture(&bShape, 0.0f);
+	b2FixtureDef fDef;
+	fDef.shape = &bShape;
+	fDef.density = 1.0f;
+	fDef.friction = 0.3f;
+
+	body->CreateFixture(&fDef);
 }
 
 void Box::draw(Engine::SpriteBatch& sBatch)

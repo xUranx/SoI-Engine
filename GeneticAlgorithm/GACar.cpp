@@ -18,7 +18,7 @@ void GACar::init(b2World * world)
 {
 	int popu;
 	//std::cout << "Population: "; std::cin >> popu;
-	setMembers(500);
+	setMembers(300);
 
 
 	srand(time(NULL));

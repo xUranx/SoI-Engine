@@ -3,9 +3,7 @@
 #include <math.h>
 namespace Engine {
 
-#ifndef WIN32
-#define 
-#endif
+
 	Glyhp::Glyhp(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint Texture, float Depth, const ColourRGBA8& colour) :texture(Texture), depth(Depth)
 	{
 		topLeft.colour = colour;
