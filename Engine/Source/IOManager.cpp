@@ -2,7 +2,6 @@
 #ifndef WIN32
 #include <core/Log.h>
 #include "android/asset_manager.h"
-#include "Log.h"
 #endif
 #ifdef WIN32
 #include <fstream>
