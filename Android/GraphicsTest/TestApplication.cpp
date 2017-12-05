@@ -20,10 +20,7 @@ namespace engine
 		, m_totalTime(0.0f), m_asset(asset)
 	{
 		Engine::IOManager::m_asset = asset;
-        std::string file;
-        Engine::IOManager::readFileToBuffer("Shaders/colorShading.vert", file);
-        LOGI("File: %s" , file.c_str());
-        file.clear();
+        sBatch.init();
 	}
 
 

@@ -61,20 +61,30 @@ namespace Engine {
 		shaderProc.addAtribute("vertexPos");
 		shaderProc.addAtribute("vertexColor");
 		shaderProc.linkShaders();
-
+#ifdef WIN32
 		glGenVertexArrays(1, &vao);
+		glBindVertexArray(vao);
+#endif
+
 		glGenBuffers(1, &vbo);
 		glGenBuffers(1, &ibo);
-
-		glBindVertexArray(vao);
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 
 		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(DebugVertex), (void *)offsetof(DebugVertex, position));
 		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(DebugVertex), (void *)offsetof(DebugVertex, position));
 		glVertexAttribPointer(1, 4,GL_UNSIGNED_BYTE, GL_TRUE, sizeof(DebugVertex), (void *)offsetof(DebugVertex, colour));
+#ifdef WIN32
 		glBindVertexArray(0);
+#else
+		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(1);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+#endif // WIN32
+
+		
 	}
 
 	void DebugRenderer::end()
@@ -190,9 +200,25 @@ namespace Engine {
 		glUniformMatrix4fv(pLoc, 1, GL_FALSE, &(pMat[0][0]));
 		
 		glLineWidth(lineWidth);
+#ifdef WIN32
 		glBindVertexArray(vao);
+#else
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+
+		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(1);
+#endif // WIN32
+
 		glDrawElements(GL_LINES, numElements, GL_UNSIGNED_INT, 0);
+#ifdef WIN32
 		glBindVertexArray(0);
+#else
+		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(1);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+#endif // WIN32
 
 		shaderProc.unuse();
 	}
@@ -201,7 +227,9 @@ namespace Engine {
 	{
 		if (vao)
 		{
+#ifdef WIN32
 			glDeleteVertexArrays(1, &vao);
+#endif // WIN32
 		}
 		if (vbo)
 		{

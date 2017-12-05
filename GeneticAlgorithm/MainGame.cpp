@@ -98,6 +98,11 @@ void MainGame::gLoop()
 			{
 				inputManager.releaseKey(e.key.keysym.sym);
 			}
+			if (e.type = SDL_MOUSEMOTION)
+			{
+				int mouseX = e.motion.x;
+				int mouseY = e.motion.y;
+			}
 		}
 		
 		if (inputManager.isKeyPressed(SDLK_ESCAPE)) gMode = Exit;

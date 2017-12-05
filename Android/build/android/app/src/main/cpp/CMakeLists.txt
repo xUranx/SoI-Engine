@@ -14,7 +14,7 @@ file(GLOB ENGINES_SOURCES ../../../../../../../Engine/Source/*.cpp)
 
 file(GLOB OGL_SOURCES ../../../../../../source/OGL/*.cpp)
 
-file(GLOB A_LIBS ../../../../../../alib/*.so)
+#file(GLOB A_LIBS ../../../../../../alib/*.so)
 #message("LIBS = ${A_LIBS}")
 
 add_library(native-activity SHARED
@@ -44,7 +44,7 @@ target_link_libraries(native-activity
                       GLESv3
                       z
                       dl
-                      ${A_LIBS}
+                      #${A_LIBS}
                       log)
 
 

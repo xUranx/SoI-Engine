@@ -10,6 +10,7 @@
 #include <graphics/GraphicsApplication.h>
 #include <core/Log.h>
 #include <android/asset_manager.h>
+#include <Engine/Include/SpriteBatch.h>
 
 namespace engine
 {
@@ -31,8 +32,9 @@ namespace engine
 		virtual void render(Window* window, GraphicsSystem* graphics);
 
 	private:
-		float						m_totalTime;
+		float m_totalTime;
 		AAssetManager* m_asset;
+		Engine::SpriteBatch sBatch;
 	};
 
 }

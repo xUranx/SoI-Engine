@@ -182,16 +182,32 @@ namespace Engine {
 
 	void SpriteBatch::renderBatch()
 	{
+#ifdef WIN32
 		glBindVertexArray(vao);
+#else
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
+		glEnableVertexAttribArray(0);
+
+		glEnableVertexAttribArray(1);
+
+		glEnableVertexAttribArray(2);
+#endif
 		for (int i = 0; i < rBatch.size(); i++)
 		{
 			glBindTexture(GL_TEXTURE_2D, rBatch[i].texture);
 
 			glDrawArrays(GL_TRIANGLES, rBatch[i].offset, rBatch[i].numVertices);
 		}
-
+#ifdef WIN32
 		glBindVertexArray(0);
+#else
+		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(1);
+		glDisableVertexAttribArray(2);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+#endif // WIN32
+
 
 	}
 
@@ -317,12 +333,13 @@ namespace Engine {
 	//private
 	void SpriteBatch::createVertxArray()
 	{
+#ifdef WIN32
 		if (vao == 0)
 		{
 			glGenVertexArrays(1, &vao);
 		}
 		glBindVertexArray(vao);
-
+#endif
 		if (vbo == 0)
 		{
 			glGenBuffers(1, &vbo);
@@ -342,8 +359,14 @@ namespace Engine {
 
 		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, uv));
 
+#ifdef WIN32
 		glBindVertexArray(0);
-
+#else
+		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(1);
+		glDisableVertexAttribArray(2);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+#endif
 
 	}
 	void SpriteBatch::sortGLyph()
