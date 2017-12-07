@@ -18,7 +18,7 @@ void GACar::init(b2World * world)
 {
 	int popu;
 	//std::cout << "Population: "; std::cin >> popu;
-	setMembers(300);
+	setMembers(100);
 
 
 	srand(time(NULL));
@@ -49,7 +49,6 @@ void GACar::init(b2World * world)
 			Tire t;
 			t.init(world, rad, 0.5, color);
 			int radd = rad * 10;
-			memberr->car.Tinit(t ,j);
 			destRect.x = (float)(rand() % a - a / 2) / 10;
 			destRect.y = (float)(rand() % b - b / 2) / 10;
 			destRect.z = (float)(rand() % radd - radd/2) / 10;
@@ -59,7 +58,8 @@ void GACar::init(b2World * world)
 				on = true;
 			else
 				on = false;
-			memberr->car.getTire(j).initJoint(memberr->car.getBody(), destRect, on);
+			t.initJoint(memberr->car.getBody(), destRect, on);
+			memberr->car.Tinit(t ,j);
 		}
 		memberr->fitness = 0;
 		Members[i] = memberr;
@@ -204,24 +204,24 @@ void GACar::run(Engine::Camera2D& cam2d)
 				memberr->car.setTires(Parents[i + ran].car.getTireCount());
 				int a = destRect.z * 10;
 				int b = destRect.w * 10;
-				for (int j = 0; j < memberr->car.getTireCount(); j++)
+				for (int l = 0; l < memberr->car.getTireCount(); l++)
 				{
-					color = Parents[i + ran].car.getTire(j).getColour();
-					float rad = Parents[i + ran].car.getTire(j).getRadius();
+					color = Parents[i + ran].car.getTire(l).getColour();
+					float rad = Parents[i + ran].car.getTire(l).getRadius();
 					Tire t;
 					t.init(Parents[i].car.getBody()->GetWorld(), rad, 0.5, color);
 					int radd = rad * 10;
-					memberr->car.Tinit(t, j);
-					destRect.x = Parents[i + ran].car.getTire(j).getJoint()->GetAnchorA().x;
-					destRect.y = Parents[i + ran].car.getTire(j).getJoint()->GetAnchorA().y;
-					destRect.z = Parents[i + ran].car.getTire(j).getJoint()->GetAnchorB().x;
-					destRect.w = Parents[i + ran].car.getTire(j).getJoint()->GetAnchorB().y;
+					destRect.x = Parents[i + ran].car.getTire(l).getJoint()->GetAnchorA().x;
+					destRect.y = Parents[i + ran].car.getTire(l).getJoint()->GetAnchorA().y;
+					destRect.z = Parents[i + ran].car.getTire(l).getJoint()->GetAnchorB().x;
+					destRect.w = Parents[i + ran].car.getTire(l).getJoint()->GetAnchorB().y;
 					bool on;
-					on = Parents[i + ran].car.getTire(j).getJoint()->IsMotorEnabled();
-					memberr->car.getTire(j).initJoint(memberr->car.getBody(), destRect, on);
+					on = Parents[i + ran].car.getTire(l).getJoint()->IsMotorEnabled();
+					t.initJoint(memberr->car.getBody(), destRect, on);
+					memberr->car.Tinit(t, l);
 				}
 				memberr->fitness = 0;
-				Members[i] = memberr;
+				Members[i+j] = memberr;
 			}
 			
 			
@@ -236,11 +236,11 @@ void GACar::run(Engine::Camera2D& cam2d)
 			}
 
 			Parents[i].car.getBody()->GetWorld()->DestroyBody(Parents[i].car.getBody());
-			delete(&Parents[i].car);
 			Parents[i].fitness = 0;
+			Parents.clear();
 		}
+		Engine::Message("Mating Done");
 	}
-
 }
 
 void GACar::draw(Engine::SpriteBatch & sBatch)
