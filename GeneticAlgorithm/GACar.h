@@ -26,7 +26,13 @@ private:
 		Car car;
 		int fitness;
 	};
-	int ch = -60*5;
+	struct Parent
+	{
+		glm::vec2 dimens;
+		std::vector<glm::vec4> joints;
+		std::vector<glm::vec4> collours;
+	};
+	int ch = -60*4;
 	int higFit = 0;
 	int m = 0;
 	int sleep = 0;
