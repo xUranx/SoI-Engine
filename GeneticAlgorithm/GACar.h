@@ -29,8 +29,12 @@ private:
 	struct Parent
 	{
 		glm::vec2 dimens;
+		int tirecount;
+		std::vector<bool> motor;
+		std::vector<float> rads;
 		std::vector<glm::vec4> joints;
-		std::vector<glm::vec4> collours;
+		std::vector<Engine::ColourRGBA8> collours;
+		b2World* m_world;
 	};
 	int ch = -60*4;
 	int higFit = 0;
@@ -38,7 +42,7 @@ private:
 	int sleep = 0;
 	void setMembers(int pop) { Members.clear(); Members.resize(pop); }
 	std::vector<Member*> Members;
-	std::vector<Member> Parents;
+	std::vector<Parent> Parents;
 	bool SeqFound;
 	int mutRate = 10;
 	int generation = 0;

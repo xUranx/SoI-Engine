@@ -130,7 +130,7 @@ void GACar::run(Engine::Camera2D& cam2d)
 	if (sleep >= Members.size())
 	{
 		//Engine::fatal_error("End");
-		std::sort(Members.begin(), Members.end(), 
+		std::sort(Members.begin(), Members.end(),
 			[](Member* a, Member* b) {return a->fitness > b->fitness; });
 		/*int tF = 0;
 		for (auto& b : Members)
@@ -141,43 +141,54 @@ void GACar::run(Engine::Camera2D& cam2d)
 		for (int i = 0;i < Members.size(); i++)
 		{
 			//if (med < Members[i]->fitness)
-			if (i < Members.size()/2)
+			if (i < Members.size() / 2)
 			{
-				Parents.push_back(*Members[i]);
-				delete(&Members[i]->car);
-				Members[i]->fitness = 0;
-				
-			}
-			else
-			{
-				int tC = Members[i]->car.getTireCount();
-				for (int j = 0; j < tC; j++)
+				Parent parent;
+				parent.m_world = Members[i]->car.getBody()->GetWorld();
+				parent.dimens = Members[i]->car.getDimens();
+				parent.tirecount = Members[i]->car.getTireCount();
+				parent.collours.resize(parent.tirecount + 1);
+				parent.rads.resize(parent.tirecount);
+				parent.joints.resize(parent.tirecount);
+				parent.motor.resize(parent.tirecount);
+				parent.collours[0] = Members[i]->car.getColour();
+				for (int j = 0; j < parent.tirecount; j++)
+					parent.collours[j + 1] = Members[i]->car.getTire(j).getColour();
+				for (int j = 0; j < parent.tirecount; j++)
+					parent.rads[j] = Members[i]->car.getTire(j).getRadius();
+				for (int j = 0; j < parent.tirecount; j++)
 				{
-					Members[i]->car.getBody()->GetWorld()->DestroyBody(Members[i]->car.getTire(j).getBody());
+					parent.joints[j].x = Members[i]->car.getTire(j).getJoint()->GetLocalAnchorA().x;
+					parent.joints[j].y = Members[i]->car.getTire(j).getJoint()->GetLocalAnchorA().y;
+					parent.joints[j].z = Members[i]->car.getTire(j).getJoint()->GetLocalAnchorB().x;
+					parent.joints[j].w = Members[i]->car.getTire(j).getJoint()->GetLocalAnchorB().y;
 				}
-				
-				Members[i]->car.getBody()->GetWorld()->DestroyBody(Members[i]->car.getBody());
-				delete(&Members[i]->car);
-				Members[i]->fitness = 0;
+				for (int j = 0; j < parent.tirecount; j++)
+					parent.motor[j] = Members[i]->car.getTire(j).getJoint()->IsMotorEnabled();
+				Parents.push_back(parent);
 			}
-		}
-		if(Parents.size() % 2)
-		{
-			int tC = Parents[Parents.size()-1].car.getTireCount();
+			int tC = Members[i]->car.getTireCount();
 			for (int j = 0; j < tC; j++)
-				Parents[Parents.size() - 1].car.getBody()->GetWorld()->
-				DestroyBody(Parents[Parents.size() - 1].car.getTire(j).getBody());
-			Parents.erase(Parents.end()-1);
+			{
+				Members[i]->car.getBody()->GetWorld()->DestroyBody(Members[i]->car.getTire(j).getBody());
+			}
+
+			Members[i]->car.getBody()->GetWorld()->DestroyBody(Members[i]->car.getBody());
+			delete(&Members[i]->car);
+			Members[i]->fitness = 0;
+
 		}
+		if (Parents.size() % 2)
+			Parents.erase(Parents.end() - 1);
 		srand(time(NULL));
 		int pop = 0;
 		int par = Parents.size();
 		int k = floor(Members.size() / Parents.size());
 		int r = Members.size() - Parents.size()*k;
 		int mems = 0;
-		for (int i = 0; i < par; i+=2)
+		for (int i = 0; i < par; i += 2)
 		{
-			
+
 			/*int p1 = rand() % Parents.size();
 			int p2 = rand() % Parents.size();
 			while (p1 == p2)
@@ -196,53 +207,39 @@ void GACar::run(Engine::Camera2D& cam2d)
 				glm::vec4 destRect;
 				destRect.x = 0;
 				destRect.y = -14;
-				destRect.z = Parents[i+ran].car.getDimens().x;
-				destRect.w = Parents[i+ran].car.getDimens().y;
-				Engine::ColourRGBA8 color = Parents[i].car.getColour();;
-				
-				memberr->car.init(Parents[i+ran].car.getBody()->GetWorld(), destRect, color);
+				destRect.z = Parents[i + ran].dimens.x;
+				destRect.w = Parents[i + ran].dimens.y;
+				Engine::ColourRGBA8 color = Parents[i + ran].collours[0];
+
+				memberr->car.init(Parents[i + ran].m_world, destRect, color);
 				ran = rand() % 2;
-				memberr->car.setTires(Parents[i+ran].car.getTireCount());
+				memberr->car.setTires(Parents[i + ran].tirecount);
 				int a = destRect.z * 10;
 				int b = destRect.w * 10;
-				for (int l = 0; l < Parents[i+ran].car.getTireCount(); l++)
+				for (int l = 0; l < Parents[i + ran].tirecount; l++)
 				{
-					color = Parents[i+ran].car.getTire(l).getColour();
-					float rad = Parents[i+ran].car.getTire(l).getRadius();
+					color = Parents[i + ran].collours[l + 1];
+					float rad = Parents[i + ran].rads[l];
 					Tire t;
-					t.init(Parents[i].car.getBody()->GetWorld(), rad, 0.5, color);
+					t.init(Parents[i].m_world, rad, 0.5, color);
 					int radd = rad * 10;
-					destRect.x = Parents[i+ran].car.getTire(l).getJoint()->GetLocalAnchorA().x;
-					destRect.y = Parents[i+ran].car.getTire(l).getJoint()->GetLocalAnchorA().y;
-					destRect.z = Parents[i+ran].car.getTire(l).getJoint()->GetLocalAnchorB().x;
-					destRect.w = Parents[i].car.getTire(l).getJoint()->GetLocalAnchorB().y;
+					destRect = Parents[i + ran].joints[l];
 					bool on;
-					on = Parents[i+ran].car.getTire(l).getJoint()->IsMotorEnabled();
+					on = Parents[i + ran].motor[l];
 					t.initJoint(memberr->car.getBody(), destRect, on);
 					memberr->car.Tinit(t, l);
 				}
 				memberr->fitness = 0;
 				Members[mems++] = memberr;
 			}
-			
-			
+
+
 		}
 		Engine::Message("Mating Done");
-		for (int i = 0; i < Parents.size(); i++)
-		{
-			int tC = Parents[i].car.getTireCount();
-			for (int j = 0; j < tC; j++)
-			{
-				Parents[i].car.getBody()->GetWorld()->DestroyBody(Parents[i].car.getTire(j).getBody());
-			}
-
-			Parents[i].car.getBody()->GetWorld()->DestroyBody(Parents[i].car.getBody());
-			Parents[i].fitness = 0;
-		}
 		Parents.clear();
 		sleep = 0;
 		cam2d.setPos(glm::vec2(Members[m]->car.getBody()->GetPosition().x,
-			Members[m]->car.getBody()->GetPosition().y));
+			Members[0]->car.getBody()->GetPosition().y));
 		ch = -60 * 4;
 		generation++;
 	}
