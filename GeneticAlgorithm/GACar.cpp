@@ -4,7 +4,7 @@
 #include <time.h>
 #include <algorithm>
 #include <Engine\Include\Log.h>
-
+#include <Engine\Include\ResourceManager.h>
 GACar::GACar()
 {
 }
@@ -18,8 +18,7 @@ void GACar::init(b2World * world)
 {
 	int popu;
 	//std::cout << "Population: "; std::cin >> popu;
-	setMembers(300);
-
+	setMembers(200);
 
 	srand(time(NULL));
 	for (int i = 0; i < Members.size(); i++)
@@ -138,10 +137,11 @@ void GACar::run(Engine::Camera2D& cam2d)
 			tF += b->fitness;
 		}
 		int med = tF / Members.size();*/
-		for (int i = 0;i < Members.size(); i++)
+		int memsize = Members.size();
+		for (int i = 0;i < memsize; i++)
 		{
 			//if (med < Members[i]->fitness)
-			if (i < Members.size() / 2)
+			if (i < memsize / 2)
 			{
 				Parent parent;
 				parent.m_world = Members[i]->car.getBody()->GetWorld();

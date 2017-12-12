@@ -19,14 +19,14 @@ public:
 	float getRadius() const { return radius; }
 	void setJoint(b2RevoluteJoint* revoJoint) { joint = revoJoint; }
 	void update();
-
 	void draw(Engine::SpriteBatch& sBatch);
+	void setTexture(Engine::GLTexture _texture) { texture = _texture; }
 private:
+	Engine::GLTexture texture;
 	b2RevoluteJoint* joint;
 	b2Body* body;
 	Engine::ColourRGBA8 colour;
 	float radius;
-	Engine::GLTexture texture;
 };
 
 
