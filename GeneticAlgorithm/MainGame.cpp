@@ -24,8 +24,7 @@ MainGame::~MainGame()
 
 void MainGame::run()
 {
-	std::string sysName = SDL_GetPlatform();
-	Message(sysName);
+	
 	if (!window.init("Genetic Algorithm", sWidth, sHeight, 0))
 	{
 		fatal_error("Failed to Init");
@@ -53,6 +52,8 @@ void MainGame::run()
 
 bool MainGame::initShaders()
 {
+	std::string sysName = SDL_GetPlatform();
+	Message(sysName);
 	bool success = true;
 	success = colorP.compileShaders("assets/Shaders/colorShading.vert", "assets/Shaders/colorShading.frag");
 	colorP.addAtribute("vertexPosition");
@@ -65,6 +66,7 @@ bool MainGame::initShaders()
 
 void MainGame::gLoop()
 {
+	
 	//Main loop flag
 	bool init = true;
 	renderDebug = true;

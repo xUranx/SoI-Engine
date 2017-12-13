@@ -28,7 +28,7 @@ namespace Engine {
 		}
 		else
 		{
-			Message("Used Cahced Texture");
+			//Message("Used Cahced Texture");
 			return it->second;
 		}
 

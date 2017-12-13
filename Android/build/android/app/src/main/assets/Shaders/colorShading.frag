@@ -1,4 +1,4 @@
-
+precision mediump float;
 varying vec4 fragmentColour;
 varying vec2 fragmentPosition;
 varying vec2 fragmentUV;
@@ -12,7 +12,7 @@ uniform sampler2D Textu;
 void main()
 {
 	
-	vec4 textureColour = texture(Textu, fragmentUV);
+	vec4 textureColour = texture2D(Textu, fragmentUV);
 	if(textureColour == vec4(0,0,0,1))
 	{
 		colour = fragmentColour;
