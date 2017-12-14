@@ -24,30 +24,31 @@ MainGame::~MainGame()
 
 void MainGame::run()
 {
-	
+#ifdef WIN32
 	if (!window.init("Genetic Algorithm", sWidth, sHeight, 0))
 	{
 		fatal_error("Failed to Init");
 	}
-	else
-	{
+#endif
 		//Load media
-		if (!initShaders())
-		{
-			fatal_error("Failed to init shaders");
-		}
-		else
-		{
-			spriteBatch.init();
-			spriteBatchTri.init();
-			UIspriteBatch.init();
-			spriteFont = new SpriteFont("assets/Fonts/OpenSansRegular.ttf", 32);
-			dRender.init();
-			gLoop();
-		}
+	if (!initShaders())
+	{
+		fatal_error("Failed to init shaders");
 	}
+			
+		spriteBatch.init();
+		//spriteBatchTri.init();
+		UIspriteBatch.init();
+#ifdef WIN32
+		spriteFont = new SpriteFont("assets/Fonts/OpenSansRegular.ttf", 32);
+#endif // WIN32
+		//dRender.init();
+		gLoop();
+	
 	//Free resources and close SDL
+#ifdef WIN32
 	window.close();
+#endif // WIN32
 }
 
 bool MainGame::initShaders()
@@ -69,7 +70,7 @@ void MainGame::gLoop()
 	
 	//Main loop flag
 	bool init = true;
-	renderDebug = true;
+	//renderDebug = true;
 	cam2D.init(sWidth,sHeight);
 	hudCam.init(sWidth, sHeight);
 	//cam2D.setPos(cam2D.getPos() + glm::vec2(sWidth / 2.0f, sHeight / 2.0f));
@@ -83,6 +84,7 @@ void MainGame::gLoop()
 	//While application is running
 	while (gMode != Exit)
 	{
+#ifdef WIN32
 		window.fpsCounter();
 		//Handle events on queue
 		while (SDL_PollEvent(&e) != 0)
@@ -108,7 +110,7 @@ void MainGame::gLoop()
 		}
 		
 		if (inputManager.isKeyPressed(SDLK_ESCAPE)) gMode = Exit;
-
+#endif // WIN32
 		switch (gMode)
 		{
 		case Game:
@@ -191,6 +193,8 @@ void MainGame::gLoop()
 		drawGame();
 	}
 }
+#ifdef WIN32
+
 
 void MainGame::processInput()
 {
@@ -223,6 +227,7 @@ void MainGame::processInput()
 			ship.getBody()->SetTransform(ship.getBody()->GetPosition(), 0);
 	}
 }
+#endif // WIN32
 
 void MainGame::drawGame()
 {
@@ -279,7 +284,9 @@ void MainGame::drawGame()
 	}
 	spriteBatch.end();
 	spriteBatch.renderBatch();
+#ifdef WIN32
 	drawHUD();
+#endif // WIN32
 	glBindTexture(GL_TEXTURE_2D, 0);
 	colorP.unuse();
 
@@ -300,6 +307,8 @@ bool MainGame::compFrontToBack(glm::vec4* a, glm::vec4* b)
 { 
 	return (a->w < b->w); 
 }
+#ifdef WIN32
+
 
 void MainGame::drawHUD()
 {
@@ -335,3 +344,4 @@ void MainGame::drawHUD()
 	UIspriteBatch.end();
 	UIspriteBatch.renderBatch();
 }
+#endif // WIN32

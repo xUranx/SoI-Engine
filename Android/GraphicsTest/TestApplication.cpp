@@ -26,6 +26,10 @@ namespace engine
         Engine::GLSLProgram colorP;
         Engine::IOManager::m_asset = asset;
         colorP.compileShaders("Shaders/colorShading.vert", "Shaders/colorShading.frag");
+		colorP.addAtribute("vertexPosition");
+		colorP.addAtribute("vertexColour");
+		colorP.addAtribute("vertexUV");
+		colorP.linkShaders();
         sBatch.init();
         Engine::GLTexture texture = Engine::ResourceManager::getTexture("Textures/Block.png");
 	}
