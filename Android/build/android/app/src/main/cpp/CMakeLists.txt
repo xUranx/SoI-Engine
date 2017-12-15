@@ -12,6 +12,8 @@ file(GLOB ENGINE_SOURCES ../../../../../../source/*.cpp)
 
 file(GLOB ENGINES_SOURCES ../../../../../../../Engine/Source/*.cpp)
 
+file(GLOB GA_SOURCES ../../../../../../../GeneticAlgorithm/*.cpp)
+
 file(GLOB OGL_SOURCES ../../../../../../source/OGL/*.cpp)
 
 #file(GLOB A_LIBS ../../../../../../alib/*.so)
@@ -22,6 +24,7 @@ add_library(native-activity SHARED
             ${ENGINE_SOURCES}
             ${ENGINES_SOURCES}
             ${OGL_SOURCES}
+            ${GA_SOURCES}
             ../../../../../../GraphicsTest/TestApplication.cpp
             main.cpp)
 

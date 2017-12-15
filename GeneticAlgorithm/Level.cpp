@@ -4,11 +4,14 @@
 #include <time.h>
 #include <iostream>
 #include <algorithm>
-#include <Engine\Include\Log.h>
-#include <Engine\Include\SpriteBatch.h>
-#include <Engine\Include\DebugRenderer.h>
+#include <Engine/Include/Log.h>
+#include <Engine/Include/SpriteBatch.h>
+#include <Engine/Include/DebugRenderer.h>
 #include <vector>
 #include <list>
+#ifndef WIN32
+#include <GLES3/gl3.h>
+#endif
 #define ITE std::vector<glm::vec2>::iterator
 
 using namespace Engine;
@@ -34,6 +37,7 @@ void Level::init(std::string _name, float _width, float _height)
 
 void ConstrainedColor(bool constrain)
 {
+#ifdef WIN32
 	if (constrain) {
 		// Green
 		glColor3f(0, 1, 0);
@@ -42,6 +46,7 @@ void ConstrainedColor(bool constrain)
 		// Red
 		glColor3f(1, 0, 0);
 	}
+#endif
 }
 
 void Level::debugPrintRaw()
@@ -56,8 +61,8 @@ void Level::debugPrintRaw()
 		glVertex2f((mapData[i].x+100)*4, (mapData[i].y+50)*4);
 		cur = i;
 		glEnd();
-	}*/
-	/*for (auto it = map.begin(); it != map.end(); it++) {
+	}
+	for (auto it = map.begin(); it != map.end(); it++) {
 		p2t::Triangle& t = **it;
 		p2t::Point& a = *t.GetPoint(0);
 		p2t::Point& b = *t.GetPoint(1);
@@ -79,7 +84,7 @@ void Level::debugPrintRaw()
 		glVertex2f(c.x + 100, c.y + 100);
 		glVertex2f(a.x + 100, a.y + 100);
 		glEnd();
-	}*/
+	}
 
 	for (int i = 0; i < triangles.size(); i++) {
 		p2t::Triangle& t = *triangles[i];
@@ -109,15 +114,16 @@ void Level::debugPrintRaw()
 		}
 		glEnd();
 	}
+	*/
 }
 
 glm::vec2 rotatePoint(glm::vec2 pos, float angle, glm::vec2 pivot)
 {
 	glm::vec2 newv;
 	pos -= pivot;
-	newv.x = pos.x * cos(angle) - pos.y * sin(angle);
-	newv.y = pos.x * sin(angle) + pos.y * cos(angle);
-	return newv + pivot;
+	newv.x = (pos.x * cos(angle) - pos.y * sin(angle))+pivot.x;
+	newv.y = (pos.x * sin(angle) + pos.y * cos(angle))+pivot.y;
+	return newv;
 }
 
 void Level::genMapData(b2World* world, const glm::vec2 pos, float tWidth)
@@ -229,7 +235,7 @@ void Level::genMapData(b2World* world, const glm::vec2 pos, float tWidth)
 	triangles = cdt->GetTriangles();
 	
 	map = cdt->GetMap();
-	Engine::Message("Map Generated");
+	Message("Map Generated");
 
 }
 

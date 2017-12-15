@@ -34,7 +34,6 @@ namespace engine
 	private:
 		float m_totalTime;
 		AAssetManager* m_asset;
-		Engine::SpriteBatch sBatch;
 	};
 
 }

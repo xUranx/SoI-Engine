@@ -1,10 +1,10 @@
 #pragma once
-#include <glm\glm.hpp>
-#include <Box2D\Box2D.h>
-#include <Engine\Include\SpriteBatch.h>
+#include <glm/glm.hpp>
+#include <Box2D/Box2D.h>
+#include <Engine/Include/SpriteBatch.h>
 #include "poly2tri/poly2tri.h"
 #include "RaycastCallBack.h"
-#include <Engine\Include\DebugRenderer.h>
+#include <Engine/Include/DebugRenderer.h>
 class Thruster
 {
 public:

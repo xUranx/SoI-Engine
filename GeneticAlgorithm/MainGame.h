@@ -1,11 +1,16 @@
 #pragma once
-#include <Engine\Include\/Window.h>
-#include <Engine\Include\/GLSLProgram.h>
-#include <Engine\Include\/SpriteBatch.h>
-#include <Engine\Include\/Camera2D.h>
-#include <Engine\Include\/SpriteFont.h>
-#include <Engine\Include\/InputManager.h>
-#include <Engine\Include\/DebugRenderer.h>
+#ifdef WIN32
+#include <Engine/Include/Window.h>
+#else
+#include <graphics/GraphicsApplication.h>
+#include <graphics/Window.h>
+#endif
+#include <Engine/Include/GLSLProgram.h>
+#include <Engine/Include/SpriteBatch.h>
+#include <Engine/Include/Camera2D.h>
+#include <Engine/Include/SpriteFont.h>
+#include <Engine/Include/InputManager.h>
+#include <Engine/Include/DebugRenderer.h>
 #include <Box2D/Box2D.h>
 #include "Level.h"
 #include "Box.h"
@@ -17,13 +22,19 @@ enum GameState
 {
 	MainMenu, Game, Text, GCar, Exit
 };
-
+class Window;
 class MainGame
 {
 public:
 	MainGame();
+
 	~MainGame();
+
+#ifdef WIN32
 	void run();
+#else
+    void run(engine::Window* swindow, engine::GraphicsSystem* sgraphics);
+#endif
 private:
 	int sWidth;
 	int sHeight;
@@ -32,7 +43,13 @@ private:
 	bool initShaders();
 	void drawGame();
 	void drawHUD();
+
+#ifdef WIN32
 	Engine::Window window;
+#else
+	engine::Window* m_window;
+    engine::GraphicsSystem* m_graphics;
+#endif
 	Engine::GLSLProgram colorP;
 	Engine::SpriteBatch spriteBatch;
 	Engine::SpriteBatch spriteBatchTri;

@@ -119,6 +119,7 @@ namespace Engine {
 		glDetachShader(programID, fragmentShaderID);
 		glDeleteShader(vertexShaderID);
 		glDeleteShader(fragmentShaderID);
+		Message("Shaders Linked");
 		return true;
 	}
 

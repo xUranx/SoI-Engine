@@ -1,10 +1,10 @@
 #pragma once
-#include <Box2D\Box2D.h>
-#include <glm\glm.hpp>
+#include <Box2D/Box2D.h>
+#include <glm/glm.hpp>
 #include "CollisionListener.h"
-#include <Engine\Include\Log.h>
-#include <Engine\Include\SpriteBatch.h>
-#include <Engine\Include\GLTexture.h>
+#include <Engine/Include/Log.h>
+#include <Engine/Include/SpriteBatch.h>
+#include <Engine/Include/GLTexture.h>
 class Box
 {
 public:

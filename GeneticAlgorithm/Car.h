@@ -1,8 +1,8 @@
 #pragma once
-#include <Engine\Include\SpriteBatch.h>
-#include <Engine\Include\GLTexture.h>
-#include <Box2D\Box2D.h>
-#include <glm\glm.hpp>
+#include <Engine/Include/SpriteBatch.h>
+#include <Engine/Include/GLTexture.h>
+#include <Box2D/Box2D.h>
+#include <glm/glm.hpp>
 #include <vector>
 class Tire
 {

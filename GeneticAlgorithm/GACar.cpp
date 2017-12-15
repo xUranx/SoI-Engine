@@ -3,8 +3,8 @@
 #include <random>
 #include <time.h>
 #include <algorithm>
-#include <Engine\Include\Log.h>
-#include <Engine\Include\ResourceManager.h>
+#include <Engine/Include/Log.h>
+#include <Engine/Include/ResourceManager.h>
 GACar::GACar()
 {
 }
@@ -123,9 +123,9 @@ void GACar::run(Engine::Camera2D& cam2d)
 	{
 		ch++;
 	}
-
-	cam2d.setPos(glm::vec2(Members[m]->car.getBody()->GetPosition().x, 
-						   Members[m]->car.getBody()->GetPosition().y));
+	glm::vec2 ps = glm::vec2(Members[m]->car.getBody()->GetPosition().x,
+							 Members[m]->car.getBody()->GetPosition().y);
+	cam2d.setPos(ps);
 	if (sleep >= Members.size())
 	{
 		//Engine::fatal_error("End");
@@ -238,8 +238,9 @@ void GACar::run(Engine::Camera2D& cam2d)
 		Engine::Message("Mating Done");
 		Parents.clear();
 		sleep = 0;
-		cam2d.setPos(glm::vec2(Members[m]->car.getBody()->GetPosition().x,
-			Members[0]->car.getBody()->GetPosition().y));
+		glm::vec2 ps = glm::vec2(Members[m]->car.getBody()->GetPosition().x,
+								 Members[m]->car.getBody()->GetPosition().y);
+		cam2d.setPos(ps);
 		ch = -60 * 4;
 		generation++;
 	}
@@ -255,10 +256,12 @@ void GACar::draw(Engine::SpriteBatch & sBatch)
 
 void GACar::print(Engine::SpriteBatch& sBatch, Engine::SpriteFont& sFont)
 {
+#ifdef WIN32
 	Engine::ColourRGBA8 colour;
 	char buffer[256];
 
 	sprintf_s(buffer, "Gen: %d Population: %d Highest Fitness: %d Sleeping: %d/%d", generation, Members.size(), higFit, sleep, Members.size());
 	sFont.draw(sBatch, buffer, glm::vec2(20, 50), glm::vec2(1.0f), 0.0f, colour);
+#endif
 	
 }

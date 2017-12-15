@@ -1,11 +1,11 @@
 #include "MainGame.h"
-#include <Engine\Include\Log.h>
-#include <Engine\Include\ResourceManager.h>
+#include <Engine/Include/Log.h>
+#include <Engine/Include/ResourceManager.h>
 #include <random>
 #include <algorithm>
 #include <math.h>
 #include <iostream>
-#include <Engine\Include\IOManager.h>
+#include <Engine/Include/IOManager.h>
 using namespace Engine;
 
 #define DEGTORAD 0.0174532925199432957f
@@ -21,14 +21,22 @@ MainGame::MainGame()
 MainGame::~MainGame()
 {
 }
-
+#ifdef WIN32
 void MainGame::run()
+#else
+void MainGame::run(engine::Window* swindow, engine::GraphicsSystem* sgraphics)
+#endif
 {
 #ifdef WIN32
 	if (!window.init("Genetic Algorithm", sWidth, sHeight, 0))
 	{
 		fatal_error("Failed to Init");
 	}
+#else
+    sWidth = swindow->getWidth();
+	sHeight = swindow->getHeight();
+	m_window = swindow;
+	m_graphics = sgraphics;
 #endif
 		//Load media
 	if (!initShaders())
@@ -74,7 +82,8 @@ void MainGame::gLoop()
 	cam2D.init(sWidth,sHeight);
 	hudCam.init(sWidth, sHeight);
 	//cam2D.setPos(cam2D.getPos() + glm::vec2(sWidth / 2.0f, sHeight / 2.0f));
-	hudCam.setPos(cam2D.getPos() + glm::vec2(sWidth / 2.0f, sHeight / 2.0f));
+    glm::vec2 pss = glm::vec2(cam2D.getPos().x + sWidth / 2.0f, cam2D.getPos().y + sHeight / 2.0f);
+	hudCam.setPos(pss);
 	gMode = GCar;
 	//Event handler
 	SDL_Event e;
@@ -113,78 +122,78 @@ void MainGame::gLoop()
 #endif // WIN32
 		switch (gMode)
 		{
-		case Game:
-			if (init)
-			{
-				b2Vec2 grav(0.0f, -9.81);
-				world = std::make_unique<b2World>(grav);
-				glm::vec2 dimes = glm::vec2(50.0f, 3.0f);
-				Ground.Fixedinit(world.get(), glm::vec2(0.0f, -15.0f), dimes);
-				cam2D.setScale(30.0f);
-				init = false;
-				map.init("Level1", 20, 200);
-				map.genMapData(world.get(), glm::vec2(0, 0), 5);
-				glm::vec2 dim[3];
-				dim[0].x = -1.5f;
-				dim[0].y = -2.0f;
-				dim[1].x = 0.0f;
-				dim[1].y = 2.0f;
-				dim[2].x = 1.5f;
-				dim[2].y = -2.0f;
-				ship.init(world.get(), glm::vec2(21, 5), dim, false, 0.4f);
-				GLTexture texture = ResourceManager::getTexture("Assets/Textures/Block.png");
-				ColourRGBA8 color;
-				//box.init(world.get(), glm::vec2(3.0f, 0.0f),texture,color, glm::vec2(5, 5));
-				
-			}
-			ship.raycast();
-			cam2D.setPos(glm::vec2(ship.getBody()->GetPosition().x, ship.getBody()->GetPosition().y));
-			processInput();
-			world->Step(1.0f / 60.f, 6, 2);
-			if (nMode != Game && nMode != NULL)
-			{
-				delete(&world);
-				world = nullptr;
-				gMode = nMode;
-			}
-			break;
-		case GCar:
-			if (init)
-			{
-				init = false;
-				b2Vec2 grav(0.0f, -9.81);
-				world = std::make_unique<b2World>(grav);
-				glm::vec2 dimes = glm::vec2(300.0f, 3.0f);
-				Ground.Fixedinit(world.get(), glm::vec2(140.0f, -15.0f), dimes);
-				Evo.init(world.get());
-				//car.init(world.get(), glm::vec2(0, -13));
-				cam2D.setScale(18.0f);
-			}
-			Evo.run(cam2D);
-			//cam2D.setPos(glm::vec2(car.getBody()->GetPosition().x, car.getBody()->GetPosition().y));
-			world->Step(1.0f / 60.f, 6, 2);
-			break;
-		case Text:
-			if (init)
-			{
-				init = false;
-				test.start();
-			}
-			
+		case Game: {
+            if (init) {
+                b2Vec2 grav(0.0f, -9.81);
+                world->SetGravity(grav);
+                glm::vec2 dimes = glm::vec2(50.0f, 3.0f);
+                Ground.Fixedinit(world.get(), glm::vec2(0.0f, -15.0f), dimes);
+                cam2D.setScale(30.0f);
+                init = false;
+                map.init("Level1", 20, 200);
+                map.genMapData(world.get(), glm::vec2(0, 0), 5);
+                glm::vec2 dim[3];
+                dim[0].x = -1.5f;
+                dim[0].y = -2.0f;
+                dim[1].x = 0.0f;
+                dim[1].y = 2.0f;
+                dim[2].x = 1.5f;
+                dim[2].y = -2.0f;
+                ship.init(world.get(), glm::vec2(21, 5), dim, false, 0.4f);
+                GLTexture texture = ResourceManager::getTexture("Assets/Textures/Block.png");
+                ColourRGBA8 color;
+                //box.init(world.get(), glm::vec2(3.0f, 0.0f),texture,color, glm::vec2(5, 5));
 
-			if (!test.getSegFound())
-			{
-				test.run();
-			}
+            }
+            ship.raycast();
+            glm::vec2 psss = glm::vec2(ship.getBody()->GetPosition().x,
+                                       ship.getBody()->GetPosition().y);
+            cam2D.setPos(pss);
+            processInput();
+            world->Step(1.0f / 60.f, 6, 2);
+            if (nMode != Game && nMode != NULL) {
+                delete (&world);
+                world = nullptr;
+                gMode = nMode;
+            }
+            break;
+        }
+		case GCar: {
+            if (init) {
+                init = false;
+                b2Vec2 grav(0.0f, -9.81);
 
-			if (nMode != Text && nMode != NULL)
-			{
-				delete(&test);
-				gMode = nMode;
-			}
-		default:
-			break;
+                world->SetGravity(grav);
+                glm::vec2 dimes = glm::vec2(300.0f, 3.0f);
+                Ground.Fixedinit(world.get(), glm::vec2(140.0f, -15.0f), dimes);
+                Evo.init(world.get());
+                //car.init(world.get(), glm::vec2(0, -13));
+                cam2D.setScale(18.0f);
+            }
+            Evo.run(cam2D);
+            //cam2D.setPos(glm::vec2(car.getBody()->GetPosition().x, car.getBody()->GetPosition().y));
+            world->Step(1.0f / 60.f, 6, 2);
+            break;
+        }
+		case Text: {
+            if (init) {
+                init = false;
+                test.start();
+            }
+
+
+            if (!test.getSegFound()) {
+                test.run();
+            }
+
+            if (nMode != Text && nMode != NULL) {
+                delete (&test);
+                gMode = nMode;
+            }
+            break;
+        }
 		}
+
 
 		//cam2D.setPos(glm::vec2(ship.getBody()->GetPosition().x, ship.getBody()->GetPosition().y));
 
@@ -232,7 +241,10 @@ void MainGame::processInput()
 void MainGame::drawGame()
 {
 	//set base depth
-	glClearDepth(1.0);
+#ifdef WIN32
+    glClearDepth(1.0);
+#endif
+
 	//Clear the buffers
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(35.0f / 255.0f, 130.0f / 255.0f, 117.0f / 255.0f, 1.0f);
@@ -299,8 +311,11 @@ void MainGame::drawGame()
 		dRender.end();
 		dRender.render(camMatrix, 2.0f);
 	}
-
+#ifdef WIN32
 	SDL_GL_SwapWindow(window.gWindow);
+#else
+    m_graphics->swapBuffers();
+#endif
 }
 
 bool MainGame::compFrontToBack(glm::vec4* a, glm::vec4* b)

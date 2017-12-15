@@ -11,11 +11,11 @@
 #include <math.h>
 //#include <Log.h>
 #include <Engine/Include/IOManager.h>
-#include <Engine/Include/GLSLProgram.h>
-#include <Engine/Include/ResourceManager.h>
-#include <Engine/Include/GLTexture.h>
+#include "GA/MainGame.h"
 //#include <Box2D/Box2D.h>
 #include <GLES3/gl3.h>
+
+
 namespace engine
 {
 
@@ -23,15 +23,10 @@ namespace engine
 		: GraphicsApplication(window, graphics)
 		, m_totalTime(0.0f), m_asset(asset)
 	{
-        Engine::GLSLProgram colorP;
+		window->getGraphics()->swapBuffers();
+        MainGame game;
         Engine::IOManager::m_asset = asset;
-        colorP.compileShaders("Shaders/colorShading.vert", "Shaders/colorShading.frag");
-		colorP.addAtribute("vertexPosition");
-		colorP.addAtribute("vertexColour");
-		colorP.addAtribute("vertexUV");
-		colorP.linkShaders();
-        sBatch.init();
-        Engine::GLTexture texture = Engine::ResourceManager::getTexture("Textures/Block.png");
+		game.run(window, graphics);
 	}
 
 

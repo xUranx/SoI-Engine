@@ -70,6 +70,7 @@ void GATextDemo::run()
 
 void GATextDemo::print(Engine::SpriteBatch& sBatch, Engine::SpriteFont& sFont)
 {
+#ifdef WIN32
 	Engine::ColourRGBA8 colour;
 	char buffer[256];
 	char buffer2[256];
@@ -81,4 +82,5 @@ void GATextDemo::print(Engine::SpriteBatch& sBatch, Engine::SpriteFont& sFont)
 	sFont.draw(sBatch, buffer2, glm::vec2(20, 164), glm::vec2(1.1f), 0.0f, colour);
 	sprintf_s(buffer3, "Strongest Text: %s", Parents.at(0).DNA.c_str());
 	sFont.draw(sBatch, buffer3, glm::vec2(20, 196), glm::vec2(1.1f), 0.0f, colour);
+#endif
 }
