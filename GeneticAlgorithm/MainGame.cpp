@@ -183,7 +183,7 @@ void MainGame::gLoop()
                 Ground.Fixedinit(world, glm::vec2(140.0f, -15.0f), dimes);
                 Evo.init(world);
                 //car.init(world.get(), glm::vec2(0, -13));
-                cam2D.setScale(24.0f);
+                cam2D.setScale(20.0f);
             }
             Evo.run(cam2D);
             //cam2D.setPos(glm::vec2(car.getBody()->GetPosition().x, car.getBody()->GetPosition().y));
