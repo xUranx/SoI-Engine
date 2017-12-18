@@ -8,7 +8,9 @@
 #include <AndroidWindow.h>
 #include <core/ElapsedTimer.h>
 #include <IOManager.h>
+#ifdef WIN32
 #include <SDL.h>
+#endif
 #include <string>
 #include <cstring>
 

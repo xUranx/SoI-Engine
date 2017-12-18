@@ -2,7 +2,9 @@
 
 #include "SpriteBatch.h"
 #include "Log.h"
+#ifdef WIN32
 #include <SDL.h>
+#endif
 #ifndef GL_BGRA
 #define GL_BGRA 0x80E1
 #endif

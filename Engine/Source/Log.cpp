@@ -5,7 +5,9 @@
 
 #include <core/Log.h>
 #endif
+#ifdef WIN32
 #include <SDL.h>
+#endif
 namespace Engine {
 #if defined(_DEBUG) && defined(WIN32)
 	void fatal_error(std::string error)

@@ -3,7 +3,6 @@
 #include <Engine/Include/Window.h>
 #else
 #include <graphics/GraphicsApplication.h>
-#include <graphics/Window.h>
 #endif
 #include <Engine/Include/GLSLProgram.h>
 #include <Engine/Include/SpriteBatch.h>
@@ -22,7 +21,11 @@ enum GameState
 {
 	MainMenu, Game, Text, GCar, Exit
 };
+#ifndef WIN32
 class Window;
+class GraphicsSystem;
+#endif
+
 class MainGame
 {
 public:
@@ -33,7 +36,7 @@ public:
 #ifdef WIN32
 	void run();
 #else
-    void run(engine::Window* swindow, engine::GraphicsSystem* sgraphics);
+    void run(engine::Window* swindow);
 #endif
 private:
 	int sWidth;
@@ -48,7 +51,6 @@ private:
 	Engine::Window window;
 #else
 	engine::Window* m_window;
-    engine::GraphicsSystem* m_graphics;
 #endif
 	Engine::GLSLProgram colorP;
 	Engine::SpriteBatch spriteBatch;
@@ -59,7 +61,7 @@ private:
 	Engine::Camera2D hudCam;
 	Engine::InputManager inputManager;
 	Engine::DebugRenderer dRender;
-	std::unique_ptr<b2World> world;
+	b2World* world;
 	Box Ground;
 	Car car;
 	std::vector<glm::vec4> pos;

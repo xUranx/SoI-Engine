@@ -1,5 +1,7 @@
 #include "IOManager.h"
+#include "Log.h"
 #ifndef WIN32
+#include <sstream>
 #include <core/Log.h>
 #include "android/asset_manager.h"
 #endif
@@ -50,9 +52,12 @@ namespace Engine {
 #else
 
 namespace Engine {
+
 	AAssetManager* IOManager::m_asset;
 	bool IOManager::readFileToBuffer(std::string filePath, std::vector<unsigned char>& buffer)
 	{
+		int pos = filePath.find("/")+1;
+        filePath.erase(filePath.begin(),filePath.begin()+pos);
         AAsset* file = AAssetManager_open(m_asset, filePath.c_str(), AASSET_MODE_BUFFER);
 		if(file == nullptr)
 		{
@@ -66,7 +71,8 @@ namespace Engine {
 	}
 	bool IOManager::readFileToBuffer(std::string filePath, std::string& buffer)
 	{
-
+		int pos = filePath.find("/")+1;
+		filePath.erase(filePath.begin(),filePath.begin()+pos);
 		AAsset* file = AAssetManager_open(m_asset, filePath.c_str(), AASSET_MODE_BUFFER);
 		if(file == nullptr)
 		{

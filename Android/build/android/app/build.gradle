@@ -1,6 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        Release {
+        }
+    }
     compileSdkVersion = 25
     buildToolsVersion = '26.0.2'
     defaultConfig {
@@ -24,7 +28,6 @@ android {
                     'proguard-rules.pro'
         }
     }
-
     externalNativeBuild {
         cmake {
             path 'src/main/cpp/CMakeLists.txt'
@@ -33,8 +36,8 @@ android {
     compileSdkVersion 25
     productFlavors {
     }
-    sourceSets{
-        main{
+    sourceSets {
+        main {
             jniLibs.srcDirs = ['../../../alib']
         }
     }

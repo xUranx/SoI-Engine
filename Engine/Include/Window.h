@@ -29,7 +29,6 @@ namespace Engine {
 
 		//Current displayed image
 
-		std::string Images = "Images/";
 		//fps counter
 		void fpsCounter();
 		//Returns fps

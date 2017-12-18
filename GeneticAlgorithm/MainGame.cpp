@@ -6,6 +6,13 @@
 #include <math.h>
 #include <iostream>
 #include <Engine/Include/IOManager.h>
+#ifndef WIN32
+#include <graphics/GraphicsSystem.h>
+#include <graphics/Window.h>
+#include <core/Log.h>
+
+#endif
+
 using namespace Engine;
 
 #define DEGTORAD 0.0174532925199432957f
@@ -24,7 +31,7 @@ MainGame::~MainGame()
 #ifdef WIN32
 void MainGame::run()
 #else
-void MainGame::run(engine::Window* swindow, engine::GraphicsSystem* sgraphics)
+void MainGame::run(engine::Window* swindow)
 #endif
 {
 #ifdef WIN32
@@ -35,8 +42,11 @@ void MainGame::run(engine::Window* swindow, engine::GraphicsSystem* sgraphics)
 #else
     sWidth = swindow->getWidth();
 	sHeight = swindow->getHeight();
-	m_window = swindow;
-	m_graphics = sgraphics;
+    LOGE("Widht: %d" , sWidth);
+    LOGE("Height: %d" , sHeight);
+    m_window = swindow;
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 #endif
 		//Load media
 	if (!initShaders())
@@ -61,8 +71,8 @@ void MainGame::run(engine::Window* swindow, engine::GraphicsSystem* sgraphics)
 
 bool MainGame::initShaders()
 {
-	std::string sysName = SDL_GetPlatform();
-	Message(sysName);
+	/*std::string sysName = SDL_GetPlatform();
+	Message(sysName);*/
 	bool success = true;
 	success = colorP.compileShaders("assets/Shaders/colorShading.vert", "assets/Shaders/colorShading.frag");
 	colorP.addAtribute("vertexPosition");
@@ -85,8 +95,11 @@ void MainGame::gLoop()
     glm::vec2 pss = glm::vec2(cam2D.getPos().x + sWidth / 2.0f, cam2D.getPos().y + sHeight / 2.0f);
 	hudCam.setPos(pss);
 	gMode = GCar;
+
 	//Event handler
+#ifdef WIN32
 	SDL_Event e;
+#endif
 	const float CamSpeed = 0.5f;
 	const float ScalSpeed = 0.5f;
 	int val = 1;
@@ -125,13 +138,13 @@ void MainGame::gLoop()
 		case Game: {
             if (init) {
                 b2Vec2 grav(0.0f, -9.81);
-                world->SetGravity(grav);
+                world = new b2World(grav);
                 glm::vec2 dimes = glm::vec2(50.0f, 3.0f);
-                Ground.Fixedinit(world.get(), glm::vec2(0.0f, -15.0f), dimes);
+                Ground.Fixedinit(world, glm::vec2(0.0f, -15.0f), dimes);
                 cam2D.setScale(30.0f);
                 init = false;
                 map.init("Level1", 20, 200);
-                map.genMapData(world.get(), glm::vec2(0, 0), 5);
+                map.genMapData(world, glm::vec2(0, 0), 5);
                 glm::vec2 dim[3];
                 dim[0].x = -1.5f;
                 dim[0].y = -2.0f;
@@ -139,17 +152,20 @@ void MainGame::gLoop()
                 dim[1].y = 2.0f;
                 dim[2].x = 1.5f;
                 dim[2].y = -2.0f;
-                ship.init(world.get(), glm::vec2(21, 5), dim, false, 0.4f);
+                ship.init(world, glm::vec2(21, 5), dim, false, 0.4f);
                 GLTexture texture = ResourceManager::getTexture("Assets/Textures/Block.png");
                 ColourRGBA8 color;
                 //box.init(world.get(), glm::vec2(3.0f, 0.0f),texture,color, glm::vec2(5, 5));
+
 
             }
             ship.raycast();
             glm::vec2 psss = glm::vec2(ship.getBody()->GetPosition().x,
                                        ship.getBody()->GetPosition().y);
             cam2D.setPos(pss);
+#ifdef WIN32
             processInput();
+#endif
             world->Step(1.0f / 60.f, 6, 2);
             if (nMode != Game && nMode != NULL) {
                 delete (&world);
@@ -162,13 +178,12 @@ void MainGame::gLoop()
             if (init) {
                 init = false;
                 b2Vec2 grav(0.0f, -9.81);
-
-                world->SetGravity(grav);
-                glm::vec2 dimes = glm::vec2(300.0f, 3.0f);
-                Ground.Fixedinit(world.get(), glm::vec2(140.0f, -15.0f), dimes);
-                Evo.init(world.get());
+                world = new b2World(grav);
+				glm::vec2 dimes = glm::vec2(300.0f, 3.0f);
+                Ground.Fixedinit(world, glm::vec2(140.0f, -15.0f), dimes);
+                Evo.init(world);
                 //car.init(world.get(), glm::vec2(0, -13));
-                cam2D.setScale(18.0f);
+                cam2D.setScale(24.0f);
             }
             Evo.run(cam2D);
             //cam2D.setPos(glm::vec2(car.getBody()->GetPosition().x, car.getBody()->GetPosition().y));
@@ -240,9 +255,12 @@ void MainGame::processInput()
 
 void MainGame::drawGame()
 {
+
 	//set base depth
 #ifdef WIN32
     glClearDepth(1.0);
+#else
+    glClearDepthf(1.0);
 #endif
 
 	//Clear the buffers
@@ -277,7 +295,8 @@ void MainGame::drawGame()
 		destRect.w = Ground.getDimensions().y;
 		//box.draw(spriteBatch);
 		map.draw(spriteBatch);
-		spriteBatch.draw(destRect, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), NULL, 0.0f, color);
+		glm::vec4 um = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
+		spriteBatch.draw(destRect, um, 0, 0.0f, color);
 		ship.draw(spriteBatch);
 		//map.debugPrintRaw();
 	}
@@ -290,7 +309,7 @@ void MainGame::drawGame()
 		destRect.y = Ground.getBody()->GetPosition().y - Ground.getDimensions().y / 2.0f;
 		destRect.z = Ground.getDimensions().x;
 		destRect.w = Ground.getDimensions().y;
-		spriteBatch.draw(destRect, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), NULL, 0.0f, color);
+		spriteBatch.draw(destRect, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), 0, 0.0f, color);
 		//car.draw(spriteBatch);
 		Evo.draw(spriteBatch);
 	}
@@ -314,7 +333,7 @@ void MainGame::drawGame()
 #ifdef WIN32
 	SDL_GL_SwapWindow(window.gWindow);
 #else
-    m_graphics->swapBuffers();
+    m_window->getGraphics()->swapBuffers();
 #endif
 }
 

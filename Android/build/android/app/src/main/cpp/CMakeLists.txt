@@ -13,8 +13,14 @@ file(GLOB ENGINE_SOURCES ../../../../../../source/*.cpp)
 file(GLOB ENGINES_SOURCES ../../../../../../../Engine/Source/*.cpp)
 
 file(GLOB GA_SOURCES ../../../../../../../GeneticAlgorithm/*.cpp)
+file(GLOB GA_H ../../../../../../../GeneticAlgorithm/*.h)
 
 file(GLOB OGL_SOURCES ../../../../../../source/OGL/*.cpp)
+
+file(GLOB_RECURSE BOX_SOURCES ../../../../../../source/Box2D/*.cpp*)
+
+file(GLOB POLY_COMMON ../../../../../../source/poly2tri/common/*.cc)
+file(GLOB POLY_SWEEP ../../../../../../source/poly2tri/sweep/*.cc)
 
 #file(GLOB A_LIBS ../../../../../../alib/*.so)
 #message("LIBS = ${A_LIBS}")
@@ -25,6 +31,9 @@ add_library(native-activity SHARED
             ${ENGINES_SOURCES}
             ${OGL_SOURCES}
             ${GA_SOURCES}
+            ${BOX_SOURCES}
+            ${POLY_COMMON}
+            ${POLY_SWEEP}
             ../../../../../../GraphicsTest/TestApplication.cpp
             main.cpp)
 
@@ -32,9 +41,9 @@ add_library(native-activity SHARED
 
 target_include_directories(native-activity PRIVATE
                             ../../../../../../include
+                             ../../../../../../include/poly2tri
                             ../../../../../../GraphicsTest
                             ../../../../../../include/android
-                            ../../../../../../../Deps/include
                             ../../../../../../../Engine/Include
                            ${ANDROID_NDK}/sources/android/native_app_glue)
 

@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
+#ifdef WIN32
 #include <SDL.h>
+#endif
 #include <glm\glm.hpp>
 namespace Engine
 {
@@ -37,7 +39,9 @@ namespace Engine
 		/*#Modes ALL, Numbers only, Letters only*/
 		static onEnd textInput(InputMode mode, std::string& buffer);
 	private:
+#ifdef WIN32
 		static SDL_Event ev;
+#endif
 	};
 }
 

@@ -192,6 +192,12 @@ namespace Engine {
 		glEnableVertexAttribArray(1);
 
 		glEnableVertexAttribArray(2);
+		//Pos attribute pointer
+		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, position));
+
+		glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(Vertex), (void*)offsetof(Vertex, colour));
+
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, uv));
 #endif
 		for (int i = 0; i < rBatch.size(); i++)
 		{
@@ -417,6 +423,7 @@ namespace Engine {
 	{
 		return (a->texture < b->texture);
 	}
+
 	bool SpriteBatch::compFrontToBackTri(GlyhpTri* a, GlyhpTri* b)
 	{
 		return (a->depth < b->depth);

@@ -39,3 +39,4 @@ packages/
 /Android/include/Engine
 /Android/source/Engine
 /SoI.VC.db
+/Android/build/android/local.properties

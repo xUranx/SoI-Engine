@@ -74,7 +74,7 @@ void Thruster::draw(Engine::SpriteBatch& sBatch, b2Body* body)
 		destRect[1].y = triangles[i]->GetPoint(1)->y + pos.y;
 		destRect[2].x = triangles[i]->GetPoint(2)->x + pos.x;
 		destRect[2].y = triangles[i]->GetPoint(2)->y + pos.y;
-		sBatch.draw(destRect, glm::vec4(0, 0, 0, 1), NULL, 0, color, body->GetAngle(), glm::vec2(pos.x, pos.y));
+		sBatch.draw(destRect, glm::vec4(0, 0, 0, 1), 0, 0, color, body->GetAngle(), glm::vec2(pos.x, pos.y));
 	}
 }
 

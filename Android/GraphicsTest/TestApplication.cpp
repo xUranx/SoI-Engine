@@ -11,9 +11,9 @@
 #include <math.h>
 //#include <Log.h>
 #include <Engine/Include/IOManager.h>
-#include "GA/MainGame.h"
 //#include <Box2D/Box2D.h>
 #include <GLES3/gl3.h>
+#include "../../GeneticAlgorithm/MainGame.h"
 
 
 namespace engine
@@ -26,7 +26,7 @@ namespace engine
 		window->getGraphics()->swapBuffers();
         MainGame game;
         Engine::IOManager::m_asset = asset;
-		game.run(window, graphics);
+		game.run(window);
 	}
 
 
