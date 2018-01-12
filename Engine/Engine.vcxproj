@@ -153,6 +153,7 @@ copy $(ProjectDir)Include\*.h $(SolutionDir)Android\include\Engine\Include  /Y</
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GraphicsSystem.cpp" />
     <ClCompile Include="Source\Camera2D.cpp" />
     <ClCompile Include="Source\DebugRenderer.cpp" />
     <ClCompile Include="Source\GLSLProgram.cpp" />
@@ -170,6 +171,7 @@ copy $(ProjectDir)Include\*.h $(SolutionDir)Android\include\Engine\Include  /Y</
     <ClCompile Include="Source\TextInput.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GraphicsSystem.h" />
     <ClInclude Include="Include\Camera2D.h" />
     <ClInclude Include="Include\Debug.h" />
     <ClInclude Include="Include\DebugRenderer.h" />
