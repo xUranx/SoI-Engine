@@ -5,10 +5,11 @@ namespace Engine
 	void GraphicsSystem::init(GSystem system)
 	{
 		m_system = system;
+		GLenum test;
 		switch (system)
 		{
 		case GL:
-			GLenum test = glewInit();
+			test = glewInit();
 			if (test != GLEW_OK)
 			{
 				fatal_error("Glew Init error");
@@ -17,9 +18,11 @@ namespace Engine
 			break;
 		case GLES20:
 			m_sBatch.init();
+			break;
 		case DX11:
 			/*std::unique_ptr<SpriteBatch> spriteBatch;
 			spriteBatch = std::make_unique<SpriteBatch>(deviceContext);*/
+			break;
 		default:
 			break;
 		}
