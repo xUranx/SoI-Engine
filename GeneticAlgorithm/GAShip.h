@@ -15,7 +15,7 @@ struct Population
 
 struct Output
 {
-	
+	bool out[3];
 };
 
 struct Inputs

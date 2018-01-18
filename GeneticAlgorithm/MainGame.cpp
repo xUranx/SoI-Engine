@@ -94,7 +94,7 @@ void MainGame::gLoop()
 	//cam2D.setPos(cam2D.getPos() + glm::vec2(sWidth / 2.0f, sHeight / 2.0f));
     glm::vec2 pss = glm::vec2(cam2D.getPos().x + sWidth / 2.0f, cam2D.getPos().y + sHeight / 2.0f);
 	hudCam.setPos(pss);
-	gMode = Game;
+	gMode = Text;
 
 	//Event handler
 #ifdef WIN32

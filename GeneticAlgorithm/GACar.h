@@ -8,8 +8,6 @@
 #include <Engine/Include/Camera2D.h>
 
 
-
-
 class GACar
 {
 public:
