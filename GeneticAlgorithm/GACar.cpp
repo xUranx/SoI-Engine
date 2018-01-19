@@ -273,7 +273,7 @@ void GACar::run(Engine::Camera2D& cam2d)
 	}
 }
 
-void GACar::draw(Engine::SpriteBatch & sBatch)
+void GACar::draw(Engine::GLSpriteBatch & sBatch)
 {
 	for (int i = 0; i < Members.size(); i++)
 	{
@@ -281,7 +281,7 @@ void GACar::draw(Engine::SpriteBatch & sBatch)
 	}
 }
 
-void GACar::print(Engine::SpriteBatch& sBatch, Engine::SpriteFont& sFont)
+void GACar::print(Engine::GLSpriteBatch& sBatch, Engine::SpriteFont& sFont)
 {
 #ifdef WIN32
 	Engine::ColourRGBA8 colour;

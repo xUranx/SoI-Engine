@@ -9,10 +9,11 @@ namespace Engine
 	{
 		GLES20, GL, DX11
 	};
-	class GraphicsSystem
+	class GraphicsSystem : protected GLSpriteBatch
 	{
 	public:
 		
+
 		void init(GSystem system);
 
 		void draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, float depth, const ColourRGBA8& colour);
@@ -35,9 +36,9 @@ namespace Engine
 
 		//Render objects
 		void render();
-
+		
 	private:
-		SpriteBatch m_sBatch;
+		GLSpriteBatch m_sBatch;
 		GSystem m_system;
 	};
 }

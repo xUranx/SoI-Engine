@@ -23,7 +23,7 @@ public:
 	void bezier(int times);
 	void debugPrintRaw();
 	void genMapData(b2World* world, const glm::vec2 position, float tWidth);
-	void draw(Engine::SpriteBatch& sBatch);
+	void draw(Engine::GLSpriteBatch& sBatch);
 	b2Body* getBody() const { return body; }
 private:
 	b2Body* body;

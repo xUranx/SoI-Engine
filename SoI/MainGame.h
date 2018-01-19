@@ -39,8 +39,8 @@ private:
 	Engine::Camera2D hudCam;
 	Engine::Window window;
 	Engine::GLSLProgram colorP;
-	Engine::SpriteBatch spriteBatch;
-	Engine::SpriteBatch UIspriteBatch;
+	Engine::GLSpriteBatch spriteBatch;
+	Engine::GLSpriteBatch UIspriteBatch;
 	Engine::SpriteFont* spriteFont;
 	Engine::DebugRenderer dRender;
 	Engine::InputManager inputManager;

@@ -35,7 +35,7 @@
 namespace Engine {
 
     struct GLTexture;
-    class SpriteBatch;
+    class GLSpriteBatch;
 
     struct CharGlyph {
     public:
@@ -74,7 +74,7 @@ namespace Engine {
         glm::vec2 measure(const char* s);
 
         /// Draws using a spritebatch
-        void draw(SpriteBatch& batch, const char* s, glm::vec2 position, glm::vec2 scaling, 
+        void draw(GLSpriteBatch& batch, const char* s, glm::vec2 position, glm::vec2 scaling, 
                   float depth, ColourRGBA8 tint, Justification just = Justification::LEFT);
     private:
         static std::vector<int>* createRows(glm::ivec4* rects, int rectsLength, int r, int padding, int& w);

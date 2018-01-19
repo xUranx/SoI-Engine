@@ -23,7 +23,7 @@ private:
 	void drawGame();
 	Engine::Window window;
 	Engine::GLSLProgram colorP;
-	Engine::SpriteBatch spriteBatch;
+	Engine::GLSpriteBatch spriteBatch;
 	Engine::Camera2D cam2D;
 	std::vector<glm::vec4> pos;
 	std::vector<glm::vec4*> posP;

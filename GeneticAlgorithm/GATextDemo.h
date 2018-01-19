@@ -26,7 +26,7 @@ public:
 	~GATextDemo();
 	bool start();
 	void run();
-	void print(Engine::SpriteBatch& sBatch, Engine::SpriteFont& sFont);
+	void print(Engine::GLSpriteBatch& sBatch, Engine::SpriteFont& sFont);
 	bool getSegFound() const { return SeqFound; }
 private:
 	Population pop;

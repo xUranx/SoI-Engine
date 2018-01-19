@@ -60,7 +60,7 @@ b2FixtureDef Thruster::init(bool rand, b2Body* b, float scale)
 	return fDef;
 }
 
-void Thruster::draw(Engine::SpriteBatch& sBatch, b2Body* body)
+void Thruster::draw(Engine::GLSpriteBatch& sBatch, b2Body* body)
 {
 	Engine::ColourRGBA8 color;
 	color.setColour(10.0f, 20.0f, 15.0f, 255.0f);
@@ -116,7 +116,7 @@ void Ship::init(b2World* world, const glm::vec2 position, const glm::vec2 dimens
 	body->SetUserData(this);
 }
 
-void Ship::draw(Engine::SpriteBatch& sBatch)
+void Ship::draw(Engine::GLSpriteBatch& sBatch)
 {
 	Engine::ColourRGBA8 color;
 	color.setColour(100.0f, 51.0f, 15.0f, 255.0f);

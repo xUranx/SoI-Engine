@@ -61,11 +61,11 @@ namespace Engine {
 		GLuint texture = 0;
 	};
 
-	class SpriteBatch
+	class GLSpriteBatch
 	{
 	public:
-		SpriteBatch();
-		~SpriteBatch();
+		GLSpriteBatch();
+		~GLSpriteBatch();
 
 		void init();
 
@@ -83,8 +83,12 @@ namespace Engine {
 		void draw(const glm::vec2 destRect[], const glm::vec4& uvRect, GLuint texture, float depth, const ColourRGBA8& colour, float angle, glm::vec2 pivot);
 
 		void renderBatch();
+	protected:
+		void setGLversion();
 
 	private:
+
+
 		int createRenderBatches();
 		void createRenderBatchesTri(int s);
 		void createVertxArray();

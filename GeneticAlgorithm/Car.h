@@ -19,7 +19,7 @@ public:
 	float getRadius() const { return radius; }
 	void setJoint(b2RevoluteJoint* revoJoint) { joint = revoJoint; }
 	void update();
-	void draw(Engine::SpriteBatch& sBatch);
+	void draw(Engine::GLSpriteBatch& sBatch);
 	void setTexture(Engine::GLTexture _texture) { texture = _texture; }
 private:
 	Engine::GLTexture texture;
@@ -47,7 +47,7 @@ public:
 	void setTires(int i) { tires.resize(i); }
 
 	void update();
-	void draw(Engine::SpriteBatch& sBatch);
+	void draw(Engine::GLSpriteBatch& sBatch);
 private:
 	Engine::ColourRGBA8 colour;
 	glm::vec2 dimensions;

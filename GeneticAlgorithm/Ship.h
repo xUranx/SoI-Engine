@@ -12,7 +12,7 @@ public:
 	~Thruster();
 	b2FixtureDef init(bool rand, b2Body* b, float scale);
 	//void TogglePower() { if (power)power = false; else power = true; }
-	void draw(Engine::SpriteBatch& sBatch, b2Body* body);
+	void draw(Engine::GLSpriteBatch& sBatch, b2Body* body);
 	void setFixture(b2Fixture* fixt) { fixture = fixt; }
 	b2Fixture* getFixture() const { return fixture; }
 private:
@@ -37,7 +37,7 @@ public:
 	Ship();
 	~Ship();
 	void init(b2World* world, const glm::vec2 position, const glm::vec2 dimensions[], bool rand, float scale);
-	void draw(Engine::SpriteBatch& sBatch);
+	void draw(Engine::GLSpriteBatch& sBatch);
 	void TogglePower() { if (power)power = false; else power = true; }
 	b2Body* getBody() { return body; }
 	void raycast();

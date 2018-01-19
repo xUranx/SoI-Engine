@@ -19,10 +19,10 @@ namespace Engine
 		case GLES20:
 			m_sBatch.init();
 			break;
-		case DX11:
-			/*std::unique_ptr<SpriteBatch> spriteBatch;
-			spriteBatch = std::make_unique<SpriteBatch>(deviceContext);*/
-			break;
+		/*case DX11:
+			std::unique_ptr<SpriteBatch> spriteBatch;
+			spriteBatch = std::make_unique<SpriteBatch>(deviceContext);
+			break;*/
 		default:
 			break;
 		}

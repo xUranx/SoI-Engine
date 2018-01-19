@@ -68,7 +68,7 @@ void GATextDemo::run()
 	}
 }
 
-void GATextDemo::print(Engine::SpriteBatch& sBatch, Engine::SpriteFont& sFont)
+void GATextDemo::print(Engine::GLSpriteBatch& sBatch, Engine::SpriteFont& sFont)
 {
 #ifdef WIN32
 	Engine::ColourRGBA8 colour;

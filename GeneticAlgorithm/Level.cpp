@@ -239,7 +239,7 @@ void Level::genMapData(b2World* world, const glm::vec2 pos, float tWidth)
 
 }
 
-void Level::draw(Engine::SpriteBatch& sBatch)
+void Level::draw(Engine::GLSpriteBatch& sBatch)
 {
 	for (int i = 0; i < triangles.size(); i++)
 	{
