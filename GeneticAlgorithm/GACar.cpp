@@ -209,23 +209,50 @@ void GACar::run(Engine::Camera2D& cam2d)
 				destRect.y = -14;
 				destRect.z = Parents[i + ran].dimens.x;
 				destRect.w = Parents[i + ran].dimens.y;
+				if (rand() % 1000 < mutRate)
+				{
+					destRect.z = (float)(rand() % 80 + 20) / 10;
+					destRect.w = (float)(rand() % 80 + 20) / 10;
+				}
 				Engine::ColourRGBA8 color = Parents[i + ran].collours[0];
 
 				memberr->car.init(Parents[i + ran].m_world, destRect, color);
 				ran = rand() % 2;
 				memberr->car.setTires(Parents[i + ran].tirecount);
+				if (rand() % 1000 < mutRate)
+				{
+					memberr->car.setTires(rand() % 4 + 1);
+				}
 				int a = destRect.z * 10;
 				int b = destRect.w * 10;
-				for (int l = 0; l < Parents[i + ran].tirecount; l++)
+				for (int l = 0; l < memberr->car.getTireCount(); l++)
 				{
 					color = Parents[i + ran].collours[l + 1];
 					float rad = Parents[i + ran].rads[l];
+					if (rand() % 1000 < mutRate)
+					{
+						rad = (float)(rand() % 30 + 1) / 10;
+					}
 					Tire t;
 					t.init(Parents[i].m_world, rad, 0.5, color);
 					int radd = rad * 10;
 					destRect = Parents[i + ran].joints[l];
+					if (rand() % 1000 < mutRate)
+					{
+						destRect.x = (float)(rand() % a - a / 2) / 10;
+						destRect.y = (float)(rand() % b - b / 2) / 10;
+						destRect.z = (float)(rand() % radd - radd / 2) / 10;
+						destRect.w = (float)(rand() % radd - radd / 2) / 10;
+					}
 					bool on;
 					on = Parents[i + ran].motor[l];
+					if (rand() % 1000 < mutRate)
+					{
+						if (rand() % 10 < 5)
+							on = true;
+						else
+							on = false;
+					}
 					t.initJoint(memberr->car.getBody(), destRect, on);
 					memberr->car.Tinit(t, l);
 				}
@@ -246,7 +273,7 @@ void GACar::run(Engine::Camera2D& cam2d)
 	}
 }
 
-void GACar::draw(Engine::SpriteBatch & sBatch)
+void GACar::draw(Engine::GLSpriteBatch & sBatch)
 {
 	for (int i = 0; i < Members.size(); i++)
 	{
@@ -254,7 +281,7 @@ void GACar::draw(Engine::SpriteBatch & sBatch)
 	}
 }
 
-void GACar::print(Engine::SpriteBatch& sBatch, Engine::SpriteFont& sFont)
+void GACar::print(Engine::GLSpriteBatch& sBatch, Engine::SpriteFont& sFont)
 {
 #ifdef WIN32
 	Engine::ColourRGBA8 colour;

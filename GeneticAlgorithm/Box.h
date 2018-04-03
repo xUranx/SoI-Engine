@@ -25,7 +25,7 @@ public:
 	void endContact() { contact = false; }
 	void startSoIcontact(b2Vec2 pos) { SoIContact = true; PlanetPos = pos; body->SetGravityScale(0); }
 	void endSoIcontact() { SoIContact = false; PlanetPos = b2Vec2(0.0f, 0.0f); body->SetGravityScale(1); }
-	void draw(Engine::SpriteBatch& sBatch);
+	void draw(Engine::GLSpriteBatch& sBatch);
 private:
 	b2Vec2 PlanetPos = b2Vec2(0.0f,0.0f);
 	b2Body* body = nullptr;

@@ -21,7 +21,7 @@ void Player::init(b2World * world, const glm::vec2 position, Engine::ColourRGBA8
 
 }
 
-void Player::draw(Engine::SpriteBatch& sBatch)
+void Player::draw(Engine::GLSpriteBatch& sBatch)
 {
 	cBox.draw(sBatch);
 }

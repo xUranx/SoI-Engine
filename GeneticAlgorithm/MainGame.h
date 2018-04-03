@@ -53,9 +53,9 @@ private:
 	engine::Window* m_window;
 #endif
 	Engine::GLSLProgram colorP;
-	Engine::SpriteBatch spriteBatch;
-	Engine::SpriteBatch spriteBatchTri;
-	Engine::SpriteBatch UIspriteBatch;
+	Engine::GLSpriteBatch spriteBatch;
+	Engine::GLSpriteBatch spriteBatchTri;
+	Engine::GLSpriteBatch UIspriteBatch;
 	Engine::SpriteFont* spriteFont;
 	Engine::Camera2D cam2D;
 	Engine::Camera2D hudCam;

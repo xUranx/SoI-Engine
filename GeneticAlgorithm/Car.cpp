@@ -57,7 +57,7 @@ void Tire::initJoint(b2Body* aBody, glm::vec4 pos, bool on)
 	joint->SetUserData(this);
 }
 
-void Tire::draw(Engine::SpriteBatch& sBatch)
+void Tire::draw(Engine::GLSpriteBatch& sBatch)
 {
 	glm::vec4 destRect;
 	
@@ -106,7 +106,7 @@ void Car::init(b2World * world, glm::vec4 Pos, Engine::ColourRGBA8 color)
 	
 }
 
-void Car::draw(Engine::SpriteBatch & sBatch)
+void Car::draw(Engine::GLSpriteBatch & sBatch)
 {
 	for (int i = 0; i < tires.size(); i++)
 	{

@@ -47,7 +47,7 @@ void Box::Fixedinit(b2World * world, const glm::vec2 position, const glm::vec2 d
 	body->CreateFixture(&bShape, 0.0f);
 }
 
-void Box::draw(Engine::SpriteBatch& sBatch)
+void Box::draw(Engine::GLSpriteBatch& sBatch)
 {
 	glm::vec4 destRect;
 	destRect.x = body->GetPosition().x - dimens.x / 2.0f;

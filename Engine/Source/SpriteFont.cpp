@@ -240,7 +240,7 @@ namespace Engine {
         return size;
     }
 
-    void SpriteFont::draw(SpriteBatch& batch, const char* s, glm::vec2 position, glm::vec2 scaling, 
+    void SpriteFont::draw(GLSpriteBatch& batch, const char* s, glm::vec2 position, glm::vec2 scaling, 
                           float depth, ColourRGBA8 tint, Justification just /* = Justification::LEFT */) {
         glm::vec2 tp = position;
         // Apply justification

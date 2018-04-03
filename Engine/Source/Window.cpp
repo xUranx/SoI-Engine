@@ -73,6 +73,7 @@ namespace Engine {
 					Message("Opengl initialized. Version: " + versio);
 					glEnable(GL_BLEND);
 					glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+					SDL_GL_SetSwapInterval(1);
 				}
 
 			}

@@ -18,12 +18,19 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="NBody.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="NBody.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{e52f7aa7-6353-41a7-b874-6035d2f33f01}</ProjectGuid>
+    <ProjectGuid>{939fcff2-1ec5-470c-b0c7-1acdaa0b82e2}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>GeneticAlgorithm</RootNamespace>
+    <RootNamespace>NBodyB</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
-    <ProjectName>GeneticAlgorithm</ProjectName>
+    <ProjectName>NBodyB</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -154,43 +161,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="Box.cpp" />
-    <ClCompile Include="Car.cpp" />
-    <ClCompile Include="CollisionListener.cpp" />
-    <ClCompile Include="GACar.cpp" />
-    <ClCompile Include="GAShip.cpp" />
-    <ClCompile Include="GATextDemo.cpp" />
-    <ClCompile Include="Level.cpp" />
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="MainGame.cpp" />
-    <ClCompile Include="poly2tri\common\shapes.cc" />
-    <ClCompile Include="poly2tri\sweep\advancing_front.cc" />
-    <ClCompile Include="poly2tri\sweep\cdt.cc" />
-    <ClCompile Include="poly2tri\sweep\sweep.cc" />
-    <ClCompile Include="poly2tri\sweep\sweep_context.cc" />
-    <ClCompile Include="RaycastCallBack.cpp" />
-    <ClCompile Include="Ship.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Box.h" />
-    <ClInclude Include="Car.h" />
-    <ClInclude Include="CollisionListener.h" />
-    <ClInclude Include="GACar.h" />
-    <ClInclude Include="GAShip.h" />
-    <ClInclude Include="GATextDemo.h" />
-    <ClInclude Include="Level.h" />
-    <ClInclude Include="MainGame.h" />
-    <ClInclude Include="poly2tri\common\shapes.h" />
-    <ClInclude Include="poly2tri\common\utils.h" />
-    <ClInclude Include="poly2tri\poly2tri.h" />
-    <ClInclude Include="poly2tri\sweep\advancing_front.h" />
-    <ClInclude Include="poly2tri\sweep\cdt.h" />
-    <ClInclude Include="poly2tri\sweep\sweep.h" />
-    <ClInclude Include="poly2tri\sweep\sweep_context.h" />
-    <ClInclude Include="RaycastCallBack.h" />
-    <ClInclude Include="Ship.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

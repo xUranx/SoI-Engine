@@ -94,7 +94,7 @@ void MainGame::gLoop()
 	//cam2D.setPos(cam2D.getPos() + glm::vec2(sWidth / 2.0f, sHeight / 2.0f));
     glm::vec2 pss = glm::vec2(cam2D.getPos().x + sWidth / 2.0f, cam2D.getPos().y + sHeight / 2.0f);
 	hudCam.setPos(pss);
-	gMode = GCar;
+	gMode = Text;
 
 	//Event handler
 #ifdef WIN32
@@ -162,7 +162,7 @@ void MainGame::gLoop()
             ship.raycast();
             glm::vec2 psss = glm::vec2(ship.getBody()->GetPosition().x,
                                        ship.getBody()->GetPosition().y);
-            cam2D.setPos(pss);
+            cam2D.setPos(psss);
 #ifdef WIN32
             processInput();
 #endif
@@ -183,7 +183,7 @@ void MainGame::gLoop()
                 Ground.Fixedinit(world, glm::vec2(140.0f, -15.0f), dimes);
                 Evo.init(world);
                 //car.init(world.get(), glm::vec2(0, -13));
-                cam2D.setScale(20.0f);
+                cam2D.setScale(30.0f);
             }
             Evo.run(cam2D);
             //cam2D.setPos(glm::vec2(car.getBody()->GetPosition().x, car.getBody()->GetPosition().y));

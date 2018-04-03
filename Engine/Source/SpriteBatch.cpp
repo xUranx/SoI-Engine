@@ -111,39 +111,39 @@ namespace Engine {
 	}
 
 
-	SpriteBatch::SpriteBatch()
+	GLSpriteBatch::GLSpriteBatch()
 	{
 	}
 
 
-	SpriteBatch::~SpriteBatch()
+	GLSpriteBatch::~GLSpriteBatch()
 	{
 	}
 
-	void SpriteBatch::init()
+	void GLSpriteBatch::init()
 	{
 		createVertxArray();
 	}
 
-	void SpriteBatch::begin(GlyphSortType type /*GlyphSortType::TEXTURE*/)
+	void GLSpriteBatch::begin(GlyphSortType type /*GlyphSortType::TEXTURE*/)
 	{
-		sortType = type;
-		rBatch.clear();
-		glyphs.clear();
-		glyphsTri.clear();
+		m_sortType = type;
+		m_rBatch.clear();
+		m_glyphs.clear();
+		m_glyphsTri.clear();
 	}
 
-	void SpriteBatch::end()
+	void GLSpriteBatch::end()
 	{
-		glyphsP.resize(glyphs.size());
-		for (int i = 0; i < glyphs.size(); i++)
+		m_glyphsP.resize(m_glyphs.size());
+		for (int i = 0; i < m_glyphs.size(); i++)
 		{
-			glyphsP[i] = &glyphs[i];
+			m_glyphsP[i] = &m_glyphs[i];
 		}
-		glyphsTriP.resize(glyphsTri.size());
-		for (int i = 0; i < glyphsTri.size(); i++)
+		m_glyphsTriP.resize(m_glyphsTri.size());
+		for (int i = 0; i < m_glyphsTri.size(); i++)
 		{
-			glyphsTriP[i] = &glyphsTri[i];
+			m_glyphsTriP[i] = &m_glyphsTri[i];
 		}
 		sortGLyph();
 		sortGLyphTri();
@@ -151,36 +151,36 @@ namespace Engine {
 		//createRenderBatchesTri(s);
 	}
 
-	void SpriteBatch::draw(const glm::vec4 & destRect, const glm::vec4 & uvRect, GLuint texture, float depth, const ColourRGBA8 & colour)
+	void GLSpriteBatch::draw(const glm::vec4 & destRect, const glm::vec4 & uvRect, GLuint texture, float depth, const ColourRGBA8 & colour)
 	{
-		glyphs.emplace_back(destRect, uvRect, texture, depth, colour);
+		m_glyphs.emplace_back(destRect, uvRect, texture, depth, colour);
 	}
 
-	void SpriteBatch::draw(const glm::vec4 & destRect, const glm::vec4 & uvRect, GLuint texture, float depth, const ColourRGBA8 & colour, float angle)
+	void GLSpriteBatch::draw(const glm::vec4 & destRect, const glm::vec4 & uvRect, GLuint texture, float depth, const ColourRGBA8 & colour, float angle)
 	{
-		glyphs.emplace_back(destRect, uvRect, texture, depth, colour, angle);
+		m_glyphs.emplace_back(destRect, uvRect, texture, depth, colour, angle);
 	}
 
-	void SpriteBatch::draw(const glm::vec4 & destRect, const glm::vec4 & uvRect, GLuint texture, float depth, const ColourRGBA8 & colour, const glm::vec2& dir)
+	void GLSpriteBatch::draw(const glm::vec4 & destRect, const glm::vec4 & uvRect, GLuint texture, float depth, const ColourRGBA8 & colour, const glm::vec2& dir)
 	{
 		const glm::vec2 right(1.0f, 0.0f);
 		float angle = acos(glm::dot(right, dir));
 		if (dir.y < 0.0f) angle = -angle;
 
-		glyphs.emplace_back(destRect, uvRect, texture, depth, colour, angle);
+		m_glyphs.emplace_back(destRect, uvRect, texture, depth, colour, angle);
 	}
 
-	void SpriteBatch::draw(const glm::vec2 destRect[], const glm::vec4 & uvRect, GLuint texture, float depth, const ColourRGBA8 & colour)
+	void GLSpriteBatch::draw(const glm::vec2 destRect[], const glm::vec4 & uvRect, GLuint texture, float depth, const ColourRGBA8 & colour)
 	{
-		glyphsTri.emplace_back(destRect, uvRect, texture, depth, colour);
+		m_glyphsTri.emplace_back(destRect, uvRect, texture, depth, colour);
 	}
 
-	void SpriteBatch::draw(const glm::vec2 destRect[], const glm::vec4 & uvRect, GLuint texture, float depth, const ColourRGBA8 & colour, float angle, glm::vec2 pivot)
+	void GLSpriteBatch::draw(const glm::vec2 destRect[], const glm::vec4 & uvRect, GLuint texture, float depth, const ColourRGBA8 & colour, float angle, glm::vec2 pivot)
 	{
-		glyphsTri.emplace_back(destRect, uvRect, texture, depth, colour, angle, pivot);
+		m_glyphsTri.emplace_back(destRect, uvRect, texture, depth, colour, angle, pivot);
 	}
 
-	void SpriteBatch::renderBatch()
+	void GLSpriteBatch::renderBatch()
 	{
 #ifdef WIN32
 		glBindVertexArray(vao);
@@ -199,11 +199,11 @@ namespace Engine {
 
 		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, uv));
 #endif
-		for (int i = 0; i < rBatch.size(); i++)
+		for (int i = 0; i < m_rBatch.size(); i++)
 		{
-			glBindTexture(GL_TEXTURE_2D, rBatch[i].texture);
+			glBindTexture(GL_TEXTURE_2D, m_rBatch[i].texture);
 
-			glDrawArrays(GL_TRIANGLES, rBatch[i].offset, rBatch[i].numVertices);
+			glDrawArrays(GL_TRIANGLES, m_rBatch[i].offset, m_rBatch[i].numVertices);
 		}
 #ifdef WIN32
 		glBindVertexArray(0);
@@ -217,71 +217,71 @@ namespace Engine {
 
 	}
 
-	int SpriteBatch::createRenderBatches()
+	int GLSpriteBatch::createRenderBatches()
 	{
 		std::vector<Vertex> vertices;
-		vertices.resize(glyphsP.size() * 6);
-		if (glyphsP.empty())
+		vertices.resize(m_glyphsP.size() * 6);
+		if (m_glyphsP.empty())
 		{
 			return 0;
 		}
 		int offset = 0;
 		int cv = 0;
-		rBatch.emplace_back(0, 6, glyphsP[0]->texture);
-		vertices[cv++] = glyphsP[0]->topLeft;
-		vertices[cv++] = glyphsP[0]->bottomLeft;
-		vertices[cv++] = glyphsP[0]->bottomRight;
-		vertices[cv++] = glyphsP[0]->bottomRight;
-		vertices[cv++] = glyphsP[0]->topRight;
-		vertices[cv++] = glyphsP[0]->topLeft;
+		m_rBatch.emplace_back(0, 6, m_glyphsP[0]->texture);
+		vertices[cv++] = m_glyphsP[0]->topLeft;
+		vertices[cv++] = m_glyphsP[0]->bottomLeft;
+		vertices[cv++] = m_glyphsP[0]->bottomRight;
+		vertices[cv++] = m_glyphsP[0]->bottomRight;
+		vertices[cv++] = m_glyphsP[0]->topRight;
+		vertices[cv++] = m_glyphsP[0]->topLeft;
 		offset += 6;
-		for (int cg = 1; cg < glyphsP.size(); cg++)
+		for (int cg = 1; cg < m_glyphsP.size(); cg++)
 		{
-			if (glyphsP[cg]->texture != glyphsP[cg - 1]->texture)
+			if (m_glyphsP[cg]->texture != m_glyphsP[cg - 1]->texture)
 			{
-				rBatch.emplace_back(offset, 6, glyphsP[cg]->texture);
+				m_rBatch.emplace_back(offset, 6, m_glyphsP[cg]->texture);
 			}
 			else
 			{
-				rBatch.back().numVertices += 6;
+				m_rBatch.back().numVertices += 6;
 			}
-			vertices[cv++] = glyphsP[cg]->topLeft;
-			vertices[cv++] = glyphsP[cg]->bottomLeft;
-			vertices[cv++] = glyphsP[cg]->bottomRight;
-			vertices[cv++] = glyphsP[cg]->bottomRight;
-			vertices[cv++] = glyphsP[cg]->topRight;
-			vertices[cv++] = glyphsP[cg]->topLeft;
+			vertices[cv++] = m_glyphsP[cg]->topLeft;
+			vertices[cv++] = m_glyphsP[cg]->bottomLeft;
+			vertices[cv++] = m_glyphsP[cg]->bottomRight;
+			vertices[cv++] = m_glyphsP[cg]->bottomRight;
+			vertices[cv++] = m_glyphsP[cg]->topRight;
+			vertices[cv++] = m_glyphsP[cg]->topLeft;
 			offset += 6;
 		}
 
 		std::vector<Vertex> verticesTri;
-		verticesTri.resize(glyphsTriP.size() * 3);
+		verticesTri.resize(m_glyphsTriP.size() * 3);
 		bool Tri = true;
-		if (glyphsTriP.empty())
+		if (m_glyphsTriP.empty())
 		{
 			Tri = false;
 		}
 		else
 		{
 			cv = 0;
-			rBatch.emplace_back(offset, 3, glyphsTriP[0]->texture);
-			verticesTri[cv++] = glyphsTriP[0]->A;
-			verticesTri[cv++] = glyphsTriP[0]->B;
-			verticesTri[cv++] = glyphsTriP[0]->C;
+			m_rBatch.emplace_back(offset, 3, m_glyphsTriP[0]->texture);
+			verticesTri[cv++] = m_glyphsTriP[0]->A;
+			verticesTri[cv++] = m_glyphsTriP[0]->B;
+			verticesTri[cv++] = m_glyphsTriP[0]->C;
 			offset += 3;
-			for (int cg = 1; cg < glyphsTriP.size(); cg++)
+			for (int cg = 1; cg < m_glyphsTriP.size(); cg++)
 			{
-				if (glyphsTriP[cg]->texture != glyphsTriP[cg - 1]->texture)
+				if (m_glyphsTriP[cg]->texture != m_glyphsTriP[cg - 1]->texture)
 				{
-					rBatch.emplace_back(offset, 3, glyphsTriP[cg]->texture);
+					m_rBatch.emplace_back(offset, 3, m_glyphsTriP[cg]->texture);
 				}
 				else
 				{
-					rBatch.back().numVertices += 3;
+					m_rBatch.back().numVertices += 3;
 				}
-				verticesTri[cv++] = glyphsTriP[cg]->A;
-				verticesTri[cv++] = glyphsTriP[cg]->B;
-				verticesTri[cv++] = glyphsTriP[cg]->C;
+				verticesTri[cv++] = m_glyphsTriP[cg]->A;
+				verticesTri[cv++] = m_glyphsTriP[cg]->B;
+				verticesTri[cv++] = m_glyphsTriP[cg]->C;
 				offset += 3;
 			}
 		}
@@ -296,34 +296,34 @@ namespace Engine {
 		return vertices.size();
 	}
 
-	void SpriteBatch::createRenderBatchesTri(int s)
+	void GLSpriteBatch::createRenderBatchesTri(int s)
 	{
 		std::vector<Vertex> verticesTri;
-		verticesTri.resize(glyphsTriP.size() * 3);
-		if (glyphsTriP.empty())
+		verticesTri.resize(m_glyphsTriP.size() * 3);
+		if (m_glyphsTriP.empty())
 		{
 			return;
 		}
 		int offset = 0;
 		int cv = 0;
-		rBatch.emplace_back(0, 3, glyphsTriP[0]->texture);
-		verticesTri[cv++] = glyphsTriP[0]->A;
-		verticesTri[cv++] = glyphsTriP[0]->B;
-		verticesTri[cv++] = glyphsTriP[0]->C;
+		m_rBatch.emplace_back(0, 3, m_glyphsTriP[0]->texture);
+		verticesTri[cv++] = m_glyphsTriP[0]->A;
+		verticesTri[cv++] = m_glyphsTriP[0]->B;
+		verticesTri[cv++] = m_glyphsTriP[0]->C;
 		offset += 3;
-		for (int cg = 1; cg < glyphsTriP.size(); cg++)
+		for (int cg = 1; cg < m_glyphsTriP.size(); cg++)
 		{
-			if (glyphsTriP[cg]->texture != glyphsTriP[cg - 1]->texture)
+			if (m_glyphsTriP[cg]->texture != m_glyphsTriP[cg - 1]->texture)
 			{
-				rBatch.emplace_back(offset, 3, glyphsTriP[cg]->texture);
+				m_rBatch.emplace_back(offset, 3, m_glyphsTriP[cg]->texture);
 			}
 			else
 			{
-				rBatch.back().numVertices += 3;
+				m_rBatch.back().numVertices += 3;
 			}
-			verticesTri[cv++] = glyphsTriP[cg]->A;
-			verticesTri[cv++] = glyphsTriP[cg]->B;
-			verticesTri[cv++] = glyphsTriP[cg]->C;
+			verticesTri[cv++] = m_glyphsTriP[cg]->A;
+			verticesTri[cv++] = m_glyphsTriP[cg]->B;
+			verticesTri[cv++] = m_glyphsTriP[cg]->C;
 			offset += 3;
 		}
 
@@ -337,7 +337,7 @@ namespace Engine {
 	}
 
 	//private
-	void SpriteBatch::createVertxArray()
+	void GLSpriteBatch::createVertxArray()
 	{
 #ifdef WIN32
 		if (vao == 0)
@@ -375,66 +375,66 @@ namespace Engine {
 #endif
 
 	}
-	void SpriteBatch::sortGLyph()
+	void GLSpriteBatch::sortGLyph()
 	{
-		switch (sortType)
+		switch (m_sortType)
 		{
 		case GlyphSortType::BACK_TO_FRONT:
-			std::stable_sort(glyphsP.begin(), glyphsP.end(), compFrontToBack);
+			std::stable_sort(m_glyphsP.begin(), m_glyphsP.end(), compFrontToBack);
 			break;
 		case GlyphSortType::FRONT_TO_BACK:
-			std::stable_sort(glyphsP.begin(), glyphsP.end(), compBackToFront);
+			std::stable_sort(m_glyphsP.begin(), m_glyphsP.end(), compBackToFront);
 			break;
 		case GlyphSortType::TEXTURE:
-			std::stable_sort(glyphsP.begin(), glyphsP.end(), compTexture);
+			std::stable_sort(m_glyphsP.begin(), m_glyphsP.end(), compTexture);
 			break;
 		default:
 			break;
 		}	
 	}
-	void SpriteBatch::sortGLyphTri()
+	void GLSpriteBatch::sortGLyphTri()
 	{
-		switch (sortType)
+		switch (m_sortType)
 		{
 		case GlyphSortType::BACK_TO_FRONT:
-			std::stable_sort(glyphsTriP.begin(), glyphsTriP.end(), compFrontToBackTri);
+			std::stable_sort(m_glyphsTriP.begin(), m_glyphsTriP.end(), compFrontToBackTri);
 			break;
 		case GlyphSortType::FRONT_TO_BACK:
-			std::stable_sort(glyphsTriP.begin(), glyphsTriP.end(), compBackToFrontTri);
+			std::stable_sort(m_glyphsTriP.begin(), m_glyphsTriP.end(), compBackToFrontTri);
 			break;
 		case GlyphSortType::TEXTURE:
-			std::stable_sort(glyphsTriP.begin(), glyphsTriP.end(), compTextureTri);
+			std::stable_sort(m_glyphsTriP.begin(), m_glyphsTriP.end(), compTextureTri);
 			break;
 		default:
 			break;
 		}
 	}
-	bool SpriteBatch::compFrontToBack(Glyhp* a, Glyhp* b)
+	bool GLSpriteBatch::compFrontToBack(Glyhp* a, Glyhp* b)
 	{
 		return (a->depth < b->depth);
 	}
 
-	bool SpriteBatch::compBackToFront(Glyhp* a, Glyhp* b)
+	bool GLSpriteBatch::compBackToFront(Glyhp* a, Glyhp* b)
 	{
 		return (a->depth > b->depth);
 	}
 
-	bool SpriteBatch::compTexture(Glyhp* a, Glyhp* b)
+	bool GLSpriteBatch::compTexture(Glyhp* a, Glyhp* b)
 	{
 		return (a->texture < b->texture);
 	}
 
-	bool SpriteBatch::compFrontToBackTri(GlyhpTri* a, GlyhpTri* b)
+	bool GLSpriteBatch::compFrontToBackTri(GlyhpTri* a, GlyhpTri* b)
 	{
 		return (a->depth < b->depth);
 	}
 
-	bool SpriteBatch::compBackToFrontTri(GlyhpTri* a, GlyhpTri* b)
+	bool GLSpriteBatch::compBackToFrontTri(GlyhpTri* a, GlyhpTri* b)
 	{
 		return (a->depth > b->depth);
 	}
 
-	bool SpriteBatch::compTextureTri(GlyhpTri* a, GlyhpTri* b)
+	bool GLSpriteBatch::compTextureTri(GlyhpTri* a, GlyhpTri* b)
 	{
 		return (a->texture < b->texture);
 	}
