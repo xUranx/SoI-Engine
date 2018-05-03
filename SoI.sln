@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SoI", "SoI\SoI.vcxproj", "{B73A3CAF-1554-42FD-9A34-D1B02BC7192D}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -19,8 +19,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GeneticAlgorithm", "Genetic
 	ProjectSection(ProjectDependencies) = postProject
 		{CFCCC2A4-BF61-45F2-B570-B808E0425564} = {CFCCC2A4-BF61-45F2-B570-B808E0425564}
 	EndProjectSection
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NBodyB", "NBodyB\NBodyB.vcxproj", "{939FCFF2-1EC5-470C-B0C7-1ACDAA0B82E2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -62,14 +60,6 @@ Global
 		{E52F7AA7-6353-41A7-B874-6035D2F33F01}.Release|x64.Build.0 = Release|x64
 		{E52F7AA7-6353-41A7-B874-6035D2F33F01}.Release|x86.ActiveCfg = Release|Win32
 		{E52F7AA7-6353-41A7-B874-6035D2F33F01}.Release|x86.Build.0 = Release|Win32
-		{939FCFF2-1EC5-470C-B0C7-1ACDAA0B82E2}.Debug|x64.ActiveCfg = Debug|x64
-		{939FCFF2-1EC5-470C-B0C7-1ACDAA0B82E2}.Debug|x64.Build.0 = Debug|x64
-		{939FCFF2-1EC5-470C-B0C7-1ACDAA0B82E2}.Debug|x86.ActiveCfg = Debug|Win32
-		{939FCFF2-1EC5-470C-B0C7-1ACDAA0B82E2}.Debug|x86.Build.0 = Debug|Win32
-		{939FCFF2-1EC5-470C-B0C7-1ACDAA0B82E2}.Release|x64.ActiveCfg = Release|x64
-		{939FCFF2-1EC5-470C-B0C7-1ACDAA0B82E2}.Release|x64.Build.0 = Release|x64
-		{939FCFF2-1EC5-470C-B0C7-1ACDAA0B82E2}.Release|x86.ActiveCfg = Release|Win32
-		{939FCFF2-1EC5-470C-B0C7-1ACDAA0B82E2}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
