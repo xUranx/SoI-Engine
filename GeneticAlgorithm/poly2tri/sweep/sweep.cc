@@ -730,8 +730,7 @@ void Sweep::FlipEdgeEvent(SweepContext& tcx, Point& ep, Point& eq, Triangle* t, 
       FlipEdgeEvent(tcx, ep, eq, t, p);
     }
   } else {
-    Point& newP = NextFlipPoint(ep, eq, ot, op);
-    FlipScanEdgeEvent(tcx, ep, eq, *t, ot, newP);
+    FlipScanEdgeEvent(tcx, ep, eq, *t, ot, NextFlipPoint(ep, eq, ot, op));
     EdgeEvent(tcx, ep, eq, t, p);
   }
 }
@@ -795,8 +794,7 @@ void Sweep::FlipScanEdgeEvent(SweepContext& tcx, Point& ep, Point& eq, Triangle&
     // Turns out at first glance that this is somewhat complicated
     // so it will have to wait.
   } else{
-    Point& newP = NextFlipPoint(ep, eq, ot, op);
-    FlipScanEdgeEvent(tcx, ep, eq, flip_triangle, ot, newP);
+    FlipScanEdgeEvent(tcx, ep, eq, flip_triangle, ot, NextFlipPoint(ep, eq, ot, op));
   }
 }
 

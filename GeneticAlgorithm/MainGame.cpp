@@ -94,7 +94,7 @@ void MainGame::gLoop()
 	//cam2D.setPos(cam2D.getPos() + glm::vec2(sWidth / 2.0f, sHeight / 2.0f));
     glm::vec2 pss = glm::vec2(cam2D.getPos().x + sWidth / 2.0f, cam2D.getPos().y + sHeight / 2.0f);
 	hudCam.setPos(pss);
-	gMode = Text;
+	gMode = Game;
 
 	//Event handler
 #ifdef WIN32
@@ -140,11 +140,12 @@ void MainGame::gLoop()
                 b2Vec2 grav(0.0f, -9.81);
                 world = new b2World(grav);
                 glm::vec2 dimes = glm::vec2(50.0f, 3.0f);
-                Ground.Fixedinit(world, glm::vec2(0.0f, -15.0f), dimes);
-                cam2D.setScale(30.0f);
+                //Ground.Fixedinit(world, glm::vec2(0.0f, -15.0f), dimes);
+                cam2D.setScale(10.0f);
+				cam2D.setPos(glm::vec2(0.0f,10.0f));
                 init = false;
-                map.init("Level1", 20, 200);
-                map.genMapData(world, glm::vec2(0, 0), 5);
+                //map.init("Level1", 20, 200);
+               // map.genMapData(world, glm::vec2(0, 0), 5);
                 glm::vec2 dim[3];
                 dim[0].x = -1.5f;
                 dim[0].y = -2.0f;
@@ -152,17 +153,23 @@ void MainGame::gLoop()
                 dim[1].y = 2.0f;
                 dim[2].x = 1.5f;
                 dim[2].y = -2.0f;
-                ship.init(world, glm::vec2(21, 5), dim, false, 0.4f);
+                //ship.init(world, glm::vec2(0, 5), dim, false, 0.4f);
                 GLTexture texture = ResourceManager::getTexture("Assets/Textures/Block.png");
                 ColourRGBA8 color;
                 //box.init(world.get(), glm::vec2(3.0f, 0.0f),texture,color, glm::vec2(5, 5));
-
-
+				std::vector<int> layers;
+				layers.resize(4);
+				layers[0] = 4;
+				layers[1] = 6;
+				layers[2] = 6;
+				layers[3] = 3;
+				gaShip.init(layers, 200, world,glm::vec2(20.0f,20.0f), 15);
             }
-            ship.raycast();
-            glm::vec2 psss = glm::vec2(ship.getBody()->GetPosition().x,
+			gaShip.step();
+            //ship.raycast();
+            /*glm::vec2 psss = glm::vec2(ship.getBody()->GetPosition().x,
                                        ship.getBody()->GetPosition().y);
-            cam2D.setPos(psss);
+            cam2D.setPos(psss);*/
 #ifdef WIN32
             processInput();
 #endif
@@ -226,29 +233,29 @@ void MainGame::processInput()
 	{
 	const float CamSpeed = 0.2f;
 	const float ScalSpeed = 0.2f;
-	static float dir;
-	if(inputManager.isKeyPressed(SDLK_w)) cam2D.setPos(cam2D.getPos() + glm::vec2(0.0f, -CamSpeed));
+	//static float dir;
+	if(inputManager.isKeyPressed(SDLK_s)) cam2D.setPos(cam2D.getPos() + glm::vec2(0.0f, -CamSpeed));
 		
-	if (inputManager.isKeyPressed(SDLK_s)) cam2D.setPos(cam2D.getPos() + glm::vec2(0.0f, CamSpeed));
+	if (inputManager.isKeyPressed(SDLK_w)) cam2D.setPos(cam2D.getPos() + glm::vec2(0.0f, CamSpeed));
 		
-	if (inputManager.isKeyPressed(SDLK_a))
-		cam2D.setPos(cam2D.getPos() + glm::vec2(CamSpeed, 0.0f));
 	if (inputManager.isKeyPressed(SDLK_d))
+		cam2D.setPos(cam2D.getPos() + glm::vec2(CamSpeed, 0.0f));
+	if (inputManager.isKeyPressed(SDLK_a))
 		cam2D.setPos(cam2D.getPos() + glm::vec2(-CamSpeed, 0.0f));
 	if (inputManager.isKeyPressed(SDLK_q))
 		cam2D.setScale(cam2D.getScale() + ScalSpeed);
 	if (inputManager.isKeyPressed(SDLK_e))
 		cam2D.setScale(cam2D.getScale() - ScalSpeed);
-		if (inputManager.isKeyPressed(SDLK_z))
-			dir = 0.05f;
-		else if (inputManager.isKeyPressed(SDLK_c))
-			dir = -0.05f;
-		else
-			dir = 0.0f;
-		if (inputManager.isKeyPressed(SDLK_x))
-			ship.getBody()->ApplyForce(40 * ship.getBody()->GetWorldVector(b2Vec2(0.0f + dir, 1)), ship.getBody()->GetWorldPoint(b2Vec2(0, -1)), true);
-		if (inputManager.isKeyPressed(SDLK_j))
-			ship.getBody()->SetTransform(ship.getBody()->GetPosition(), 0);
+	/*if (inputManager.isKeyPressed(SDLK_z))
+		dir = 0.05f;
+	else if (inputManager.isKeyPressed(SDLK_c))
+		dir = -0.05f;
+	else
+		dir = 0.0f;
+	if (inputManager.isKeyPressed(SDLK_x))
+		ship.getBody()->ApplyForce(40 * ship.getBody()->GetWorldVector(b2Vec2(0.0f + dir, 1)), ship.getBody()->GetWorldPoint(b2Vec2(0, -1)), true);
+	if (inputManager.isKeyPressed(SDLK_j))
+		ship.getBody()->SetTransform(ship.getBody()->GetPosition(), 0);*/
 	}
 }
 #endif // WIN32
@@ -288,16 +295,18 @@ void MainGame::drawGame()
 	{
 		ColourRGBA8 color;
 		color.setColour(6.0f, 51.0f, 15.0f, 255.0f);
-		glm::vec4 destRect;
+		/*glm::vec4 destRect;
 		destRect.x = Ground.getBody()->GetPosition().x - Ground.getDimensions().x / 2.0f;
 		destRect.y = Ground.getBody()->GetPosition().y - Ground.getDimensions().y / 2.0f;
 		destRect.z = Ground.getDimensions().x;
-		destRect.w = Ground.getDimensions().y;
+		destRect.w = Ground.getDimensions().y;*/
 		//box.draw(spriteBatch);
-		map.draw(spriteBatch);
+		//map.draw(spriteBatch);
+		spriteBatch.draw({ 19,19,2,2 }, { 0,0,1,1 }, NULL, 1, { 255,255,255,255 });
 		glm::vec4 um = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
-		spriteBatch.draw(destRect, um, 0, 0.0f, color);
-		ship.draw(spriteBatch);
+		//spriteBatch.draw(destRect, um, 0, 0.0f, color);
+		gaShip.draw(spriteBatch);
+		//ship.draw(spriteBatch);
 		//map.debugPrintRaw();
 	}
 	if (gMode == GCar)
@@ -368,8 +377,9 @@ void MainGame::drawHUD()
 	spriteFont->draw(UIspriteBatch, buffer, glm::vec2(10, 8), glm::vec2(1.0f), 0.0f, colour);
 	if (gMode == Game)
 	{
-		sprintf_s(buffer2, "Angle: %f", ship.getBody()->GetAngle() * RADTODEG);
-		spriteFont->draw(UIspriteBatch, buffer2, glm::vec2(10, 40), glm::vec2(1.0f), 0.0f, colour);
+		//sprintf_s(buffer2, "Angle: %f", gaShip.getBody()->GetAngle() * RADTODEG);
+		//spriteFont->draw(UIspriteBatch, buffer2, glm::vec2(10, 40), glm::vec2(1.0f), 0.0f, colour);
+		gaShip.print(UIspriteBatch, *spriteFont);
 	}
 	else if (gMode == GCar)
 	{

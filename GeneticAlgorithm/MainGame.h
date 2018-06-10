@@ -11,12 +11,12 @@
 #include <Engine/Include/InputManager.h>
 #include <Engine/Include/DebugRenderer.h>
 #include <Box2D/Box2D.h>
-#include "Level.h"
 #include "Box.h"
 #include "Ship.h"
 #include "GATextDemo.h" 
 #include "Car.h"
 #include "GACar.h"
+#include "GAShip.h"
 enum GameState
 {
 	MainMenu, Game, Text, GCar, Exit
@@ -52,6 +52,7 @@ private:
 #else
 	engine::Window* m_window;
 #endif
+	GAShip gaShip;
 	Engine::GLSLProgram colorP;
 	Engine::GLSpriteBatch spriteBatch;
 	Engine::GLSpriteBatch spriteBatchTri;
@@ -68,7 +69,7 @@ private:
 	std::vector<glm::vec4*> posP;
 	static bool compFrontToBack(glm::vec4* a, glm::vec4* b);
 	bool renderDebug = false;
-	Level map;
+	//Level map;
 	Ship ship;
 	Box box;
 	GameState gMode;
