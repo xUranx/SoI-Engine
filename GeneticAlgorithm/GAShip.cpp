@@ -4,6 +4,7 @@
 #include <time.h>
 #include <algorithm>
 #include <math.h>
+#include <Engine/Include/Log.h>
 GAShip::GAShip()
 {
 }
@@ -151,7 +152,7 @@ void GAShip::mutate()
 	std::sort(popu.begin(), popu.end(),
 		[](ShipPopulation a, ShipPopulation b) {return a.members.fitness > b.members.fitness; });
 	std::vector<ShipPopulation> temp;
-	for (auto& c : popu)
+	/*for (auto& c : popu)
 	{
 		for (int i = 0; i < c.neurons.size(); i++)
 			for (int j = 0; j < c.neurons[i].size(); j++)
@@ -177,10 +178,51 @@ void GAShip::mutate()
 					if (mut(rng) < mutateChance)
 						popu[pop+1].weights[i][j][k] = radn(rng);
 					else						
-						popu[pop+1].weights[i][j][k] = temp[pop + udist(rng)].weights[i][j][k];;
+						popu[pop+1].weights[i][j][k] = temp[pop + udist(rng)].weights[i][j][k];
 				}
 			}
 		}
+	}*/
+	for(auto c = 0; c < popu.size(); c++)
+	{
+		
+			popu[c].members.ship.getBody()->SetTransform(b2Vec2(0, 0), 0);
+			popu[c].members.ship.getBody()->SetAwake(true);
+			popu[c].members.fitness = 0;
+			if (c <= popu.size() / 2)
+			{
+				for (int i = 0; i < popu[c].neurons.size(); i++)
+				{
+					for (int j = 0; j < popu[c].neurons[i].size(); j++)
+						popu[c].neurons[i][j] = 0.0f;
+				}
+				temp.push_back(popu[c]);
+			}
+	}
+	int p = 0;
+	for (int pop = 0; pop < temp.size(); pop += 4)
+	{
+		for (int i = 0; i < popu[pop].weights.size(); i++)
+		{
+			for (int j = 0; j < popu[pop].weights[i].size(); j++)
+			{
+				for (int k = 0; k < popu[pop].weights[i][j].size(); k++)
+				{
+					for (int c = 0; c < 5; c++)
+					{
+						if (mut(rng) < mutateChance)
+							popu[pop+c].weights[i][j][k] = radn(rng);
+						else
+							popu[pop].weights[i][j][k] = temp[p + udist(rng)].weights[i][j][k];
+					}
+					/*if (mut(rng) < mutateChance)
+						popu[pop + 1].weights[i][j][k] = radn(rng);
+					else
+						popu[pop + 1].weights[i][j][k] = temp[pop + udist(rng)].weights[i][j][k];*/
+				}
+			}
+		}
+		p+=2;
 	}
 	sleep = 0;
 	higFit = 0;
