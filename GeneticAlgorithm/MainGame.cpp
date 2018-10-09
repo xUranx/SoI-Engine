@@ -160,8 +160,8 @@ void MainGame::gLoop()
 				std::vector<int> layers;
 				layers.resize(4);
 				layers[0] = 4;
-				layers[1] = 6;
-				layers[2] = 6;
+				layers[1] = 8;
+				layers[2] = 8;
 				layers[3] = 3;
 				gaShip.init(layers, 200, world,glm::vec2(20.0f,20.0f), 15);
             }
