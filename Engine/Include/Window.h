@@ -33,10 +33,10 @@ namespace Engine {
 		void fpsCounter();
 		//Returns fps
 		float getfps() { return fps; }
-	private:
-		std::string wName;
 		int SCREEN_WIDTH;
 		int SCREEN_HEIGHT;
+	private:
+		std::string wName;
 		float fps, frameTime;
 
 	};
