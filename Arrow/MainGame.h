@@ -13,6 +13,7 @@
 #include "Player.h"
 #include "CollisionListener.h"
 #include "Arrow.h"
+#include <set>
 
 enum GameState
 {
@@ -45,6 +46,7 @@ private:
 	Engine::DebugRenderer dRender;
 	Engine::InputManager inputManager;
 	std::vector<Arrow*> m_arrow_list;
+	std::set<Arrow*> Removal;
 	Engine::GLTexture arrowtext;
 	CollisionListener ColList;
 	std::unique_ptr<b2World> world;

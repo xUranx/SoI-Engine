@@ -18,13 +18,20 @@ public:
 	void update();
 
 	void Draw(Engine::GLSpriteBatch&);
+
+	void startContact() { contact = true; }
+
+	float getdSpawnTimer() { return m_dspawnTimer; }
+
+	b2Body* getBody() { return body; }
+
 private:
 	b2Body* body = nullptr;
 	b2Fixture* fixture = nullptr;
 	entityCat::entityCatecory eCat = entityCat::Block;
 	bool contact = false;
-	bool SoIContact = false;
 	Engine::GLTexture texture;
 	Engine::ColourRGBA8 colour;
+	float m_dspawnTimer = 0.0f; 
 };
 

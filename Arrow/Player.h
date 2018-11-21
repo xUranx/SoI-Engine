@@ -15,7 +15,15 @@ public:
 
 	const Box& getBox() const { return cBox; }
 
+	void startContact() { contact = true; }
+	void endContact() { contact = false; }
+
+	void takeDamg(float dmg) { m_hp -= dmg; }
 private:
 	Box cBox;
+	float m_hp;
+	int m_id;
+	bool contact = false;
 };
 
+  

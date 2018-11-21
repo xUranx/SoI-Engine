@@ -6,6 +6,8 @@
 #include <random>
 #include <time.h>
 using namespace Engine;
+typedef std::vector<Arrow*>::iterator ArrowIte;
+typedef std::set<Arrow*>::iterator RemovalIte;
 MainGame::MainGame(): xtime(0), sWidth(1024), sHeight(640)
 {
 }
@@ -140,12 +142,25 @@ void MainGame::gLoop()
 		{
 			isPressed = false;
 		}
-
+		void* list;
 		for (auto arrow : m_arrow_list)
 		{
 			arrow->update();
-		}
 
+			if (arrow->getdSpawnTimer() > 50 || arrow->getBody()->GetPosition().y < -200)
+				Removal.insert(arrow);
+				
+		}
+		for (RemovalIte it = Removal.begin(); it != Removal.end(); it++)
+		{
+			delete (*it);
+
+			ArrowIte itr = std::find(m_arrow_list.begin(), m_arrow_list.end(), (*it));
+			if (itr != m_arrow_list.end())
+				m_arrow_list.erase(itr);
+
+		}
+		Removal.clear();
 		cam2D.update();
 		hudCam.update();
 		drawGame();

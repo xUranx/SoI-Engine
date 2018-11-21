@@ -18,6 +18,7 @@ void Player::init(b2World * world, const glm::vec2 position, Engine::ColourRGBA8
 	filt.categoryBits = entityCat::Player;
 	cBox.getFixture()->SetFilterData(filt);
 	cBox.getBody()->SetFixedRotation(true);
+	cBox.getBody()->SetUserData(this);
 
 }
 
