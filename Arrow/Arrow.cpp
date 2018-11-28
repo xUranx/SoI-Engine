@@ -25,9 +25,10 @@ void Arrow::Init(b2World * world, b2Body* uBody, Engine::GLTexture text, Engine:
 	b2Vec2 vertices[4];
 	vertices[0].Set(-1.4f, 0);
 	vertices[1].Set(0, -0.1f);
-	vertices[2].Set(1.0f, 0);
+	vertices[2].Set(0.6f, 0);
 	vertices[3].Set(0, 0.1f);
 	bShape.Set(vertices, 4);
+	//bShape.SetAsBox(1.f, .2f);
 
 	b2FixtureDef fDef;
 	fDef.shape = &bShape;
@@ -56,11 +57,19 @@ void Arrow::update()
 
 	b2Vec2 arrowTailPos = body->GetWorldPoint({ -1.4f,0 });
 	body->ApplyForce(dragForceMagnitude * -flightDir, arrowTailPos, true);
-	if(contact)
-		m_dspawnTimer += 1.f/10.f;
+	if (contact)
+		col = true;
+	if (col)
+		m_dspawnTimer += 1.f / 10.f;
 }
 void Arrow::Draw(Engine::GLSpriteBatch& sBatch)
 {
-	glm::vec4 destRect(body->GetPosition().x-0.8f, body->GetPosition().y -0.1f,2.6f,0.2f);
+	glm::vec4 destRect(body->GetPosition().x-1.4f, body->GetPosition().y-0.1f,2.f,0.2f);
 	sBatch.draw(destRect, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture.id, 1.0f, colour, body->GetAngle());
+}
+
+
+void Arrow::collision(b2Fixture* other)
+{
+
 }

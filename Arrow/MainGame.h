@@ -51,6 +51,7 @@ private:
 	CollisionListener ColList;
 	std::unique_ptr<b2World> world;
 	Box Ground;
+	Box Wall;
 	Player player;
 	glm::vec2 mouse;
 };

@@ -16,37 +16,36 @@ CollisionListener::~CollisionListener()
 
 void CollisionListener::BeginContact(b2Contact * contact)
 {
-	//check if fixture A was a ball
+	//check if fixture A has user data
 	void* bodyUserData = contact->GetFixtureA()->GetBody()->GetUserData();
 	bool arrow = false;
 	if (bodyUserData) 
 	{
-		if (entityCat::Arrow == contact->GetFixtureA()->GetFilterData().categoryBits)
-		{
-			static_cast<Arrow*>(bodyUserData)->startContact();
-			bool arrow = true;
-		}
+		static_cast<GameObj*>(bodyUserData)->startContact();
 	}
 		
 
-	//check if fixture B was a ball
+	//check if fixture A has user data
 	bodyUserData = contact->GetFixtureB()->GetBody()->GetUserData();
 	if (bodyUserData) 
 	{
-		if (entityCat::Arrow == contact->GetFixtureB()->GetFilterData().categoryBits)
-			static_cast<Arrow*>(bodyUserData)->startContact();
-		if (arrow && entityCat::Player == contact->GetFixtureB()->GetFilterData().categoryBits)
-			static_cast<Player*>(bodyUserData)->startContact();
+		static_cast<GameObj*>(bodyUserData)->startContact();
 	}
 }
 
 void CollisionListener::EndContact(b2Contact * contact)
 {
-	//check if fixture A was a ball
+	//check if fixture A has user data
 	void* bodyUserData = contact->GetFixtureA()->GetBody()->GetUserData();
-	if (bodyUserData) {}
+	if (bodyUserData)
+	{
+		static_cast<GameObj*>(bodyUserData)->endContact();
+	}
 
-	//check if fixture B was a ball
+	//check if fixture A has user data
 	bodyUserData = contact->GetFixtureB()->GetBody()->GetUserData();
-	if (bodyUserData) {}
+	if (bodyUserData) 
+	{
+		static_cast<GameObj*>(bodyUserData)->endContact();
+	}
 }

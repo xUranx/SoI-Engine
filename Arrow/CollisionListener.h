@@ -5,7 +5,6 @@ namespace entityCat
 	enum entityCatecory
 	{
 		Walls = 0x0001,
-		Planet_SOI = 0x0002,
 		Arrow = 0x0004,
 		Player = 0x0006,
 		Block = 0x0010

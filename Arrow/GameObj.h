@@ -5,13 +5,13 @@ class GameObj
 {
 public:
 	GameObj();
-	virtual ~GameObj();
+	~GameObj();
 	virtual void update() = 0;
-
+	void startContact() { contact = true; }
+	void endContact() { contact = false; }
+	virtual void collision(b2Fixture*) = 0;
 protected:
-	b2Body* body;
-	b2Fixture* fixture;
-	glm::vec2 dimens;
+	bool contact = false;
 
 };
 
