@@ -118,6 +118,14 @@ void MainGame::gLoop()
 			{
 				mouse = cam2D.TranslateScreenToWorld(e.motion.x, e.motion.y);
 			}
+			if (e.type == SDL_MOUSEBUTTONDOWN)
+			{
+				inputManager.pressKey(e.button.button);
+			}
+			if (e.type == SDL_MOUSEBUTTONUP)
+			{
+				inputManager.releaseKey(e.button.button);
+			}
 		
 		}
 		processInput();
@@ -126,8 +134,7 @@ void MainGame::gLoop()
 						  player.getBody()->GetPosition().y };
 		glm::vec2 direction = mouse - pos;
 		float angle = atan2f(-direction.x, direction.y);
-
-		if (inputManager.isKeyPressed(SDLK_k)&&!isPressed)
+		if (inputManager.isKeyPressed(SDL_BUTTON_LEFT)&&!isPressed)
 		{
 			ColourRGBA8 color;
 			Arrow* n_arrow = new Arrow;
@@ -135,7 +142,7 @@ void MainGame::gLoop()
 			m_arrow_list.push_back(n_arrow);
 			isPressed = true;
 		}
-		else if (inputManager.isKeyPressed(SDLK_k))
+		else if (inputManager.isKeyPressed(SDL_BUTTON_LEFT))
 		{
 
 		}

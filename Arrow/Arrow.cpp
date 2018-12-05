@@ -22,11 +22,12 @@ void Arrow::Init(b2World * world, b2Body* uBody, Engine::GLTexture text, Engine:
 	body = world->CreateBody(&bDef);
 
 	b2PolygonShape bShape;
-	b2Vec2 vertices[4];
-	vertices[0].Set(-1.4f, 0);
-	vertices[1].Set(0, -0.1f);
-	vertices[2].Set(0.6f, 0);
-	vertices[3].Set(0, 0.1f);
+	b2Vec2 vertices[5];
+	vertices[0].Set(-1.0f, -0.1f);
+	vertices[1].Set(.8f, -0.1f);
+	vertices[2].Set(1.0f, 0);
+	vertices[3].Set(.8f, 0.1f);
+	vertices[4].Set(-1.0f, 0.1f);
 	bShape.Set(vertices, 4);
 	//bShape.SetAsBox(1.f, .2f);
 
@@ -55,16 +56,18 @@ void Arrow::update()
 	float dot = b2Dot(flightDir, pointDir);
 	float dragForceMagnitude = (1 - fabs(dot)) * velocity * velocity * .1f * body->GetMass();
 
-	b2Vec2 arrowTailPos = body->GetWorldPoint({ -1.4f,0 });
+	b2Vec2 arrowTailPos = body->GetWorldPoint({ -1.0f,0 });
 	body->ApplyForce(dragForceMagnitude * -flightDir, arrowTailPos, true);
-	if (contact)
-		col = true;
-	if (col)
+	if (contact > 0)
 		m_dspawnTimer += 1.f / 10.f;
+	else if(contact==0&&m_dspawnTimer!=0)
+		m_dspawnTimer = 0;
+	else {}
+		
 }
 void Arrow::Draw(Engine::GLSpriteBatch& sBatch)
 {
-	glm::vec4 destRect(body->GetPosition().x-1.4f, body->GetPosition().y-0.1f,2.f,0.2f);
+	glm::vec4 destRect(body->GetPosition().x-1.0f, body->GetPosition().y-0.1f,2.f,0.2f);
 	sBatch.draw(destRect, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture.id, 1.0f, colour, body->GetAngle());
 }
 

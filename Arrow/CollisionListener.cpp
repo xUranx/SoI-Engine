@@ -22,6 +22,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 	if (bodyUserData) 
 	{
 		static_cast<GameObj*>(bodyUserData)->startContact();
+		static_cast<GameObj*>(bodyUserData)->collision(contact->GetFixtureB());
 	}
 		
 
@@ -30,6 +31,7 @@ void CollisionListener::BeginContact(b2Contact * contact)
 	if (bodyUserData) 
 	{
 		static_cast<GameObj*>(bodyUserData)->startContact();
+		static_cast<GameObj*>(bodyUserData)->collision(contact->GetFixtureA());
 	}
 }
 

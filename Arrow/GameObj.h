@@ -7,11 +7,11 @@ public:
 	GameObj();
 	~GameObj();
 	virtual void update() = 0;
-	void startContact() { contact = true; }
-	void endContact() { contact = false; }
+	void startContact() { contact++; }
+	void endContact() { contact--; }
 	virtual void collision(b2Fixture*) = 0;
 protected:
-	bool contact = false;
+	int contact = 0;
 
 };
 

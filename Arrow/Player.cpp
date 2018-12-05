@@ -1,6 +1,6 @@
 #include "Player.h"
-
-
+#include "Arrow.h"
+#include <iostream>
 
 Player::Player()
 {
@@ -45,7 +45,7 @@ void Player::draw(Engine::GLSpriteBatch& sBatch)
 	destRect.y = body->GetPosition().y - dimens.y / 2.0f;
 	destRect.z = dimens.x;
 	destRect.w = dimens.y;
-	sBatch.draw(destRect, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), NULL, 1.0f, colour);
+	sBatch.draw(destRect, glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), texture.id, 1.0f, colour);
 }
 
 void Player::update()
@@ -54,5 +54,14 @@ void Player::update()
 
 void Player::collision(b2Fixture* other)
 {
-
+	void* userdata = other->GetBody()->GetUserData();
+	if (userdata)
+	{
+		GameObj* obj = static_cast<GameObj*>(userdata);
+		Arrow* arrow = dynamic_cast<Arrow*>(obj);
+		if (arrow != NULL)
+		{
+			std::cout << "Hit!"<<std::endl;
+		}
+	}
 }
