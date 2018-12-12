@@ -161,6 +161,7 @@ copy $(ProjectDir)Include\*.h $(SolutionDir)Android\include\Engine\Include  /Y</
     <ClCompile Include="Source\InputManager.cpp" />
     <ClCompile Include="Source\IOManager.cpp" />
     <ClCompile Include="Source\Log.cpp" />
+    <ClCompile Include="Source\Network.cpp" />
     <ClCompile Include="Source\picoPNG.cpp" />
     <ClCompile Include="Source\ResourceManager.cpp" />
     <ClCompile Include="Source\Sprite.cpp" />
@@ -181,6 +182,7 @@ copy $(ProjectDir)Include\*.h $(SolutionDir)Android\include\Engine\Include  /Y</
     <ClInclude Include="Include\InputManager.h" />
     <ClInclude Include="Include\IOManager.h" />
     <ClInclude Include="Include\Log.h" />
+    <ClInclude Include="Include\Network.h" />
     <ClInclude Include="Include\picoPNG.h" />
     <ClInclude Include="Include\ResourceManager.h" />
     <ClInclude Include="Include\Sprite.h" />

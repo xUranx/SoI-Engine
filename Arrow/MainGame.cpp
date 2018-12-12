@@ -5,6 +5,7 @@
 #include <Engine\Include\ResourceManager.h>
 #include <random>
 #include <time.h>
+
 using namespace Engine;
 typedef std::vector<Arrow*>::iterator ArrowIte;
 typedef std::set<Arrow*>::iterator RemovalIte;
