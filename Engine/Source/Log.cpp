@@ -12,21 +12,30 @@ namespace Engine {
 #if defined(_DEBUG) && defined(WIN32)
 	void fatal_error(std::string error)
 	{
-		std::cout << "Error: " << error << std::endl;
+		printf("Error: %s", error);
 		SDL_Quit();
 		exit(1);
 	}
 
 	void fatal_error(std::string error, std::string ctx)
 	{
-		std::cout << "Error: " << error << ctx << std::endl;
+		printf("Error: %s: %s", error, ctx);
 		SDL_Quit();
 		exit(1);
 	}
 
 	void Message(std::string msg)
 	{
-		std::cout << "Info: " << msg << std::endl;
+		printf("Info: %s", msg);
+	}
+
+	void Message(const char* fmt, ...)
+	{
+		char* args;
+		va_start(args, fmt);
+		vprintf(fmt, args);
+		va_end(args);
+
 	}
 
 #elif WIN32
