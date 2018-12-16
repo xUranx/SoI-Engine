@@ -5,6 +5,7 @@
 #include <Engine\Include\ResourceManager.h>
 #include <random>
 #include <time.h>
+#include <Engine/Include/Network.h>
 
 using namespace Engine;
 typedef std::vector<Arrow*>::iterator ArrowIte;
@@ -21,6 +22,8 @@ MainGame::~MainGame()
 
 void MainGame::run()
 {
+
+
 	if (!window.init("Sphere of Influence", sWidth, sHeight, 0))
 	{
 		fatal_error("Failed to init window");

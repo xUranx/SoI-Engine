@@ -3,6 +3,7 @@
 namespace RakNet
 {
 	class RakPeerInterface;
+	class BitStream;
 }
 namespace Engine 
 {
@@ -35,10 +36,8 @@ namespace Engine
 
 		//char* GetServerIP() { return m_server; }
 
-
 	private:
 		friend class Network;
-		void connect(RakNet::RakPeerInterface*);
 		char* m_server_ip;
 
 	};
@@ -55,14 +54,21 @@ namespace Engine
 		
 		bool Connect(char* ip);
 
-		void Update();
+		void Reseive();
+
+		void Send();
+
+		//RakNet::BitStream* getBitSream() { return m_bitstream; }
+		RakNet::RakPeerInterface* getPeer() { return raknet; }
 
 	private:
+		//RakNet::BitStream* m_bitstream = nullptr;
 		int m_mode = 0;
 		bool m_mode_set = false;
 		Server* m_server;
 		Client* m_client;
 		RakNet::RakPeerInterface* raknet;
+
 	};
 	
 }

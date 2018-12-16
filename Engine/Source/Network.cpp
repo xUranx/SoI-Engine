@@ -1,6 +1,7 @@
 #include "Network.h"
 #include <Raknet/RakPeerInterface.h>
 #include <Raknet/MessageIdentifiers.h>
+#include <Raknet/BitStream.h>
 #include <Log.h>
 namespace Engine 
 {
@@ -40,7 +41,7 @@ namespace Engine
 		return true;
 	}
 
-	void Network::Update()
+	void Network::Reseive()
 	{
 		RakNet::Packet *packet;
 		for (packet = raknet->Receive(); raknet->DeallocatePacket(packet), packet = raknet->Receive();)
@@ -86,5 +87,9 @@ namespace Engine
 				break;
 			}
 		}
+	}
+	void Network::Send()
+	{
+
 	}
 }
