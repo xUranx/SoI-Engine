@@ -16,7 +16,7 @@ namespace Engine {
 
 	bool GLSLProgram::compileShaders(std::string vertexShaderFilePath, std::string fragmentShaderFilePath)
 	{
-		Message("Creating Shaders.");
+		Message("Creating Shaders.\n");
 
 		std::string vertSource;
 		std::string fragSource;
@@ -48,7 +48,7 @@ namespace Engine {
 		{
 			fatal_error("Fragment shader failed to be created!");
 		}
-		Message("Compiling Shaders");
+		Message("Compiling Shaders\n");
 		compileShader(vertexSource, "Vertex Shader", vertexShaderID);
 		compileShader(fragmentSource, "Fragment Shader", fragmentShaderID);
 
@@ -119,7 +119,7 @@ namespace Engine {
 		glDetachShader(programID, fragmentShaderID);
 		glDeleteShader(vertexShaderID);
 		glDeleteShader(fragmentShaderID);
-		Message("Shaders Linked");
+		Message("Shaders Linked\n");
 		return true;
 	}
 

@@ -20,7 +20,6 @@ void Arrow::Init(b2World * world, b2Body* uBody, Engine::GLTexture text, Engine:
 	bDef.position = uBody->GetPosition();
 
 	body = world->CreateBody(&bDef);
-
 	b2PolygonShape bShape;
 	b2Vec2 vertices[5];
 	vertices[0].Set(-1.0f, -0.1f);

@@ -24,10 +24,10 @@ namespace Engine {
 		exit(1);
 	}
 
-	void Message(std::string msg)
+	/*void Message(std::string msg)
 	{
 		printf("Info: %s", msg);
-	}
+	}*/
 
 	void Message(const char* fmt, ...)
 	{
@@ -60,9 +60,13 @@ namespace Engine {
 		SDL_Quit();
 		exit(1);
 	}
-	void Message(std::string msg)
+	void Message(const char* fmt, ...)
 	{
-		std::cout << "Info: " << msg << std::endl;
+		char* args;
+		va_start(args, fmt);
+		vprintf(fmt, args);
+		va_end(args);
+
 	}
 #else
 	extern void fatal_error(std::string error)

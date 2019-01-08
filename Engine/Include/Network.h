@@ -1,5 +1,7 @@
 #pragma once
 #include <map>
+#include <RakNet/RakNetTypes.h>
+#include <vector>
 namespace RakNet
 {
 	class RakPeerInterface;
@@ -14,12 +16,15 @@ namespace Engine
 		~Server() {};
 
 		virtual void Send() {};
-		virtual void Reseive() {};
+		virtual void Receive(RakNet::Packet *packet) {};
 
-	private:
+		std::map<int, RakNet::SystemAddress> m_clients;
+	protected:
 		friend class Network;
-		int m_client_count = 0;
-		std::map<int, char> m_clients;
+		std::vector<int> m_freeIDs;
+		int m_client_num = 0;
+		RakNet::RakPeerInterface* m_peer = nullptr;
+	private:
 
 	};
 
@@ -32,13 +37,16 @@ namespace Engine
 		void setIP(char* ServerIp) { m_server_ip = ServerIp; }
 
 		virtual void Send() {};
-		virtual void Reseive() {};
+		virtual void Receive(RakNet::Packet *packet) {};
 
 		//char* GetServerIP() { return m_server; }
 
-	private:
+
+	protected:
 		friend class Network;
 		char* m_server_ip;
+		RakNet::RakPeerInterface* m_peer = nullptr;
+	private:
 
 	};
 	class Network

@@ -23,7 +23,7 @@ namespace Engine {
 			//LoadTexture
 			GLTexture newTexture = ImageLoader::loadPNG(path);
 			textureMap.insert(make_pair(path, newTexture));
-			Message("Loaded new Texture: " + path);
+			Message("Loaded new Texture: %s\n", path.c_str());
 			return newTexture;
 		}
 		else

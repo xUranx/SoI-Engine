@@ -7,7 +7,7 @@ public:
 	Player();
 	virtual ~Player();
 
-	void init(b2World* world, const glm::vec2 position, Engine::ColourRGBA8 color, Engine::GLTexture textu, const glm::vec2& dimensions);
+	void init(b2World* world, const glm::vec2 position, Engine::ColourRGBA8 color, Engine::GLTexture textu, const glm::vec2& dimensions, int id);
 
 	void draw(Engine::GLSpriteBatch& sBatch);
 
@@ -15,12 +15,14 @@ public:
 
 	b2Body* getBody() { return body; }
 
+	int getID() { return m_id; }
+
 	void takeDamg(float dmg) { m_hp -= dmg; }
 
 	void collision(b2Fixture*);
 private:
-	float m_hp;
 	int m_id;
+	float m_hp;
 
 	b2Body* body = nullptr;
 	b2Fixture* fixture = nullptr;

@@ -11,9 +11,9 @@ Player::~Player()
 {
 }
 
-void Player::init(b2World * world, const glm::vec2 position, Engine::ColourRGBA8 color, Engine::GLTexture textu, const glm::vec2 & dimensions)
+void Player::init(b2World * world, const glm::vec2 position, Engine::ColourRGBA8 color, Engine::GLTexture textu, const glm::vec2 & dimensions, int id)
 {
-
+	m_id = id;
 	texture = textu;
 	colour = color;
 	dimens = dimensions;
@@ -50,6 +50,7 @@ void Player::draw(Engine::GLSpriteBatch& sBatch)
 
 void Player::update()
 {
+
 }
 
 void Player::collision(b2Fixture* other)

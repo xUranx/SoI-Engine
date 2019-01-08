@@ -47,7 +47,7 @@ namespace Engine {
 		else
 		{
 			SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-			Message("SDL Initialized");
+			Message("SDL Initialized.\n");
 			//Create window
 
 			gWindow = SDL_CreateWindow(_wName.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, sW, sH, flags);
@@ -58,7 +58,7 @@ namespace Engine {
 			}
 			else
 			{
-				Message("Window initialized");
+				Message("Window initialized\n");
 				//Get window surface
 				glcontext = SDL_GL_CreateContext(gWindow);
 				GLenum test = glewInit();
@@ -70,7 +70,8 @@ namespace Engine {
 				else
 				{
 					std::string versio = (char*)glGetString(GL_VERSION);
-					Message("Opengl initialized. Version: " + versio);
+					Message("Opengl initialized. Version: %s\n", (char*)glGetString(GL_VERSION));
+
 					glEnable(GL_BLEND);
 					glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 					SDL_GL_SetSwapInterval(1);
@@ -84,7 +85,7 @@ namespace Engine {
 
 	void Window::close()
 	{
-		Message("Closing");
+		Message("Closing\n");
 		//Destroy window
 		SDL_DestroyWindow(gWindow);
 		gWindow = NULL;
